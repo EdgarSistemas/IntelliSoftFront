@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-dashboard',
-  imports: [],
+  standalone:false,
   templateUrl: './layout-dashboard.component.html',
   styleUrl: './layout-dashboard.component.css'
 })

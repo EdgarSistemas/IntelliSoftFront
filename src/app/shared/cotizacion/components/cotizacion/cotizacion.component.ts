@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-cotizacion',
-  imports: [],
+  standalone:false,
   templateUrl: './cotizacion.component.html',
   styleUrl: './cotizacion.component.css'
 })

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-manuales',
-  imports: [],
+  standalone:false,
   templateUrl: './manuales.component.html',
   styleUrl: './manuales.component.css'
 })

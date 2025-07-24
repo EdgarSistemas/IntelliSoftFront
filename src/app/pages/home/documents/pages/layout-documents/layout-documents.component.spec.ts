@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayotDocumentsComponent } from './layot-documents.component';
+import { LayoutDocumentsComponent } from './layout-documents.component';
 
-describe('LayotDocumentsComponent', () => {
-  let component: LayotDocumentsComponent;
-  let fixture: ComponentFixture<LayotDocumentsComponent>;
+describe('LayoutDocumentsComponent', () => {
+  let component: LayoutDocumentsComponent;
+  let fixture: ComponentFixture<LayoutDocumentsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LayotDocumentsComponent]
+      imports: [LayoutDocumentsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LayotDocumentsComponent);
+    fixture = TestBed.createComponent(LayoutDocumentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-comentarios',
-  imports: [],
+  standalone:false,
   templateUrl: './layout-comentarios.component.html',
   styleUrl: './layout-comentarios.component.css'
 })

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-empresa',
-  imports: [],
+  standalone:false,
   templateUrl: './layout-empresa.component.html',
   styleUrl: './layout-empresa.component.css'
 })

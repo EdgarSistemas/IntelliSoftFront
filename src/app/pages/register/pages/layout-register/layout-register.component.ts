@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-register',
-  imports: [],
+  standalone:false,
   templateUrl: './layout-register.component.html',
   styleUrl: './layout-register.component.css'
 })

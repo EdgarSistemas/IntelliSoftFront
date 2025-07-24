@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-proveedores',
-  imports: [],
+  standalone:false,
   templateUrl: './layout-proveedores.component.html',
   styleUrl: './layout-proveedores.component.css'
 })

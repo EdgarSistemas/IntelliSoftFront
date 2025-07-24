@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-shop',
-  imports: [],
+  standalone:false,
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.css'
 })

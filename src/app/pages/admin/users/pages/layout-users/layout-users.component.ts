@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-users',
-  imports: [],
+  standalone:false,
   templateUrl: './layout-users.component.html',
   styleUrl: './layout-users.component.css'
 })

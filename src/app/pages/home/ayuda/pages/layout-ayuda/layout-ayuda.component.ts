@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-ayuda',
-  imports: [],
+  standalone:false,
   templateUrl: './layout-ayuda.component.html',
   styleUrl: './layout-ayuda.component.css'
 })

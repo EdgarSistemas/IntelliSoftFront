@@ -5,38 +5,41 @@ import { AppComponent } from "./app.component";
 import { JwtModule } from '@auth0/angular-jwt';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-
-//GLOBALES
-import { NavbarComponent } from "./components/navbar/navbar.component";
-import { FooterComponent } from "./components/footer/footer.component";
-
-//LOGIN/REGISTER
-import { LoginComponent } from "./pages/login/login.component";
-import { RegisterComponent } from "./pages/register/register.component";
-
-//HOME
-import { AyudaComponent } from "./pages/home/ayuda/ayuda.component";
-import { DocumentsComponent } from "./pages/home/documents/documents.component";
-import { EmpresaComponent } from "./pages/home/empresa/empresa.component";
-import { InicioComponent } from "./pages/home/inicio/inicio.component";
-
-//CLIENTE
-import { ManualesComponent } from "./pages/client/manuales/manuales.component";
-import { ProductsComponent } from "./pages/client/products/products.component";
-import { ShopComponent } from "./pages/client/shop/shop.component";
-
-//ADMIN
-import { ComentariosComponent } from "./pages/admin/comentarios/comentarios.component";
-import { ComprasComponent } from "./pages/admin/compras/compras.component";
-import { DashboardComponent } from "./pages/admin/dashboard/dashboard.component";
-import { ProductosComponent } from "./pages/admin/productos/productos.component";
-import { ProveedoresComponent } from "./pages/admin/proveedores/proveedores.component";
-import { UsersComponent } from "./pages/admin/users/users.component";
-import { VentasComponent } from "./pages/admin/ventas/ventas.component";
-import { CotizacionComponent } from "./components/cotizacion/cotizacion.component";
-import { ProfileComponent } from "./components/profile/profile.component";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
+
+
+//SHARED
+import { LayoutNavbarComponent } from "./shared/navbar/pages/layout-navbar/layout-navbar.component";
+import { LayoutFooterComponent } from "./shared/footer/pages/layout-footer/layout-footer.component";
+import { LayoutCotizacionComponent } from "./shared/cotizacion/pages/layout-cotizacion/layout-cotizacion.component";
+import { LayoutProfileComponent } from "./shared/profile/pages/layout-profile/layout-profile.component";
+
+
+//LOGIN/REGISTER
+import { LayoutLoginComponent} from "./pages/login/pages/layout-login/layout-login.component";
+import { LayoutRegisterComponent } from './pages/register/pages/layout-register/layout-register.component';
+
+
+//HOME
+import { LayoutAyudaComponent } from "./pages/home/ayuda/pages/layout-ayuda/layout-ayuda.component";
+import { LayoutDocumentsComponent } from "./pages/home/documents/pages/layout-documents/layout-documents.component";
+import { LayoutEmpresaComponent } from "./pages/home/empresa/pages/layout-empresa/layout-empresa.component";
+import { LayoutInicioComponent } from "./pages/home/inicio/pages/layout-inicio/layout-inicio.component";
+
+//CLIENTE
+import { LayoutManualesComponent } from "./pages/client/manuales/pages/layout-manuales/layout-manuales.component";
+import { LayoutProductsComponent } from "./pages/client/products/pages/layout-products/layout-products.component";
+import { LayoutShopComponent } from "./pages/client/shop/pages/layout-shop/layout-shop.component";
+
+//ADMIN
+import { LayoutComentariosComponent } from "./pages/admin/comentarios/pages/layout-comentarios/layout-comentarios.component";
+import { LayoutComprasComponent } from "./pages/admin/compras/pages/layout-compras/layout-compras.component";
+import { LayoutDashboardComponent } from "./pages/admin/dashboard/pages/layout-dashboard/layout-dashboard.component";
+import { LayoutProductosComponent } from "./pages/admin/productos/pages/layout-productos/layout-productos.component";
+import { LayoutProveedoresComponent } from "./pages/admin/proveedores/pages/layout-proveedores/layout-proveedores.component";
+import { LayoutUsersComponent } from "./pages/admin/users/pages/layout-users/layout-users.component";
+import { LayoutVentasComponent } from "./pages/admin/ventas/pages/layout-ventas/layout-ventas.component";
 
 export function tokenGetter() {
     return localStorage.getItem('jwt');
@@ -44,27 +47,27 @@ export function tokenGetter() {
 
 @NgModule({
     declarations: [
-        AppComponent,
-        NavbarComponent,
-        FooterComponent,
-        LoginComponent,
-        RegisterComponent,
-        AyudaComponent,
-        DocumentsComponent,
-        EmpresaComponent,
-        InicioComponent,
-        ManualesComponent,
-        ProductsComponent,
-        ShopComponent,
-        ComentariosComponent,
-        ComprasComponent,
-        DashboardComponent,
-        ProductosComponent,
-        ProveedoresComponent,
-        UsersComponent,
-        VentasComponent,
-        CotizacionComponent,
-        ProfileComponent
+    LayoutNavbarComponent,
+    LayoutFooterComponent,
+    LayoutCotizacionComponent,
+    LayoutProfileComponent,
+    LayoutLoginComponent,
+    LayoutRegisterComponent,
+    LayoutAyudaComponent,
+    LayoutDocumentsComponent,
+    LayoutEmpresaComponent,
+    LayoutInicioComponent,
+    LayoutManualesComponent,
+    LayoutProductsComponent,
+    LayoutShopComponent,
+    LayoutComentariosComponent,
+    LayoutComprasComponent,
+    LayoutDashboardComponent,
+    LayoutProductosComponent,
+    LayoutProveedoresComponent,
+    LayoutUsersComponent,
+    LayoutVentasComponent
+
     ],
     imports: [
         BrowserModule,
@@ -81,7 +84,7 @@ export function tokenGetter() {
       }
     })
 ],
-    exports: [ NavbarComponent, FooterComponent],
+    exports: [ LayoutNavbarComponent, LayoutFooterComponent ],
     bootstrap: [ AppComponent]
 })
 export class AppModule{}
