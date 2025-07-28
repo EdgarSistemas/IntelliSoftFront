@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../../../pages/login/services/auth.service';
 
 @Component({
   selector: 'app-layout-footer',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './layout-footer.component.css'
 })
 export class LayoutFooterComponent {
-
+ 
 }

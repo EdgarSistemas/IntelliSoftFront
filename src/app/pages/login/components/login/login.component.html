@@ -1,1 +1,45 @@
-<p>login works!</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <h3 class="text-center mb-4">Iniciar Sesión</h3>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input
+            type="email"
+            formControlName="email"
+            id="email"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && f['email'].errors">
+<div *ngIf="f['email'].errors?.['required']">El correo es obligatorio</div>
+            <div *ngIf="f['email'].errors?.['email']">Correo inválido</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input
+            type="password"
+            formControlName="password"
+            id="password"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && f['password'].errors">
+            La contraseña es obligatoria
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" [disabled]="loading">Entrar</button>
+        </div>
+
+        <div class="alert alert-danger mt-3" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
