@@ -11,13 +11,14 @@ import { AuthService } from './pages/login/services/auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
+  public title = 'intelliSoft';
   isLoggedIn: boolean = false;
 
   constructor(private AuthService: AuthService) {}
 
   ngOnInit(): void{
     AOS.init();
-
+    AOS.refresh();
     this.isLoggedIn = this.AuthService.isAuthenticated();
   }
 }

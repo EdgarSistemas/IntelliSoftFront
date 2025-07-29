@@ -1,0 +1,99 @@
+/* Navbar transparente (estado inicial) */
+.navbar-scroll {
+  background-color: transparent !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Links en negro cuando el navbar es transparente */
+.navbar-scroll .text-scroll {
+  color: #ffffff !important;
+}
+
+/* Navbar con color al hacer scroll */
+.navbar-scroll.scrolled {
+  background-color: #0f1530 !important;
+}
+
+/* Links en blanco cuando el navbar tiene color */
+.navbar-scroll.scrolled .text-scroll {
+  color: #fff !important;
+}
+
+/* Efecto de línea inferior (negro cuando navbar transparente) */
+.navbar-scroll .nav-link::after,
+.navbar-scroll .active-link::after {
+  background-color: #ffffff;
+}
+
+/* Efecto de línea inferior (blanco cuando navbar con color) */
+.navbar-scroll.scrolled .nav-link::after,
+.navbar-scroll.scrolled .active-link::after {
+  background-color: #fff;
+}
+
+/* Mantener el resto de estilos previos */
+.nav-link {
+  font-size: 1.1rem;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.active-link {
+  font-weight: 500;
+}
+
+.active-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(1);
+  transition: transform 0.3s ease;
+}
+
+.nav-link:not(.active-link)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* --- Estilos para los botones --- */
+
+/* Cuando el navbar es transparente (antes del scroll) */
+.navbar-scroll .btn-scroll {
+  border-color: #ffffff !important;  /* Borde azul */
+  color: #ffffff !important;         /* Texto azul */
+  background-color: transparent !important;
+}
+
+/* Efecto hover para el botón azul */
+.navbar-scroll .btn-scroll:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Cuando el navbar tiene color (después del scroll) */
+.navbar-scroll.scrolled .btn-outline-primary.btn-scroll {
+  border-color: #fff !important;  /* Borde blanco */
+  color: #fff !important;         /* Texto blanco */
+}
+
+.navbar-scroll.scrolled .btn-light.btn-scroll {
+  background-color: #fff !important;
+  color: #ffffff !important;      /* Texto azul para el botón sólido */
+}
+
+/* Efecto hover para el botón blanco */
+.navbar-scroll.scrolled .btn-scroll:hover {
+  opacity: 0.9;
+}

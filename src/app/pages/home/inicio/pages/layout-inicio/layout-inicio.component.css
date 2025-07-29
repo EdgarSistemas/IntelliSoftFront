@@ -1,0 +1,104 @@
+/* Estilos para la sección hero */
+section .hero{
+    background-color: #004aad;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+}
+
+/* Efectos hover para tarjetas */
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.hero {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding: 80px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* Color overlay opcional */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 2;
+}
+.hero:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 3;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 80px;
+
+}
+
+.hero p {
+  margin: 10px 0 0 0;
+  font-size: 30px;
+}
+
+.hero .btn-get-started {
+  color: #fff;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 40px;
+  margin: 30px 0 0 0;
+  border-radius: 4px;
+  transition: 0.5s;
+
+}
+
+@media (max-width: 768px) {
+  .hero h2 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+}
+
+section p{
+    font-size: 23px;
+}
+
+.beneficios{
+    height: 70vh;
+    display: flex;
+    align-items: center;
+}
