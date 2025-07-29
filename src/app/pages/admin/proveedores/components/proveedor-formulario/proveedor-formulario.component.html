@@ -1,0 +1,45 @@
+<div class="card">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">Nuevo Proveedor</h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="proveedorForm" (ngSubmit)="guardar()">
+      <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input formControlName="nombre" class="form-control" [class.is-invalid]="proveedorForm.get('nombre')?.invalid && proveedorForm.get('nombre')?.touched">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Teléfono</label>
+        <input formControlName="telefono" class="form-control" [class.is-invalid]="proveedorForm.get('telefono')?.invalid && proveedorForm.get('telefono')?.touched">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Contacto</label>
+        <input formControlName="contacto" class="form-control" [class.is-invalid]="proveedorForm.get('contacto')?.invalid && proveedorForm.get('contacto')?.touched">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Correo electrónico</label>
+        <input formControlName="correoElectronico" type="email" class="form-control" [class.is-invalid]="proveedorForm.get('correoElectronico')?.invalid && proveedorForm.get('correoElectronico')?.touched">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Descripción del servicio</label>
+        <textarea formControlName="descripcionServicio" class="form-control"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Estatus</label>
+        <select formControlName="estatus" class="form-select">
+          <option [value]="1">Activo</option>
+          <option [value]="0">Inactivo</option>
+        </select>
+      </div>
+
+      <button class="btn btn-success w-100" type="submit">
+        <i class="bi bi-check-circle me-1"></i> Guardar Proveedor
+      </button>
+    </form>
+  </div>
+</div>
