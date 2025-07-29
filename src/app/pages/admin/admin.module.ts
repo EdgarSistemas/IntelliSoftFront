@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -6,7 +7,8 @@ import { ComentariosComponent } from './comentarios/components/comentarios/comen
 import { ComprasComponent } from './compras/components/compras/compras.component';
 import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
 import { ProductosComponent } from './productos/components/productos/productos.component';
-import { ProveedoresComponent } from './proveedores/components/proveedores/proveedores.component';
+import { ProveedorTableComponent } from './proveedores/components/proveedor-tabla/proveedor-tabla.component';
+import { ProveedorFormularioComponent } from './proveedores/components/proveedor-formulario/proveedor-formulario.component';
 import { UsersComponent } from './users/components/users/users.component';
 import { VentasComponent } from './ventas/components/ventas/ventas.component';
 import { LayoutComentariosComponent } from './comentarios/pages/layout-comentarios/layout-comentarios.component';
@@ -26,7 +28,8 @@ import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.com
     ComprasComponent,
     DashboardComponent,
     ProductosComponent,
-    ProveedoresComponent,
+    ProveedorTableComponent,
+    ProveedorFormularioComponent,
     UsersComponent,
     VentasComponent,
     LayoutComentariosComponent,
@@ -36,7 +39,7 @@ import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.com
     LayoutProveedoresComponent,
     LayoutUsersComponent,
     LayoutVentasComponent,
-   
+
   ],
   imports: [
     CommonModule,
@@ -44,7 +47,8 @@ import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.com
     AdminRoutingModule,
     NavbarAdminComponent,
     FooterAdminComponent,
-    RouterOutlet
+    RouterOutlet,
+    ReactiveFormsModule
 ]
 })
 export class AdminModule { }

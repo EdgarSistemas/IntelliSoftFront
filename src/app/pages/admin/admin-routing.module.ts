@@ -9,7 +9,7 @@ import { ComentariosComponent } from "./comentarios/components/comentarios/comen
 import { ComprasComponent } from "./compras/components/compras/compras.component";
 import { DashboardComponent } from "./dashboard/components/dashboard/dashboard.component";
 import { ProductosComponent } from "./productos/components/productos/productos.component";
-import { ProveedoresComponent } from "./proveedores/components/proveedores/proveedores.component";
+import { LayoutProveedoresComponent } from "./proveedores/pages/layout-proveedores/layout-proveedores.component";
 import { UsersComponent } from "./users/components/users/users.component";
 import { VentasComponent } from "./ventas/components/ventas/ventas.component";
 import { ProfileComponent } from "../../shared/profile/components/profile/profile.component";
@@ -25,7 +25,7 @@ const routes: Routes = [
       { path: 'compras', component: ComprasComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'productos', component: ProductosComponent },
-      { path: 'proveedores', component: ProveedoresComponent },
+      { path: 'proveedores', component: LayoutProveedoresComponent },
       { path: 'users', component: UsersComponent },
       { path: 'ventas', component: VentasComponent },
       { path: 'profile', component: ProfileComponent },

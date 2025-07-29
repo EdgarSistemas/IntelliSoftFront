@@ -4,10 +4,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root' 
+  providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'https://localhost:7259/api/auth'; // tu backend
+  private baseUrl = 'https://localhost:5000/api/auth'; // tu backend
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private router: Router) {}
 
