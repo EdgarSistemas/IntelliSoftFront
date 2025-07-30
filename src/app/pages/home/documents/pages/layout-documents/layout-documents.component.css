@@ -1,0 +1,35 @@
+.documents-hero {
+    color: #fff;
+    background: linear-gradient(135deg, rgba(0,74,173,0.9) 0%, rgba(0,119,182,0.9) 100%);
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .documents-hero .lead {
+    font-size: 1rem;
+  }
+  
+  .documents-hero .input-group {
+    width: 100% !important;
+  }
+}
+.icon-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(2, 48, 107, 0.4) !important;
+  }
+  
+  .icon-card:hover {
+    transform: translateY(-5px);
+    background: rgba(2, 48, 107, 0.4) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }

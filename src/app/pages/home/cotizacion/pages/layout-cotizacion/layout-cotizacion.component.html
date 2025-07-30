@@ -1,1 +1,127 @@
-<h1 class="" style="margin-top: 100px;">Aquí va el contenido de Cotizacion</h1>
+<!-- hero.component.html -->
+<section class="quote-hero" style="background: linear-gradient(rgba(0, 74, 173, 0.8), rgba(0, 74, 173, 0.8)), url('assets/img/agriculture-bg.jpg') center/cover;">
+  <div class="container py-5 text-center text-white" >
+    <h1 class="display-4 fw-bold mb-3" data-aos="zoom-in">Cotización <span class="intelliSoft">IntelliSoft</span></h1>
+    <p class="lead mb-4" data-aos="zoom-in">Completa el formulario y recibirás una propuesta personalizada</p>
+  </div>
+</section>
+
+<!-- form.component.html -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-0 shadow-lg rounded overflow-hidden">
+      <!-- Columna de Imagen -->
+      <div class="col-lg-6 d-none d-lg-block">
+        <div class="h-100" style="background: url('./img/11.webp') center/cover; min-height: 600px;"></div>
+      </div>
+      
+      <!-- Columna de Formulario -->
+      <div class="col-lg-6 bg-white p-4 p-md-5">
+        <h2 class="mb-4 text-center">Datos para cotización</h2>
+        
+        <form [formGroup]="cotizacionForm" (ngSubmit)="onSubmit()">
+          <!-- Datos de Contacto -->
+          <div class="mb-4">
+            <h4 class="mb-3 text-primary"><i class="bi bi-person-lines-fill me-2 fs-4"></i> Información de contacto</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre completo*</label>
+                <input type="text" class="form-control" formControlName="fullName" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Correo electrónico*</label>
+                <input type="email" class="form-control" formControlName="email" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Teléfono*</label>
+                <input type="tel" class="form-control" formControlName="phone" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Empresa</label>
+                <input type="text" class="form-control" formControlName="company">
+              </div>
+            </div>
+          </div>
+
+          <!-- Detalles del Proyecto -->
+          <div class="mb-4">
+            <h4 class="mb-3 text-primary"><i class="bi bi-clipboard2-data-fill me-2 fs-4"></i> Detalles del proyecto</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Tipo de cultivo</label>
+                <select class="form-select" formControlName="plantType">
+                  <option value="">Seleccionar...</option>
+                  <option>Hortalizas</option>
+                  <option>Hierbas aromáticas</option>
+                  <option>Frutales</option>
+                  <option>Ornamentales</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Número de hectáreas*</label>
+                <input type="number" class="form-control" formControlName="hectares" min="1" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Estanques activos</label>
+                <select class="form-select" formControlName="activePonds">
+                  <option value="">Seleccionar...</option>
+                  <option>1-3 estanques</option>
+                  <option>4-6 estanques</option>
+                  <option>7-10 estanques</option>
+                  <option>Más de 10</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Sistema actual (si aplica)</label>
+                <input type="text" class="form-control" formControlName="currentSystem">
+              </div>
+            </div>
+          </div>
+
+          <!-- Información Adicional -->
+          <div class="mb-4">
+             <h5 class="mb-3 text-primary"><i class="bi bi-chat-square-text-fill me-2 fs-5"></i> Detalles adicionales</h5>
+            <textarea class="form-control" rows="3" formControlName="additionalDetails" 
+              placeholder="Describe cualquier requerimiento especial..."></textarea>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg py-3" [disabled]="!cotizacionForm.valid">
+              <i class="bi bi-send me-2"></i> Enviar solicitud
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal (se mantiene igual) -->
+
+<!-- confirmation-modal.component.html -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="confirmationModalLabel">¡Solicitud recibida!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <i class="bi bi-check-circle-fill text-success display-4 mb-4"></i>
+        <h4 class="mb-3">Gracias por tu interés en IntelliSoft</h4>
+        <p class="text-muted">
+          Hemos recibido tu solicitud de cotización. Nuestro equipo la revisará y te enviará 
+          una propuesta personalizada al correo: <strong>{{cotizacionForm.value.email}}</strong>
+        </p>
+        <p class="text-muted small mt-3">
+          <i class="bi bi-clock-history me-2"></i> Tiempo estimado de respuesta: 24-48 hrs
+        </p>
+      </div>
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <a routerLink="/inicio" class="btn btn-primary">Ir al inicio</a>
+      </div>
+    </div>
+  </div>
+</div>

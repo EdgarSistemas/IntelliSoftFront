@@ -1,6 +1,6 @@
 //RUTAS
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, ExtraOptions } from '@angular/router';
 
 //LOGIN
 import { LoginComponent } from './pages/login/components/login/login.component';
@@ -38,8 +38,14 @@ const routes: Routes = [
   { path: '**', redirectTo: 'inicio' },
 ];
 
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled',
+  scrollOffset: [0, 64] // Ajusta según tu navbar (opcional)
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -1,1 +1,153 @@
-<h1 class="" style="margin-top: 100px;">Aquí va el contenido de ayuda </h1>
+<!-- help-hero.component.html -->
+<section class="help-hero bg-primary py-5">
+  <div class="container py-5 text-center text-white">
+    <div data-aos="zoom-in">
+      <h1 class="display-5 fw-bold mb-4">Centro de <span class="text-light">Ayuda</span></h1>
+      <p class="lead mb-5">Encuentra soluciones rápidas para tus consultas</p>
+      <div class="w-75 mx-auto">
+        <div class="input-group input-group-lg">
+          <input type="text" class="form-control" placeholder="¿Cómo podemos ayudarte?">
+          <button class="btn btn-light" type="button">
+            <i class="bi bi-search"></i> Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- help-categories.component.html -->
+<section class="py-5 bg-white">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="fw-light">Explora por <span class="fw-bold text-primary">categoría</span></h2>
+      <div class="divider mx-auto"></div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card border-0 shadow-sm h-100 hover-lift">
+          <div class="card-body text-center p-4">
+            <i class="bi bi-question-circle-fill text-primary fs-1 mb-3"></i>
+            <h4 class="mb-3">Preguntas Frecuentes</h4>
+            <p class="text-muted">Soluciones a los problemas más comunes</p>
+            <a href="#faq" class="btn btn-outline-primary mt-3">Ver preguntas</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card border-0 shadow-sm h-100 hover-lift">
+          <div class="card-body text-center p-4">
+            <i class="bi bi-file-earmark-text-fill text-primary fs-1 mb-3"></i>
+            <h4 class="mb-3">Manuales</h4>
+            <p class="text-muted">Documentación detallada del sistema</p>
+            <a routerLink="/documentos" class="btn btn-outline-primary mt-3">Ver documentos</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card border-0 shadow-sm h-100 hover-lift">
+          <div class="card-body text-center p-4">
+            <i class="bi bi-headset text-primary fs-1 mb-3"></i>
+            <h4 class="mb-3">Soporte Directo</h4>
+            <p class="text-muted">Contacta a nuestro equipo técnico</p>
+            <a href="#contact" class="btn btn-outline-primary mt-3">Contactar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- faq-section.component.html -->
+<section id="faq" class="py-5 bg-light">
+  <div class="container py-4">
+    <h2 class="fw-light text-center mb-5">Preguntas <span class="fw-bold text-primary">frecuentes</span></h2>
+    
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item border-0 mb-3" data-aos="fade-up" *ngFor="let item of faqs; let i = index">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed shadow-none bg-white rounded" type="button" 
+                  [attr.data-bs-target]="'#collapse'+i" data-bs-toggle="collapse">
+            <i class="bi bi-question-circle text-primary me-3"></i>
+            {{item.question}}
+          </button>
+        </h3>
+        <div [id]="'collapse'+i" class="accordion-collapse collapse" [attr.data-bs-parent]="'#faqAccordion'">
+          <div class="accordion-body pt-0">
+            {{item.answer}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- support-contact.component.html -->
+<section id="contact" class="py-5 bg-white">
+  <div class="container py-4">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+        <h2 class="fw-light mb-4">¿Necesitas <span class="fw-bold text-primary">ayuda personalizada?</span></h2>
+        <p class="text-muted mb-4">Nuestro equipo técnico está listo para asistirte</p>
+        
+        <div class="d-flex align-items-start mb-4">
+          <i class="bi bi-envelope-fill text-warning fs-4 me-3 mt-1"></i>
+          <div>
+            <h5 class="mb-1">Correo Electrónico</h5>
+            <p class="text-muted mb-0">soporte-intellisoft.com</p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start mb-4">
+          <i class="bi bi-telephone-fill text-primary fs-4 me-3 mt-1"></i>
+          <div>
+            <h5 class="mb-1">Teléfono</h5>
+            <p class="text-muted mb-0">+52 55 1234 5678</p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start">
+          <i class="bi bi-whatsapp text-success fs-4 me-3 mt-1"></i>
+          <div>
+            <h5 class="mb-1">WhatsApp</h5>
+            <p class="text-muted mb-0">+52 55 8765 4321</p>
+            <a href="https://wa.me/525587654321" class="btn btn-sm btn-success mt-2">
+              <i class="bi bi-whatsapp me-2"></i> Enviar mensaje
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-left">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4">
+            <h4 class="mb-4">Formulario de contacto</h4>
+            <form>
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Nombre completo">
+              </div>
+              <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Correo electrónico">
+              </div>
+              <div class="mb-3">
+                <select class="form-select">
+                  <option selected>Tipo de consulta</option>
+                  <option>Soporte técnico</option>
+                  <option>Consulta comercial</option>
+                  <option>Error en el sistema</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <textarea class="form-control" rows="4" placeholder="Describe tu problema"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Enviar solicitud</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

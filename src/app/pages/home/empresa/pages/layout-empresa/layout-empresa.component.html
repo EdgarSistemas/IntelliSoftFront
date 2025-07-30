@@ -1,1 +1,83 @@
-<h1 class="" style="margin-top: 100px;">Aquí va el contenido de Empresa</h1>
+<section class="hero-section" >
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6" data-aos="fade-right">
+        <h1 class="display-4 fw-light mb-4 text-light">Soluciones tecnológicas <span class="fw-bold text-light">a medida</span></h1>
+        <p class="lead mb-5  text-light">Desarrollamos innovación y soluciones avanzadas para tu negocio</p>
+        <button class="btn btn-outline-light  btn-lg px-4 me-2" routerLink="/inicio">Conoce más</button>
+        
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <img src="./img/empresa.webp" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- services-section.component.html -->
+<section class="py-5 bg-white">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-light mb-3">Nuestro <span class="fw-bold text-primary">enfoque</span></h2>
+      <div class="divider mx-auto"></div>
+      <p class="text-muted w-lg-50 mx-auto">Soluciones tecnológicas diseñadas para simplificar procesos complejos</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let service of services" data-aos="fade-up">
+        <div class="p-4 text-center">
+          <div class="icon-box mb-4 mx-auto">
+            <i [class]="service.icon" class="feature-icon"></i>
+          </div>
+          <h3 class="h5 mb-3">{{service.title}}</h3>
+          <p class="text-muted">{{service.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- process-section.component.html -->
+<section class="py-5 bg-light">
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+        <h2 class="fw-light mb-4">Metodología <span class="fw-bold text-primary">IntelliSoft</span></h2>
+        <p class="text-muted mb-4">Nuestro proceso garantiza resultados medibles y adaptables a tus objetivos.</p>
+        
+        <div class="process-step d-flex mb-4" *ngFor="let step of processSteps">
+          <div class="step-number me-4 text-primary fw-bold">{{step.number}}</div>
+          <div>
+            <h4 class="h5">{{step.title}}</h4>
+            <p class="text-muted mb-0">{{step.description}}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6" data-aos="fade-left">
+        <img src="./img/b.jpg" alt="Proceso IntelliSoft" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- contact-section.component.html -->
+<section class="py-5">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h2 class="fw-light mb-4">¿Listo para <span class="fw-bold text-primary">transformar</span> tu negocio?</h2>
+        <p class="text-muted mb-5">Déjanos tus datos y nos pondremos en contacto contigo</p>
+        
+        <form class="contact-form mx-auto" style="max-width: 500px;">
+          <div class="mb-3">
+            <input type="text" class="form-control py-3" placeholder="Nombre completo">
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control py-3" placeholder="Correo electrónico">
+          </div>
+          <button type="submit" class="btn btn-primary w-100 py-3">Enviar mensaje</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

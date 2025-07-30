@@ -26,7 +26,6 @@ import { LayoutEmpresaComponent } from './pages/home/empresa/pages/layout-empres
 import { LayoutInicioComponent } from './pages/home/inicio/pages/layout-inicio/layout-inicio.component';
 import { NavbarInicioComponent } from './pages/home/inicio/pages/navbar-inicio/navbar-inicio.component';
 import { FooterInicioComponent } from './pages/home/inicio/pages/footer-inicio/footer-inicio.component';
-import { LoaderComponent } from "./shared/loaders/loader/loader.component";
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -64,7 +63,7 @@ export function tokenGetter() {
             disallowedRoutes: ['localhost:7259/api/auth/login'],
         },
     }),
-    LoaderComponent
+ 
 ],
   providers: [
     {

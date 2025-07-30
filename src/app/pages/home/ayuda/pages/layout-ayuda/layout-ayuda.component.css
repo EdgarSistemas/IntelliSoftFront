@@ -1,0 +1,31 @@
+.help-hero {
+  background: linear-gradient(135deg, rgba(0,74,173,0.9) 0%, rgba(0,119,182,0.9) 100%);
+  position: relative;
+}
+
+.divider {
+  width: 80px;
+  height: 3px;
+  background: var(--primary);
+  margin: 1rem auto;
+}
+
+.hover-lift {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+}
+
+.accordion-button:not(.collapsed) {
+  background: rgba(0,74,173,0.05);
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .help-hero .input-group {
+    width: 100% !important;
+  }
+}

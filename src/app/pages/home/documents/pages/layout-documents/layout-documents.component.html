@@ -1,1 +1,186 @@
-<h1 class="" style="margin-top: 100px;">Aquí va el contenido de Documentos </h1>
+<section class="documents-hero py-5 position-relative bg-primary">
+  <!-- Fondo con overlay oscuro -->
+  <div class="container py-4 position-relative z-1">
+    <div class="text-center">
+      <h1 class="display-5 fw-bold mb-3" data-aos="fade-down">Documentación <span class="text-light">IntelliSoft</span></h1>
+      <p class="lead text-light mb-5" data-aos="fade-down" data-aos-delay="100">Encuentra todos los recursos en un solo lugar</p>
+      
+      <!-- Iconos con animaciones -->
+      <div class="row g-4 justify-content-center">
+        <!-- Documentos -->
+        <div class="col-md-4 col-lg-2" data-aos="fade-up" data-aos-delay="200">
+          <div class="icon-card rounded-3 p-4 text-center">
+            <i class="bi bi-file-earmark-text-fill text-light fs-1 mb-3"></i>
+            <h5 class="text-light mb-0">Manuales</h5>
+          </div>
+        </div>
+        
+        <!-- Guías -->
+        <div class="col-md-4 col-lg-2" data-aos="fade-up" data-aos-delay="300">
+          <div class="icon-card bg-primary bg-opacity-25 rounded-3 p-4 text-center">
+            <i class="bi bi-journal-text text-light fs-1 mb-3"></i>
+            <h5 class="text-light mb-0">Guías</h5>
+          </div>
+        </div>
+        
+        <!-- Videos -->
+        <div class="col-md-4 col-lg-2" data-aos="fade-up" data-aos-delay="400">
+          <div class="icon-card bg-primary bg-opacity-25 rounded-3 p-4 text-center">
+            <i class="bi bi-play-circle-fill text-light fs-1 mb-3"></i>
+            <h5 class="text-light mb-0">Tutoriales</h5>
+          </div>
+        </div>
+              
+        <!-- Contacto -->
+        <div class="col-md-4 col-lg-2" data-aos="fade-up" data-aos-delay="600">
+          <div class="icon-card bg-primary bg-opacity-25 rounded-3 p-4 text-center">
+            <i class="bi bi-headset text-light fs-1 mb-3"></i>
+            <h5 class="text-light mb-0">Soporte</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- pdf-documents.component.html -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="fw-bold mb-4"><i class="bi bi-file-earmark-pdf text-danger me-2"></i> Documentos PDF</h2>
+    
+    <div class="row g-5 align-items-center" style="height: 60vh;">
+      <!-- Documento 1 -->
+      <div class="col-md-6">
+        <div class="p-3 border rounded d-flex align-items-center">
+          <i class="bi bi-file-earmark-pdf fs-3 text-danger me-3"></i>
+          <div>
+            <h5 class="mb-1">Manual de Usuario v3.2</h5>
+            <p class="text-muted small mb-2">Actualizado: 15/03/2023 | 2.4MB</p>
+            <a href="https://drive.google.com/ejemplo-manual.pdf" class="btn btn-sm btn-outline-danger" target="_blank">
+              <i class="bi bi-download me-1"></i> Descargar
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Documento 2 -->
+      <div class="col-md-6">
+        <div class="p-3 border rounded d-flex align-items-center">
+          <i class="bi bi-file-earmark-pdf fs-3 text-danger me-3"></i>
+          <div>
+            <h5 class="mb-1">Guía de Instalación Rápida</h5>
+            <p class="text-muted small mb-2">Actualizado: 10/04/2023 | 1.1MB</p>
+            <a href="https://drive.google.com/ejemplo-guia.pdf" class="btn btn-sm btn-outline-danger" target="_blank">
+              <i class="bi bi-download me-1"></i> Descargar
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Añade más documentos según necesites -->
+    </div>
+  </div>
+</section>
+
+<!-- featured-resources.component.html -->
+<section class="py-5 bg-light">
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+      <h2 class="fw-light mb-0">Recursos <span class="fw-bold text-primary">destacados</span></h2>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let resource of featuredResources">
+        <div class="card border-0 h-100 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <span class="badge bg-danger me-2">{{resource.type}}</span>
+              <small class="text-muted">{{resource.date}}</small>
+            </div>
+            <h5 class="mb-3">{{resource.title}}</h5>
+            <p class="text-muted small mb-3">{{resource.description}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <a [href]="resource.fileUrl" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-download me-2"></i>Descargar
+              </a>
+              <span class="text-muted small">{{resource.fileSize}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- video-tutorials.component.html -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="fw-bold mb-4"><i class="bi bi-play-circle-fill text-primary me-2"></i> Video Tutoriales</h2>
+    
+    <div class="row g-4">
+      <!-- Video 1 -->
+      <div class="col-md-6">
+        <div class="ratio ratio-16x9 mb-3">
+          <iframe src="https://www.youtube.com/embed/CODIGO_VIDEO_1" allowfullscreen></iframe>
+        </div>
+        <h5>Configuración Inicial del Sistema</h5>
+        <p class="text-muted small">Duración: 8 min</p>
+        <a href="https://youtu.be/CODIGO_VIDEO_1" class="btn btn-sm btn-outline-danger" target="_blank">
+          <i class="bi bi-youtube me-1"></i> Ver en YouTube
+        </a>
+      </div>
+      
+      <!-- Video 2 -->
+      <div class="col-md-6">
+        <div class="ratio ratio-16x9 mb-3">
+          <iframe src="https://www.youtube.com/embed/CODIGO_VIDEO_2" allowfullscreen></iframe>
+        </div>
+        <h5>Mantenimiento Preventivo</h5>
+        <p class="text-muted small">Duración: 12 min</p>
+        <a href="https://youtu.be/CODIGO_VIDEO_2" class="btn btn-sm btn-outline-danger" target="_blank">
+          <i class="bi bi-youtube me-1"></i> Ver en YouTube
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- links.component.html -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="fw-bold mb-4"><i class="bi bi-link-45deg text-success me-2"></i> Enlaces Rápidos</h2>
+    
+    <div class="row g-3">
+      <div class="col-md-4">
+        <a href="https://drive.google.com/carpeta-documentos" class="card h-100 text-decoration-none hover-lift" target="_blank">
+          <div class="card-body text-center">
+            <i class="bi bi-folder-fill text-warning fs-1 mb-3"></i>
+            <h5>Carpeta de Documentos</h5>
+            <p class="text-muted small">Todos los recursos en Drive</p>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-md-4">
+        <a href="https://youtube.com/playlist?list=TU_LINK" class="card h-100 text-decoration-none hover-lift" target="_blank">
+          <div class="card-body text-center">
+            <i class="bi bi-collection-play text-danger fs-1 mb-3"></i>
+            <h5>Playlist Tutoriales</h5>
+            <p class="text-muted small">Todos los videos en YouTube</p>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-md-4">
+        <a href="https://wa.me/521234567890" class="card h-100 text-decoration-none hover-lift" target="_blank">
+          <div class="card-body text-center">
+            <i class="bi bi-whatsapp text-success fs-1 mb-3"></i>
+            <h5>Soporte Técnico</h5>
+            <p class="text-muted small">Contacto directo por WhatsApp</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
