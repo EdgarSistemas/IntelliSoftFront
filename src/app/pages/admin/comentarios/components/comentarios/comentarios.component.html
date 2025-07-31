@@ -1,1 +1,24 @@
-<p>comentarios works!</p>
+<div class="container-fluid p-5 mb-5 portada">
+    <div class="container">
+        <h1 class="display-5 fw-bold">Panel de Administración</h1>
+        <p class="fs-4">Gestiona tus comentarios y preguntas</p>
+    </div>
+</div>
+
+<div class="container mt-5">
+  <h2>Comentarios y Preguntas</h2>
+  <div class="row mt-3" *ngFor="let comentario of comentarios">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          {{comentario.nombre}}
+        </div>
+        <div class="card-body">
+          <p>{{comentario.comentario}}</p>
+          <p *ngIf="comentario.respuesta">Respuesta: {{comentario.respuesta}}</p>
+          <button class="btn btn-primary" (click)="responderComentario(comentario)">Responder</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

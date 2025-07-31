@@ -1,1 +1,26 @@
-<p>users works!</p>
+<div class="container-fluid p-5 mb-5 portada">
+    <div class="container">
+        <h1 class="display-5 fw-bold">Panel de Administración</h1>
+        <p class="fs-4">Gestiona tus comentarios y preguntas</p>
+    </div>
+</div>
+
+<div class="container mt-5">
+<h2>Usuarios Registrados</h2>
+<div class="row mt-3" *ngFor="let usuario of usuarios">
+<div class="col-md-12">
+<div class="card">
+<div class="card-header">
+{{usuario.nombre}} {{usuario.apellido}}
+</div>
+<div class="card-body">
+<p>Correo: {{usuario.correo}}</p>
+<p>Rol: {{usuario.rol}}</p>
+<button class="btn btn-primary" (click)="editarUsuario(usuario)">Editar</button>
+<button class="btn btn-danger" (click)="eliminarUsuario(usuario)">Eliminar</button>
+</div>
+</div>
+</div>
+</div>
+<button class="btn btn-primary mt-3" routerLink="/nuevo-usuario">Agregar Usuario</button>
+</div>

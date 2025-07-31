@@ -1,4 +1,185 @@
-<app-navbar-admin></app-navbar-admin>
-<app-layout-dashboard></app-layout-dashboard>
+<section class="products-hero">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-lg-6 text-white">
+        <h1 class="display-5 fw-bold mb-4">Dashboard IntelliSoft</h1>
+        <p class="lead mb-4">Tecnología integrada para agricultura sostenible</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<app-footer-admin></app-footer-admin>
+<div class="dashboard-container">
+  <!-- Contenido Principal -->
+  <main class="main-content">
+    <!-- Métricas Rápidas -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon bg-primary-light">
+          <i class="bi bi-tree text-primary"></i>
+        </div>
+        <div class="metric-info">
+          <h3>24</h3>
+          <p>Invernaderos activos</p>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon bg-success-light">
+          <i class="bi bi-currency-dollar text-success"></i>
+        </div>
+        <div class="metric-info">
+          <h3>$128,450</h3>
+          <p>Ventas este mes</p>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon bg-warning-light">
+          <i class="bi bi-people text-warning"></i>
+        </div>
+        <div class="metric-info">
+          <h3>42</h3>
+          <p>Nuevos clientes</p>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon bg-danger-light">
+          <i class="bi bi-exclamation-triangle text-danger"></i>
+        </div>
+        <div class="metric-info">
+          <h3>5</h3>
+          <p>Alertas activas</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gráficos y Datos -->
+    <section class="data-section">
+      <div class="chart-card">
+        <div class="card-header">
+          <h3>Rendimiento de cultivos</h3>
+          <select class="form-select-sm">
+            <option>Últimos 7 días</option>
+            <option>Últimos 30 días</option>
+            <option>Este año</option>
+          </select>
+        </div>
+        <div class="chart-container">
+          <!-- Aquí iría tu gráfico (Chart.js, etc) -->
+          <div class="chart-placeholder"></div>
+        </div>
+      </div>
+
+      <div class="activity-card">
+        <div class="card-header">
+          <h3>Actividad reciente</h3>
+        </div>
+        <ul class="activity-list">
+          <li>
+            <div class="activity-icon bg-primary-light">
+              <i class="bi bi-cart-check text-primary"></i>
+            </div>
+            <div class="activity-details">
+              <p>Nueva venta realizada</p>
+              <small>Invernadero Pro - $45,000</small>
+              <span class="activity-time">Hace 2 horas</span>
+            </div>
+          </li>
+          <li>
+            <div class="activity-icon bg-success-light">
+              <i class="bi bi-check-circle text-success"></i>
+            </div>
+            <div class="activity-details">
+              <p>Sistema actualizado</p>
+              <small>Invernadero #7 - Actualización completada</small>
+              <span class="activity-time">Hace 5 horas</span>
+            </div>
+          </li>
+          <li>
+            <div class="activity-icon bg-warning-light">
+              <i class="bi bi-exclamation-triangle text-warning"></i>
+            </div>
+            <div class="activity-details">
+              <p>Alerta de temperatura</p>
+              <small>Invernadero #12 - Temperatura elevada</small>
+              <span class="activity-time">Hace 1 día</span>
+            </div>
+          </li>
+          <li>
+            <div class="activity-icon bg-info-light">
+              <i class="bi bi-person-plus text-info"></i>
+            </div>
+            <div class="activity-details">
+              <p>Nuevo cliente registrado</p>
+              <small>AgroTec Solutions</small>
+              <span class="activity-time">Ayer</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Tabla de Invernaderos -->
+    <section class="table-section">
+      <div class="table-card">
+        <div class="card-header">
+          <h3>Estado de invernaderos</h3>
+          <button class="btn btn-sm btn-outline-primary">
+            Ver todos
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ubicación</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Última revisión</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>INV-007</td>
+                <td>Guadalajara</td>
+                <td>Premium</td>
+                <td><span class="badge bg-success">Activo</span></td>
+                <td>Hoy, 09:42 AM</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>INV-012</td>
+                <td>Monterrey</td>
+                <td>Pro</td>
+                <td><span class="badge bg-warning">Mantenimiento</span></td>
+                <td>Ayer, 03:15 PM</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>INV-003</td>
+                <td>Ciudad de México</td>
+                <td>Premium</td>
+                <td><span class="badge bg-success">Activo</span></td>
+                <td>Hoy, 11:20 AM</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

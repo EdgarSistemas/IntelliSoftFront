@@ -1,1 +1,27 @@
-<p>ventas works!</p>
+<div class="container-fluid p-5 mb-5 portada">
+    <div class="container">
+        <h1 class="display-5 fw-bold">Panel de Administración</h1>
+        <p class="fs-4">Gestiona tus comentarios y preguntas</p>
+    </div>
+</div>
+
+<div class="container mt-5">
+<h2>Ventas Realizadas</h2>
+<div class="row mt-3" *ngFor="let venta of ventas">
+<div class="col-md-12">
+<div class="card">
+<div class="card-header">
+{{venta.fecha}} - {{venta.total | currency}}
+</div>
+<div class="card-body">
+<p>Productos:</p>
+<ul>
+<li *ngFor="let producto of venta.productos">{{producto.nombre}} ({{producto.cantidad}})</li>
+</ul>
+<p>Estado: {{venta.estado}}</p>
+<button class="btn btn-primary" (click)="detalleVenta(venta)">Detalle</button>
+</div>
+</div>
+</div>
+</div>
+</div>

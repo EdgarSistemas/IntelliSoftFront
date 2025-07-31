@@ -1,1 +1,33 @@
-<p>compras works!</p>
+<div class="container-fluid p-5 mb-5 portada">
+    <div class="container">
+        <h1 class="display-5 fw-bold">Panel de Administración</h1>
+        <p class="fs-4">Gestiona tus comentarios y preguntas</p>
+    </div>
+</div>
+
+<div class="container mt-5">
+<h2>Nueva Compra</h2>
+<form [formGroup]="formulario" (ngSubmit)="agregarCompra()">
+<div class="mb-3">
+<label>Fecha de compra:</label>
+<input type="date" formControlName="fecha" class="form-control">
+</div>
+<div class="mb-3">
+<label>Proveedor:</label>
+<input type="text" formControlName="proveedor" class="form-control">
+</div>
+<div class="mb-3">
+<label>Insumo:</label>
+<input type="text" formControlName="insumo" class="form-control">
+</div>
+<div class="mb-3">
+<label>Cantidad:</label>
+<input type="number" formControlName="cantidad" class="form-control">
+</div>
+<div class="mb-3">
+<label>Costo unitario:</label>
+<input type="number" formControlName="costoUnitario" class="form-control">
+</div>
+<button type="submit" class="btn btn-primary">Agregar</button>
+</form>
+</div>

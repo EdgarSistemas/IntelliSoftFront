@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-footer-admin',
-  imports: [],
+  standalone: false,
   templateUrl: './footer-admin.component.html',
   styleUrl: './footer-admin.component.css'
 })

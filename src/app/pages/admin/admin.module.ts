@@ -20,6 +20,7 @@ import { LayoutUsersComponent } from './users/pages/layout-users/layout-users.co
 import { LayoutVentasComponent } from './ventas/pages/layout-ventas/layout-ventas.component';
 import { NavbarAdminComponent } from "./home/pages/navbar-admin/navbar-admin.component";
 import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.component";
+import { HeaderComponent } from './proveedores/components/proveedor-header/header/header.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.com
     ProductosComponent,
     ProveedorTableComponent,
     ProveedorFormularioComponent,
+    HeaderComponent,
     UsersComponent,
     VentasComponent,
     LayoutComentariosComponent,
@@ -39,14 +41,14 @@ import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.com
     LayoutProveedoresComponent,
     LayoutUsersComponent,
     LayoutVentasComponent,
+    NavbarAdminComponent,
+    FooterAdminComponent,
 
   ],
   imports: [
     CommonModule,
     RouterModule,
     AdminRoutingModule,
-    NavbarAdminComponent,
-    FooterAdminComponent,
     RouterOutlet,
     ReactiveFormsModule
 ]

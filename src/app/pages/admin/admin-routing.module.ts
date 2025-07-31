@@ -5,13 +5,14 @@ import { RoleGuard } from "../../guard/role.guard";
 
 
 //ADMIN
-import { ComentariosComponent } from "./comentarios/components/comentarios/comentarios.component";
-import { ComprasComponent } from "./compras/components/compras/compras.component";
-import { DashboardComponent } from "./dashboard/components/dashboard/dashboard.component";
-import { ProductosComponent } from "./productos/components/productos/productos.component";
+
 import { LayoutProveedoresComponent } from "./proveedores/pages/layout-proveedores/layout-proveedores.component";
-import { UsersComponent } from "./users/components/users/users.component";
-import { VentasComponent } from "./ventas/components/ventas/ventas.component";
+import { LayoutComentariosComponent } from "./comentarios/pages/layout-comentarios/layout-comentarios.component";
+import { LayoutComprasComponent } from "./compras/pages/layout-compras/layout-compras.component";
+import { LayoutDashboardComponent } from "./dashboard/pages/layout-dashboard/layout-dashboard.component";
+import { LayoutProductosComponent } from "./productos/pages/layout-productos/layout-productos.component";
+import { LayoutUsersComponent } from "./users/pages/layout-users/layout-users.component";
+import { LayoutVentasComponent } from "./ventas/pages/layout-ventas/layout-ventas.component";
 
 
 const routes: Routes = [
@@ -21,13 +22,13 @@ const routes: Routes = [
     data: { expectedRole: 'admin' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'comentarios', component: ComentariosComponent },
-      { path: 'compras', component: ComprasComponent },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'productos', component: ProductosComponent },
+      { path: 'comentarios', component: LayoutComentariosComponent },
+      { path: 'compras', component: LayoutComprasComponent},
+      { path: 'dashboard', component: LayoutDashboardComponent },
+      { path: 'productos', component: LayoutProductosComponent },
       { path: 'proveedores', component: LayoutProveedoresComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'ventas', component: VentasComponent },
+      { path: 'users', component: LayoutUsersComponent },
+      { path: 'ventas', component: LayoutVentasComponent },
       
     ]
   }
