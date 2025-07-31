@@ -1,1 +1,212 @@
-<p>products works!</p>
+<!-- products-hero.component.html -->
+<section class="products-hero">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-lg-6 text-white">
+        <h1 class="display-4 fw-bold mb-4">Sistemas <span class="text-light">IntelliSoft</span></h1>
+        <p class="lead mb-4">Tecnología integrada para agricultura sostenible</p>
+        <div class="d-flex gap-3">
+          <a href="#productos" class="btn btn-primary btn-lg px-4">
+            <i class="bi bi-box-seam me-2"></i> Ver Productos
+          </a>
+          <a href="#contacto" class="btn btn-outline-light btn-lg px-4">
+            <i class="bi bi-chat-dots me-2"></i> Asesoría
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- products-grid.component.html -->
+<section id="productos" class="py-5 bg-light">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="fw-light">Nuestros <span class="fw-bold text-primary">Sistemas</span></h2>
+      <div class="divider mx-auto"></div>
+      <p class="text-muted">Soluciones completas para cultivos eficientes</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Producto 1 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card product-card h-100 border-0 shadow-sm">
+          <div class="badge bg-success position-absolute top-0 end-0 m-3">Más vendido</div>
+          <img src="assets/img/products/aqua-pro.jpg" class="card-img-top" alt="AquaPro System">
+          <div class="card-body">
+            <h5 class="card-title">AquaPro 3000</h5>
+            <p class="text-muted small">Sistema acuapónico premium</p>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Para 1-2 hectáreas</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Monitoreo IoT</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Automatización total</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 text-primary">$24,999</h5>
+              <button class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-cart-plus me-1"></i> Cotizar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 2 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card product-card h-100 border-0 shadow-sm">
+          <img src="assets/img/products/aqua-home.jpg" class="card-img-top" alt="AquaHome System">
+          <div class="card-body">
+            <h5 class="card-title">AquaHome 1000</h5>
+            <p class="text-muted small">Para emprendedores</p>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Hasta 5,000 m²</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Control semi-automático</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Ideal para iniciar</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 text-primary">$14,999</h5>
+              <button class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-cart-plus me-1"></i> Cotizar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card product-card h-100 border-0 shadow-sm">
+          <div class="badge bg-info position-absolute top-0 end-0 m-3">Nuevo</div>
+          <img src="assets/img/products/aqua-commercial.jpg" class="card-img-top" alt="AquaCommercial System">
+          <div class="card-body">
+            <h5 class="card-title">AquaCommercial X</h5>
+            <p class="text-muted small">Para operaciones a escala</p>
+            <ul class="list-unstyled mb-4">
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> 5+ hectáreas</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Inteligencia artificial</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Reportes avanzados</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 text-primary">$49,999</h5>
+              <button class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-cart-plus me-1"></i> Cotizar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- products-comparison.component.html -->
+<section class="py-5 bg-white">
+  <div class="container py-4">
+    <h2 class="fw-light text-center mb-5">Compara <span class="fw-bold text-primary">Modelos</span></h2>
+    
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Característica</th>
+            <th scope="col" class="text-center">AquaHome 1000</th>
+            <th scope="col" class="text-center">AquaPro 3000</th>
+            <th scope="col" class="text-center">AquaCommercial X</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Área de cultivo</th>
+            <td class="text-center">Hasta 5,000 m²</td>
+            <td class="text-center">1-2 hectáreas</td>
+            <td class="text-center">5+ hectáreas</td>
+          </tr>
+          <tr>
+            <th scope="row">Tecnología</th>
+            <td class="text-center">Semi-automático</td>
+            <td class="text-center">IoT + Automatización</td>
+            <td class="text-center">IA Avanzada</td>
+          </tr>
+          <tr>
+            <th scope="row">Producción estimada</th>
+            <td class="text-center">3-5 ton/año</td>
+            <td class="text-center">8-12 ton/año</td>
+            <td class="text-center">20+ ton/año</td>
+          </tr>
+          <tr>
+            <th scope="row">Ahorro de agua</th>
+            <td class="text-center">Hasta 80%</td>
+            <td class="text-center">Hasta 90%</td>
+            <td class="text-center">Hasta 95%</td>
+          </tr>
+          <tr>
+            <th scope="row">Garantía</th>
+            <td class="text-center">1 año</td>
+            <td class="text-center">2 años</td>
+            <td class="text-center">3 años</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- benefits-section.component.html -->
+<section class="py-5 bg-light">
+  <div class="container py-4">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <img src="assets/img/aquaponic-system.jpg" alt="Sistema IntelliSoft" class="img-fluid rounded shadow">
+      </div>
+      <div class="col-lg-6">
+        <h2 class="fw-light mb-4">¿Por qué elegir <span class="fw-bold text-primary">IntelliSoft</span>?</h2>
+        
+        <div class="d-flex mb-4">
+          <div class="me-4 text-primary">
+            <i class="bi bi-graph-up-arrow fs-1"></i>
+          </div>
+          <div>
+            <h5>Mayor productividad</h5>
+            <p class="text-muted">Sistemas optimizados para maximizar tu producción por metro cuadrado.</p>
+          </div>
+        </div>
+        
+        <div class="d-flex mb-4">
+          <div class="me-4 text-primary">
+            <i class="bi bi-droplet fs-1"></i>
+          </div>
+          <div>
+            <h5>Ahorro de recursos</h5>
+            <p class="text-muted">Tecnología que reduce el consumo de agua hasta en un 90%.</p>
+          </div>
+        </div>
+        
+        <div class="d-flex">
+          <div class="me-4 text-primary">
+            <i class="bi bi-phone fs-1"></i>
+          </div>
+          <div>
+            <h5>Control inteligente</h5>
+            <p class="text-muted">Monitorea y controla tu sistema desde cualquier dispositivo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- contact-cta.component.html -->
+<section id="contacto" class="py-5 bg-primary text-white">
+  <div class="container py-4 text-center">
+    <h2 class="fw-bold mb-4">¿Listo para transformar tu producción?</h2>
+    <p class="lead mb-5 w-lg-50 mx-auto">Nuestros especialistas están listos para asesorarte en la elección del sistema perfecto para tus necesidades.</p>
+    <div class="d-flex justify-content-center gap-3">
+      <a routerLink="/cliente/cotizar" class="btn btn-light btn-lg px-4">
+        <i class="bi bi-chat-square-text me-2"></i> Solicitar cotización
+      </a>
+      <a href="tel:+525512345678" class="btn btn-outline-light btn-lg px-4">
+        <i class="bi bi-telephone me-2"></i> Llamar ahora
+      </a>
+    </div>
+  </div>
+</section>

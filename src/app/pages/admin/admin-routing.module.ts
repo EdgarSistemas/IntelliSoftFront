@@ -12,7 +12,7 @@ import { ProductosComponent } from "./productos/components/productos/productos.c
 import { LayoutProveedoresComponent } from "./proveedores/pages/layout-proveedores/layout-proveedores.component";
 import { UsersComponent } from "./users/components/users/users.component";
 import { VentasComponent } from "./ventas/components/ventas/ventas.component";
-import { ProfileComponent } from "../../shared/profile/components/profile/profile.component";
+
 
 const routes: Routes = [
   {
@@ -28,7 +28,7 @@ const routes: Routes = [
       { path: 'proveedores', component: LayoutProveedoresComponent },
       { path: 'users', component: UsersComponent },
       { path: 'ventas', component: VentasComponent },
-      { path: 'profile', component: ProfileComponent },
+      
     ]
   }
 ];

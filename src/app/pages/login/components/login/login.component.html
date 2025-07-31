@@ -1,93 +1,94 @@
-<div class="container my-4 justify-content-end">
-  <div class="justify-content-end">
-    <div class="col-lg-5">
-      <div class="card border-0 shadow-sm">
-        <div class="row g-0">
-          <!-- Columna de formulario -->
-          <div class="col-md-12">
-            <div class="p-4 p-md-5">
-              <div class="text-center mb-4">
-                <img src="./img/logo.png" alt="IntelliSoft" width="60" class="mb-3">
-                <h3 class="fw-bold text-primary">Iniciar Sesión</h3>
-                <p class="text-muted small">Ingresa tus credenciales para acceder</p>
+
+  <div class="container my-4 justify-content-end">
+    <div class="justify-content-end">
+      <div class="col-lg-5 bg-transparent">
+        <div class="card border-0 shadow-sm">
+          <div class="row g-0">
+            <!-- Columna de formulario -->
+            <div class="col-md-12">
+              <div class="p-4 p-md-5">
+                <div class="text-center mb-4">
+                  <img src="./img/logo.png" alt="IntelliSoft" width="48" class="mb-3">
+                  <h3 class="fw-bold text-primary">Iniciar Sesión</h3>
+                  <p class="text-muted small">Ingresa tus credenciales para acceder</p>
+                </div>
+
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                  <!-- Email -->
+                  <div class="mb-3">
+                    <label class="form-label small text-uppercase fw-bold text-muted">Correo electrónico</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0">
+                        <i class="bi bi-envelope text-muted"></i>
+                      </span>
+                      <input
+                        type="email"
+                        formControlName="email"
+                        class="form-control border-start-0"
+                        [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                        placeholder="usuario@intellisoft.com"
+                      />
+                    </div>
+                    <div class="invalid-feedback mt-1" *ngIf="submitted && f['email'].errors">
+                      <div *ngIf="f['email'].errors?.['required']">
+                        <i class="bi bi-exclamation-circle me-1"></i> El correo es obligatorio
+                      </div>
+                      <div *ngIf="f['email'].errors?.['email']">
+                        <i class="bi bi-exclamation-circle me-1"></i> Correo inválido
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Contraseña -->
+                  <div class="mb-4">
+                    <label class="form-label small text-uppercase fw-bold text-muted">Contraseña</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0">
+                        <i class="bi bi-lock text-muted"></i>
+                      </span>
+                      <input
+                        type="password"
+                        formControlName="password"
+                        class="form-control border-start-0"
+                        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+                        placeholder="••••••••"
+                      />
+                    </div>
+                    <div class="invalid-feedback mt-1" *ngIf="submitted && f['password'].errors">
+                      <i class="bi bi-exclamation-circle me-1"></i> La contraseña es obligatoria
+                    </div>
+                  </div>
+
+                  <!-- Botón -->
+                  <div class="d-grid mb-3">
+                    <button class="btn btn-primary py-2" [disabled]="loading">
+                      <span *ngIf="!loading">Acceder al sistema</span>
+                      <span *ngIf="loading">
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        Verificando...
+                      </span>
+                    </button>
+                  </div>
+
+                  <!-- Enlaces adicionales -->
+                  <div class="text-center small">
+                    <a href="#" class="text-decoration-none text-muted me-3">
+                      <i class="bi bi-question-circle me-1"></i> Ayuda
+                    </a>
+                    <a href="#" class="text-decoration-none text-primary">
+                      <i class="bi bi-key me-1"></i> Recuperar contraseña
+                    </a>
+                  </div>
+
+                  <!-- Mensaje de error -->
+                  <div class="alert alert-danger mt-4 p-2 border-0 bg-light-danger" *ngIf="errorMessage">
+                    <i class="bi bi-exclamation-triangle me-2"></i> {{ errorMessage }}
+                  </div>
+                </form>
               </div>
-
-              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <!-- Email -->
-                <div class="mb-3">
-                  <label class="form-label small text-uppercase fw-bold text-muted">Correo electrónico</label>
-                  <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0">
-                      <i class="bi bi-envelope text-muted"></i>
-                    </span>
-                    <input
-                      type="email"
-                      formControlName="email"
-                      class="form-control border-start-0"
-                      [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
-                      placeholder="usuario@intellisoft.com"
-                    />
-                  </div>
-                  <div class="invalid-feedback mt-1" *ngIf="submitted && f['email'].errors">
-                    <div *ngIf="f['email'].errors?.['required']">
-                      <i class="bi bi-exclamation-circle me-1"></i> El correo es obligatorio
-                    </div>
-                    <div *ngIf="f['email'].errors?.['email']">
-                      <i class="bi bi-exclamation-circle me-1"></i> Correo inválido
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Contraseña -->
-                <div class="mb-4">
-                  <label class="form-label small text-uppercase fw-bold text-muted">Contraseña</label>
-                  <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0">
-                      <i class="bi bi-lock text-muted"></i>
-                    </span>
-                    <input
-                      type="password"
-                      formControlName="password"
-                      class="form-control border-start-0"
-                      [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-                      placeholder="••••••••"
-                    />
-                  </div>
-                  <div class="invalid-feedback mt-1" *ngIf="submitted && f['password'].errors">
-                    <i class="bi bi-exclamation-circle me-1"></i> La contraseña es obligatoria
-                  </div>
-                </div>
-
-                <!-- Botón -->
-                <div class="d-grid mb-3">
-                  <button class="btn btn-primary py-2" [disabled]="loading">
-                    <span *ngIf="!loading">Acceder al sistema</span>
-                    <span *ngIf="loading">
-                      <span class="spinner-border spinner-border-sm me-2"></span>
-                      Verificando...
-                    </span>
-                  </button>
-                </div>
-
-                <!-- Enlaces adicionales -->
-                <div class="text-center small">
-                  <a href="#" class="text-decoration-none text-muted me-3">
-                    <i class="bi bi-question-circle me-1"></i> Ayuda
-                  </a>
-                  <a href="#" class="text-decoration-none text-primary">
-                    <i class="bi bi-key me-1"></i> Recuperar contraseña
-                  </a>
-                </div>
-
-                <!-- Mensaje de error -->
-                <div class="alert alert-danger mt-4 p-2 border-0 bg-light-danger" *ngIf="errorMessage">
-                  <i class="bi bi-exclamation-triangle me-2"></i> {{ errorMessage }}
-                </div>
-              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg fixed-top p-1 navbar-scroll" id="mainNavbar" [class.scrolled]="scrolled">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-4 mt-1" href="/cliente/products">
+      <img
+        src="img/logo_1.jpg"
+        height="60"
+        alt="IntelliSoft"
+        loading="lazy"
+        rel="preload"
+        style="margin-top: -7px; border-radius: 15px 15px 15px 0px"
+      />
+    </a>
+    <div class="collapse navbar-collapse" id="navbarButtonsExample">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      </ul>
+      <div class="d-flex align-items-end a-nav">
+        <div class="collapse navbar-collapse" id="navbarNav">
+             <ul class="navbar-nav">
+               <li class="nav-item">
+                <a class="nav-link me-4 text-dark text-scroll" routerLink="/cliente/products" routerLinkActive="active-link">Productos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-4 text-dark text-scroll" routerLink="/cliente/cotizaciones" routerLinkActive="active-link">Cotización</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-4 text-dark text-scroll" routerLink="/cliente/manuales" routerLinkActive="active-link">Manuales</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-4 text-dark text-scroll" routerLink="/cliente/shop" routerLinkActive="active-link">Mis compras</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link me-4 text-dark text-scroll" routerLink="/cliente/profile" routerLinkActive="active-link">Perfil</a>
+              </li>
+            </ul>
+        </div>
+        
+        <!-- Botón Iniciar Sesión -->
+<button
+  data-mdb-ripple-init
+  data-mdb-ripple-color="dark"
+  type="button"
+  class="btn btn-outline-primary btn-scroll me-4"
+  *ngIf="!auth.isAuthenticated()"
+  routerLink="/login">
+  Iniciar sesión
+</button>
+
+        <!-- BOTÓN CERRAR SESIÓN -->
+        <button
+          data-mdb-ripple-init
+          data-mdb-ripple-color="dark"
+          type="button"
+          class="btn btn-light me-4"
+          *ngIf="auth.isAuthenticated()"
+          (click)="auth.logout()">
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

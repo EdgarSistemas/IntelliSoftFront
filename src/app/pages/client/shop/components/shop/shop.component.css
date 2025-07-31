@@ -1,0 +1,132 @@
+/* Estilos base consistentes con tu tema */
+.purchases-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.purchase-header {
+   background: linear-gradient(rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.85));
+  color: white;
+   height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.purchase-body {
+  border-radius: 0 0 10px 10px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para acordeón */
+.accordion-item {
+  border-radius: 8px !important;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: rgba(0, 74, 173, 0.1);
+  color: #004aad;
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(0, 74, 173, 0.25);
+  border-color: rgba(0, 74, 173, 0.25);
+}
+
+/* Badges de estado */
+.badge-completed {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-pending {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge-cancelled {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Divider estilo consistente */
+.divider {
+  width: 80px;
+  height: 3px;
+  background: #004aad;
+  margin: 1rem 0;
+}
+
+/* Tablas con hover */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 74, 173, 0.05);
+}
+
+/* Paginación */
+.page-item.active .page-link {
+  background-color: #004aad;
+  border-color: #004aad;
+}
+
+.page-link {
+  color: #004aad;
+}
+
+/* Botones */
+.btn-outline-primary {
+  color: #004aad;
+  border-color: #004aad;
+}
+
+.btn-outline-primary:hover {
+  background-color: #004aad;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #004aad;
+  border-color: #004aad;
+}
+
+.btn-primary:hover {
+  background-color: #003b8a;
+  border-color: #003b8a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .purchase-header {
+    text-align: center;
+    padding: 1.5rem !important;
+  }
+  
+  .purchase-header .col-md-4 {
+    margin-top: 1rem;
+  }
+  
+  .accordion-body .row > div {
+    margin-bottom: 1rem;
+  }
+  
+  .accordion-button {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+  
+  .filter-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .filter-buttons .btn {
+    width: 100%;
+  }
+}

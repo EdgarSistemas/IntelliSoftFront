@@ -1,0 +1,54 @@
+.manuals-hero {
+  background: linear-gradient(rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.85));
+    min-height: 60vh;
+}
+
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+  
+  .nav-link {
+    border: none;
+    color: var(--secondary);
+    font-weight: 500;
+    
+    &:hover, &.active {
+      color: var(--primary);
+      background: transparent;
+      border-bottom: 2px solid var(--primary);
+      margin-bottom: -2px;
+    }
+  }
+}
+
+.hover-lift {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.icon-box {
+  width: 70px;
+  height: 70px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.accordion-button {
+  font-weight: 500;
+  
+  &:not(.collapsed) {
+    background: rgba(0, 74, 173, 0.05);
+    color: var(--primary);
+  }
+}
+
+@media (max-width: 768px) {
+  .manuals-hero {
+    padding: 60px 0;
+    background-attachment: scroll;
+  }
+}

@@ -1,0 +1,45 @@
+.products-hero {
+  background: linear-gradient(rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.85));
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+.product-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+  
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+}
+
+.divider {
+  width: 80px;
+  height: 3px;
+  background: var(--primary);
+  margin: 1rem auto;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 74, 173, 0.05);
+}
+
+@media (max-width: 768px) {
+  .products-hero {
+    height: auto;
+    padding: 100px 0;
+    text-align: center;
+  }
+  
+  .products-hero .d-flex {
+    justify-content: center;
+  }
+}

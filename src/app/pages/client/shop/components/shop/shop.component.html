@@ -1,1 +1,216 @@
-<p>shop works!</p>
+<div class="purchases-container">
+  <!-- Header con datos del cliente -->
+  <div class="purchase-header p-4 rounded-top">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h3 class="mb-3">Historial de compras de <strong>{{clientData?.name}}</strong></h3>
+          <div class="divider"></div>
+          <p class="mb-0">
+            <i class="bi bi-building me-1"></i> {{clientData?.company || 'Sin empresa registrada'}} | 
+            <i class="bi bi-envelope me-1"></i> {{clientData?.email}} |
+            <i class="bi bi-phone me-1"></i> {{clientData?.phone || 'Sin teléfono registrado'}}
+          </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <span class="badge bg-light text-dark fs-6">Cliente desde: {{joinDate | date}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cuerpo del historial -->
+   <div class="purchase-body p-4 rounded-bottom bg-white">
+    <!-- Filtros -->
+    <div class="mb-4 p-4 bg-light rounded" style="border-left: 4px solid #004aad;">
+      <h5 class="mb-3">
+        <i class="bi bi-funnel-fill me-2" style="color: #004aad;"></i> Filtros
+      </h5>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Rango de fechas</label>
+          <div class="input-group">
+            <input type="date" class="form-control" [(ngModel)]="dateFrom">
+            <span class="input-group-text">a</span>
+            <input type="date" class="form-control" [(ngModel)]="dateTo">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Estado</label>
+          <select class="form-select" [(ngModel)]="statusFilter">
+            <option value="">Todos los estados</option>
+            <option value="completed">Completadas</option>
+            <option value="pending">Pendientes</option>
+            <option value="cancelled">Canceladas</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button class="btn btn-success me-2" (click)="applyFilters()">
+            <i class="bi bi-filter-circle me-2"></i> Aplicar
+          </button>
+          <button class="btn btn-outline-secondary" (click)="resetFilters()">
+            <i class="bi bi-arrow-counterclockwise me-2"></i> Reiniciar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Listado de compras -->
+    <div *ngIf="purchases.length > 0; else noPurchases">
+      <h5 class="mb-4">
+        <i class="bi bi-list-check me-2" style="color: #004aad;"></i> Compras realizadas
+        <span class="badge bg-primary ms-2">{{filteredPurchases.length}}</span>
+      </h5>
+
+      <div class="accordion" id="purchasesAccordion">
+        <div class="accordion-item mb-3" *ngFor="let purchase of paginatedPurchases; let i = index">
+          <h2 class="accordion-header" [id]="'heading'+i">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                    [attr.data-bs-target]="'#collapse'+i" [attr.aria-expanded]="i === 0 ? 'true' : 'false'" 
+                    [attr.aria-controls]="'collapse'+i">
+              <div class="d-flex justify-content-between w-100 me-3">
+                <div>
+                  <span class="badge me-2" [ngClass]="{
+                    'bg-success': purchase.status === 'completed',
+                    'bg-warning': purchase.status === 'pending',
+                    'bg-danger': purchase.status === 'cancelled'
+                  }">
+                    {{purchase.status | titlecase}}
+                  </span>
+                  <strong>Orden #{{purchase.orderNumber}}</strong>
+                </div>
+                <div class="text-end">
+                  <span class="me-3">{{purchase.date | date}}</span>
+                  <span class="fw-bold">{{purchase.total | currency}}</span>
+                </div>
+              </div>
+            </button>
+          </h2>
+          <div [id]="'collapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading'+i" 
+               data-bs-parent="#purchasesAccordion">
+            <div class="accordion-body">
+              <!-- Detalles del producto comprado -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <img [src]="purchase.product.image" class="img-fluid rounded" alt="Invernadero acuapónico">
+                </div>
+                <div class="col-md-8">
+                  <h5>{{purchase.product.name}}</h5>
+                  <p class="text-muted">{{purchase.product.description}}</p>
+                  <ul class="list-unstyled">
+                    <li>
+                      <i class="bi bi-check-circle-fill text-success me-2"></i> 
+                      <strong>Tipo:</strong> {{purchase.product.type}}
+                    </li>
+                    <li>
+                      <i class="bi bi-check-circle-fill text-success me-2"></i> 
+                      <strong>Tamaño:</strong> {{purchase.product.size}}
+                    </li>
+                    <li>
+                      <i class="bi bi-check-circle-fill text-success me-2"></i> 
+                      <strong>Capacidad:</strong> {{purchase.product.capacity}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Detalles de la compra -->
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="border-bottom pb-2">Información de envío</h6>
+                  <p *ngIf="purchase.shipping">
+                    <i class="bi bi-truck me-2"></i> 
+                    {{purchase.shipping.address}}<br>
+                    {{purchase.shipping.city}}, {{purchase.shipping.state}}<br>
+                    Código Postal: {{purchase.shipping.zipCode}}<br>
+                    <span class="text-muted small">
+                      Método: {{purchase.shipping.method}} | 
+                      Estado: {{purchase.shipping.status || 'En preparación'}}
+                    </span>
+                  </p>
+                  <p *ngIf="!purchase.shipping" class="text-muted">
+                    <i class="bi bi-info-circle me-2"></i> Recogida en tienda
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="border-bottom pb-2">Resumen de pago</h6>
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <tbody>
+                        <tr>
+                          <td>Subtotal:</td>
+                          <td class="text-end">{{purchase.subtotal | currency}}</td>
+                        </tr>
+                        <tr *ngIf="purchase.shipping">
+                          <td>Envío:</td>
+                          <td class="text-end">{{purchase.shipping.cost | currency}}</td>
+                        </tr>
+                        <tr *ngIf="purchase.discount > 0">
+                          <td>Descuento:</td>
+                          <td class="text-end text-danger">-{{purchase.discount | currency}}</td>
+                        </tr>
+                        <tr>
+                          <td class="fw-bold">Total:</td>
+                          <td class="text-end fw-bold">{{purchase.total | currency}}</td>
+                        </tr>
+                        <tr>
+                          <td>Método de pago:</td>
+                          <td class="text-end">
+                            <span class="badge bg-secondary">
+                              {{purchase.paymentMethod | titlecase}}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Acciones -->
+              <div class="d-flex justify-content-end pt-3 border-top">
+                <button *ngIf="purchase.status === 'pending'" class="btn btn-outline-danger me-2" 
+                        (click)="cancelOrder(purchase)">
+                  <i class="bi bi-x-circle me-2"></i> Cancelar orden
+                </button>
+                <button class="btn btn-outline-success me-2" (click)="downloadInvoice(purchase)">
+                  <i class="bi bi-file-earmark-pdf me-2"></i> Factura
+                </button>
+                <button *ngIf="purchase.status === 'completed'" class="btn btn-success" 
+                        (click)="requestSupport(purchase)">
+                  <i class="bi bi-headset me-2"></i> Soporte técnico
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <nav aria-label="Page navigation" class="mt-4" *ngIf="totalPages > 1">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="changePage(currentPage - 1)">Anterior</a>
+          </li>
+          <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
+            <a class="page-link" (click)="changePage(page)">{{page}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="changePage(currentPage + 1)">Siguiente</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <ng-template #noPurchases>
+      <div class="text-center py-5">
+        <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
+        <h4 class="mt-3">No se encontraron compras registradas</h4>
+        <p class="text-muted">Parece que este cliente aún no ha realizado compras en nuestro sistema.</p>
+        <button class="btn btn-success mt-3" routerLink="/productos">
+          <i class="bi bi-arrow-right-circle me-2"></i> Ver productos disponibles
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

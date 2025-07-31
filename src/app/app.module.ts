@@ -18,7 +18,6 @@ import { LoginComponent } from './pages/login/components/login/login.component';
 import { EmpresaComponent } from './pages/home/empresa/components/empresa/empresa.component';
 import { DocumentsComponent } from './pages/home/documents/components/documents/documents.component';
 import { CotizacionComponent } from './pages/home/cotizacion/components/cotizacion/cotizacion.component';
-import { FooterComponent } from './shared/footer/components/footer/footer.component';
 import { LayoutAyudaComponent } from './pages/home/ayuda/pages/layout-ayuda/layout-ayuda.component';
 import { LayoutCotizacionComponent } from './pages/home/cotizacion/pages/layout-cotizacion/layout-cotizacion.component';
 import { LayoutDocumentsComponent } from './pages/home/documents/pages/layout-documents/layout-documents.component';
@@ -39,7 +38,6 @@ export function tokenGetter() {
     DocumentsComponent,
     EmpresaComponent,
     InicioComponent,
-    FooterComponent,
     LoginComponent,
     LayoutAyudaComponent,
     LayoutCotizacionComponent,
