@@ -1,0 +1,35 @@
+/* Agrega esto a tu archivo CSS principal */
+#cotizacionModal .modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#cotizacionModal .modal-header {
+  border-bottom: none;
+  padding: 1.2rem;
+}
+
+#cotizacionModal .modal-body {
+  padding: 2rem;
+}
+
+#cotizacionModal .modal-footer {
+  padding-bottom: 1.5rem;
+  padding-top: 0;
+}
+
+#cotizacionModal .btn {
+  min-width: 140px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+#cotizacionModal .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 74, 173, 0.2);
+}
+
+#cotizacionModal .btn-outline-primary:hover {
+  background-color: rgba(0, 74, 173, 0.05);
+}

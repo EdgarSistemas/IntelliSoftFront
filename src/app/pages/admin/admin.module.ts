@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -50,7 +50,8 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     RouterModule,
     AdminRoutingModule,
     RouterOutlet,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
 ]
 })
 export class AdminModule { }

@@ -1,8 +1,8 @@
 <div class="login-container d-flex justify-content-center align-items-center min-vh-100">
-  <div class="login-card">
+  <div class="login-card" data-aos="fade-down">
     <div class="text-center mb-4">
-      <img src="./img/logo.png" alt="IntelliSoft" width="100" class="mb-3">
-      <h4 class="fw-light text-dark mb-2 display-4">IntelliSoft</h4>
+
+      <h4 class="fw-light text-dark mb-2 display-4" >IntelliSoft</h4>
       <p class="text-muted medium">Tecnología e innovación</p>
     </div>
 
@@ -14,11 +14,16 @@
           formControlName="email"
           class="form-control form-control-lg border-0 border-bottom"
           placeholder="Correo electrónico"
-          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          [ngClass]="{ 
+            'is-invalid': (submitted && f['email'].errors) || 
+                         (f['email'].touched && f['email'].errors),
+            'is-valid': f['email'].valid
+          }"
         />
-        <div class="invalid-feedback small" *ngIf="submitted && f['email'].errors">
+        <div class="invalid-feedback small" *ngIf="f['email'].errors">
           <div *ngIf="f['email'].errors?.['required']">Correo requerido</div>
-          <div *ngIf="f['email'].errors?.['email']">Formato inválido</div>
+          <div *ngIf="f['email'].errors?.['email']">Formato de correo inválido</div>
+          <div *ngIf="f['email'].errors?.['minlength']">Mínimo 5 caracteres</div>
         </div>
       </div>
 
@@ -29,35 +34,41 @@
           formControlName="password"
           class="form-control form-control-lg border-0 border-bottom"
           placeholder="Contraseña"
-          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          [ngClass]="{ 
+            'is-invalid': (submitted && f['password'].errors) || 
+                         (f['password'].touched && f['password'].errors),
+            'is-valid': f['password'].valid
+          }"
         />
-        <div class="invalid-feedback small" *ngIf="submitted && f['password'].errors">
-          Contraseña requerida
+        <div class="invalid-feedback small" *ngIf="f['password'].errors">
+          <div *ngIf="f['password'].errors?.['required']">Contraseña requerida</div>
+          <div *ngIf="f['password'].errors?.['minlength']">Mínimo 8 caracteres</div>
+          <div *ngIf="f['password'].errors?.['pattern']">
+            Debe contener al menos un símbolo (!#$%^&*)
+          </div>
         </div>
       </div>
 
       <!-- Botón -->
       <div class="d-grid mb-3">
-        <button class="btn btn-primary py-2" [disabled]="loading">
-          <span *ngIf="!loading">Acceder</span>
-          <span *ngIf="loading">
-            <span class="spinner-border spinner-border-sm me-2"></span>
-            Ingresando...
-          </span>
+        <button class="btn btn-primary py-2" >
+          <span >Acceder</span>
         </button>
       </div>
 
       <!-- Enlaces -->
       <div class="text-center small mt-4">
-        <a href="#" class="text-muted text-decoration-none">
+        <a routerLink="/forgot-password" class="text-muted text-decoration-none">
           ¿Olvidaste tu contraseña?
         </a>
       </div>
-
-      <!-- Mensaje de error -->
-      <div class="alert alert-light mt-4 p-2 border text-center small" *ngIf="errorMessage">
-        <i class="bi bi-exclamation-circle me-1"></i> {{ errorMessage }}
+      <div class="text-center small mt-3">
+         ¿Aún no tienes una cuenta?
+         <a routerLink="/register" class="text-muted text-decoration-none">
+         Registrate <i class="text-primary">aquí</i>
+        </a>
       </div>
+
     </form>
   </div>
 </div>

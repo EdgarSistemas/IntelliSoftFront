@@ -1,1 +1,99 @@
-<p>register works!</p>
+<div class="container">
+  <div id="formulario-registro" class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="register-card" data-aos="zoom-in">
+        <div class="text-center mb-4">
+          <h3 class="fw-light text-dark mb-2">Crea tu cuenta</h3>
+          <p class="text-muted">Completa tus datos para comenzar</p>
+        </div>
+        <form [formGroup]="formulario" (ngSubmit)="registrarUsuario()">
+          <div class="form-group mb-3">
+            <div class="input-field">
+              <input type="text" formControlName="nombre" required />
+              <label>Nombre</label>
+              <span class="focus-border"></span>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <div class="input-field">
+              <input type="text" formControlName="apellidos" required />
+              <label>Apellidos</label>
+              <span class="focus-border"></span>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <div class="input-field">
+              <input type="email" formControlName="email" required />
+              <label>Correo electrónico</label>
+              <span class="focus-border"></span>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <div class="input-field">
+              <input type="tel" formControlName="phoneNumber" required />
+              <label>Teléfono</label>
+              <span class="focus-border"></span>
+            </div>
+          </div>
+          <div class="d-grid gap-2 mt-4">
+            <button
+              type="submit"
+              class="btn btn-futurist"
+              [disabled]="formulario.invalid"
+            >
+              Continuar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="formulario-cotizacion" class="row justify-content-center d-none">
+    <div class="col-lg-6">
+      <div class="card" data-aos="zoom-in">
+        <div class="text-center mb-4">
+          <h3 class="fw-light text-dark mb-2">Realiza tu cotización</h3>
+          <p class="text-muted">Selecciona los productos y completa los detalles</p>
+        </div>
+        <form [formGroup]="formularioCotizacion" (ngSubmit)="enviarCotizacion()">
+          <input type="hidden" formControlName="idUsuario" />
+
+          <div class="form-group mb-3">
+            <label for="productos">Productos</label>
+                  <div *ngFor="let producto of productos">
+                      <h4>{{ producto.nombre }}</h4>
+                      <button (click)="seleccionarProducto(producto)">Seleccionar</button>
+                  </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="hectareas">Hectáreas</label>
+            <input
+              type="number"
+              id="hectareas"
+              class="form-control"
+              formControlName="hectareas"
+            />
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="detalles">Detalles de la cotización</label>
+            <textarea
+              id="detalles"
+              class="form-control"
+              formControlName="detalles"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">
+              Enviar Cotización
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
