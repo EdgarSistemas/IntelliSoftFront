@@ -16,6 +16,6 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get('https://localhost:7259/api/Auth/detail', {headers});
+    return this.http.get('https://localhost:5000/api/Auth/detail', {headers});
   }
 }

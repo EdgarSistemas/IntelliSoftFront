@@ -2,18 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private baseUrl = 'https://localhost:5000/api/auth'; // tu backend
-
+  loading = false;
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private router: Router) {}
+
 
  login(model: { email: string; password: string }) {
     return this.http.post<{ token: string }>(`${this.baseUrl}/login`, model).subscribe({
       next: (res) => {
+        this.loading = false; 
         localStorage.setItem('token', res.token);
         const decoded = this.jwtHelper.decodeToken(res.token);
 
@@ -44,21 +47,30 @@ export class AuthService {
             break;
         }
       },
-      error: (err) => {
-        console.error('Error de autenticación:', err);
-        // Mejorar el mensaje de error para el usuario
-        let errorMessage = 'Credenciales inválidas. Por favor, verifica tu email y contraseña.';
-        if (err.status === 401) {
-          errorMessage = 'Usuario o contraseña incorrectos.';
-        } else if (err.error && typeof err.error === 'string') {
-          // Si el backend envía un string de error, por ejemplo, "El usuario ya existe"
-          errorMessage = err.error;
-        } else if (err.message) {
-          errorMessage = `Ocurrió un error: ${err.message}`;
-        }
-        alert(errorMessage);
-      }
+     error: (err) => {
+  console.error('Error de autenticación:', err);
+this.loading = false;
+  let errorMessage = 'Credenciales inválidas. Por favor, verifica tu email y contraseña.';
+  if (err.status === 401) {
+    errorMessage = 'Usuario o contraseña incorrectos.';
+  } else if (err.error && typeof err.error === 'string') {
+    errorMessage = err.error;
+  } else if (err.message) {
+    errorMessage = `Ocurrió un error: ${err.message}`;
+  }
+
+  Swal.fire({
+    icon: 'error',
+    title: 'Error de inicio de sesión',
+    text: errorMessage,
+    confirmButtonColor: '#004aad',
+    footer: '<a href="/forgot-password">¿Olvidaste tu contraseña?</a>'
+  });
+
+}
+
     });
+ 
   }
 
   logout() {

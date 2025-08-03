@@ -11,17 +11,18 @@ import { AyudaComponent } from './pages/home/ayuda/components/ayuda/ayuda.compon
 import { DocumentsComponent } from './pages/home/documents/components/documents/documents.component';
 import { EmpresaComponent } from './pages/home/empresa/components/empresa/empresa.component';
 import { InicioComponent } from './pages/home/inicio/components/inicio/inicio.component';
-import { CotizacionComponent } from './pages/home/cotizacion/components/cotizacion/cotizacion.component';
+import { LayoutCotizacionComponent } from './pages/home/cotizacion/pages/layout-cotizacion/layout-cotizacion.component';
+import { RegisterclientComponent } from './pages/register/components/registerclient/registerclient.component';
 
 const routes: Routes = [
   //RUTAS GENERALES SIN ESTAR LOGUEADOS
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'register', component: RegisterclientComponent},
   { path: 'inicio', component: InicioComponent },
   { path: 'empresa', component: EmpresaComponent },
   { path: 'documentos', component: DocumentsComponent },
   { path: 'ayuda', component: AyudaComponent },
-  { path: 'cotizacion', component: CotizacionComponent },
+  { path: 'cotizacion', component: LayoutCotizacionComponent },
 
   {
     path: 'admin',

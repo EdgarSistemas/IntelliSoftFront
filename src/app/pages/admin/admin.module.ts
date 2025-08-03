@@ -1,4 +1,4 @@
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -54,6 +54,7 @@ import { DatePipe } from '@angular/common';
     AdminRoutingModule,
     RouterOutlet,
     ReactiveFormsModule,
+    FormsModule,
     NgChartsModule,
     DatePipe,
     FormsModule
