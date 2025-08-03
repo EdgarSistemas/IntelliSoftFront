@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { JwtModule } from '@auth0/angular-jwt';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,6 +25,8 @@ import { LayoutEmpresaComponent } from './pages/home/empresa/pages/layout-empres
 import { LayoutInicioComponent } from './pages/home/inicio/pages/layout-inicio/layout-inicio.component';
 import { NavbarInicioComponent } from './pages/home/inicio/pages/navbar-inicio/navbar-inicio.component';
 import { FooterInicioComponent } from './pages/home/inicio/pages/footer-inicio/footer-inicio.component';
+import { RegisterComponent } from './pages/register/components/register/register.component';
+import { RegisterclientComponent } from './pages/register/components/registerclient/registerclient.component';
 
 export function tokenGetter() {
   return localStorage.getItem('jwt');
@@ -39,6 +41,8 @@ export function tokenGetter() {
     EmpresaComponent,
     InicioComponent,
     LoginComponent,
+    RegisterComponent,
+    RegisterclientComponent,
     LayoutAyudaComponent,
     LayoutCotizacionComponent,
     LayoutDocumentsComponent,
@@ -46,19 +50,21 @@ export function tokenGetter() {
     LayoutInicioComponent,
     NavbarInicioComponent,
     FooterInicioComponent,
+    
   ],
   imports: [
     BrowserModule,
     CommonModule,
     HttpClientModule,
     AppRoutingModule,
-    ReactiveFormsModule,
+   ReactiveFormsModule,
+   
     FormsModule,
     JwtModule.forRoot({
         config: {
             tokenGetter,
-            allowedDomains: ['localhost:7259'],
-            disallowedRoutes: ['localhost:7259/api/auth/login'],
+            allowedDomains: ['localhost:5000'],
+            disallowedRoutes: ['localhost:5000/api/auth/login'],
         },
     }),
  

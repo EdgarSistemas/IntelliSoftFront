@@ -11,18 +11,19 @@ import { AyudaComponent } from './pages/home/ayuda/components/ayuda/ayuda.compon
 import { DocumentsComponent } from './pages/home/documents/components/documents/documents.component';
 import { EmpresaComponent } from './pages/home/empresa/components/empresa/empresa.component';
 import { InicioComponent } from './pages/home/inicio/components/inicio/inicio.component';
-import { CotizacionComponent } from './pages/home/cotizacion/components/cotizacion/cotizacion.component';
+import { LayoutCotizacionComponent } from './pages/home/cotizacion/pages/layout-cotizacion/layout-cotizacion.component';
 import { LoginGuard } from './guard/login.guard';
+import { RegisterclientComponent } from './pages/register/components/registerclient/registerclient.component';
 
 const routes: Routes = [
   //RUTAS GENERALES SIN ESTAR LOGUEADOS
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] },
+  { path: 'register', component: RegisterclientComponent, canActivate: [LoginGuard]},
   { path: 'inicio', component: InicioComponent, canActivate: [LoginGuard] },
   { path: 'empresa', component: EmpresaComponent, canActivate: [LoginGuard] },
   { path: 'documentos', component: DocumentsComponent, canActivate: [LoginGuard] },
   { path: 'ayuda', component: AyudaComponent, canActivate: [LoginGuard] },
-  { path: 'cotizacion', component: CotizacionComponent, canActivate: [LoginGuard] },
+  { path: 'cotizacion', component: LayoutCotizacionComponent, canActivate: [LoginGuard] },
 
   {
     path: 'admin',

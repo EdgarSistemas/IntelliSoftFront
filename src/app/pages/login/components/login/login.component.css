@@ -1,9 +1,10 @@
 .login-container {
-  background-color: #d6d6d6;
+  background: linear-gradient(135deg, #4892f350 0%, #002b66 100%)!important;
+
 }
 
 .login-card {
-  background: white;
+  background-color: rgb(255, 255, 255);
   padding: 2.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);

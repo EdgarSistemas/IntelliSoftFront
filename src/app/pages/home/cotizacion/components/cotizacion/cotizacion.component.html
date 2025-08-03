@@ -1,3 +1,42 @@
-<app-navbar-inicio></app-navbar-inicio>
-<app-layout-cotizacion></app-layout-cotizacion>
-<app-footer-inicio></app-footer-inicio>
+<section class="quote-hero" style="background: linear-gradient(rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.85)), url('assets/img/agriculture-bg.jpg') center/cover;">
+  <div class="container py-5 text-center text-white" >
+    <h1 class="display-4 fw-bold mb-3" data-aos="zoom-in">Cotización <span class="intelliSoft">IntelliSoft</span></h1>
+    <p class="lead mb-4" data-aos="zoom-in">Completa el formulario y recibirás una propuesta personalizada</p>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="cotizacionModal" tabindex="-1" aria-labelledby="cotizacionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <div class="d-flex align-items-center">
+          <img src="assets/img/logo-icon-white.png" alt="IntelliSoft" width="30" class="me-2">
+          <h5 class="modal-title mb-0" id="cotizacionModalLabel">IntelliSoft</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body p-4">
+        <div class="text-center">
+          <i class="bi bi-question-circle text-primary fs-1 mb-3"></i>
+          <h5 class="fw-bold mb-3">¿Desea registrarse ahora?</h5>
+          <p class="text-muted">Complete su registro para acceder a todas las funcionalidades y guardar su cotización.</p>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-primary px-4" (click)="irRegistro()">
+          <i class="bi bi-check-circle me-2"></i>Sí, registrar
+        </button>
+        <button type="button" class="btn btn-outline-primary px-4" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-2"></i>No, gracias
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
