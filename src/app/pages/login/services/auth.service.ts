@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { LoginResponse } from '../interface/loginResponse.interface';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,12 @@ export class AuthService {
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private router: Router) {}
 
  login(model: { email: string; password: string }) {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, model).subscribe({
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, model).subscribe({
       next: (res) => {
+        if (!res.token) {
+          Swal.fire('Error', res.message || 'Error en autenticación', 'error');
+          return;
+        }
         localStorage.setItem('token', res.token);
         const decoded = this.jwtHelper.decodeToken(res.token);
 
@@ -27,11 +33,11 @@ export class AuthService {
         switch (rol) {
           case 'admin':
             console.log('Redirigiendo a /admin');
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/admin'], { replaceUrl: true });
             break;
           case 'cliente':
             console.log('Redirigiendo a /cliente');
-            this.router.navigate(['/cliente']);
+            this.router.navigate(['/cliente'], { replaceUrl: true });
             break;
           default:
             // Si el rol no es 'admin' ni 'cliente', o si el rol es nulo/indefinido,
@@ -40,7 +46,9 @@ export class AuthService {
             // para usuarios autenticados pero sin roles específicos 'admin' o 'cliente'.
             // O, si no hay una página para "roles generales", puedes redirigirlo de nuevo al login o a un mensaje de error.
             console.warn('Rol no reconocido:', rol, 'Redirigiendo a /login o /inicio como fallback.');
-            this.router.navigate(['/inicio']); // O a la ruta que consideres para roles por defecto / no reconocidos
+            this.router.navigate(['/inicio'], { replaceUrl: true }
+
+            ); // O a la ruta que consideres para roles por defecto / no reconocidos
             break;
         }
       },
@@ -62,11 +70,11 @@ export class AuthService {
   }
 
   logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('rol');
-  console.log('Token después del logout:', localStorage.getItem('token')); // debe ser null
-  this.router.navigate(['/login']);
-}
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    console.log('Token después del logout:', localStorage.getItem('token')); // debe ser null
+    this.router.navigate(['/login'], { replaceUrl: true });
+  }
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('token');

@@ -34,9 +34,10 @@ export class LoginComponent {
 
     this.loading = true;
     const { email, password } = this.loginForm.value;
-this.authService.login({
-  email: email!,
-  password: password!
-});
+    this.authService.login({
+      email: email!,
+      password: password!
+    });
+    this.loading = false;
   }
 }

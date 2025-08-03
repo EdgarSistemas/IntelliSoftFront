@@ -17,11 +17,11 @@
         <div class="card-header bg-primary text-white py-4">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h3 class="mb-1">Cotización para <strong>{{clientData?.name}}</strong></h3>
+              <!-- <h3 class="mb-1">Cotización para <strong>{{clientData?.name}}</strong></h3>
               <p class="mb-0 small opacity-75">
-                <i class="bi bi-building me-1"></i> {{clientData?.company || 'Sin empresa registrada'}} | 
+                <i class="bi bi-building me-1"></i> {{clientData?.company || 'Sin empresa registrada'}} |
                 <i class="bi bi-envelope me-1"></i> {{clientData?.email}}
-              </p>
+              </p> -->
             </div>
             <span class="badge bg-white text-primary fs-6">#{{quoteNumber}}</span>
           </div>
@@ -33,19 +33,19 @@
             <!-- Pestañas para secciones del formulario -->
             <ul class="nav nav-tabs mb-4" id="quoteTabs" role="tablist">
               <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="product-tab" data-bs-toggle="tab" 
+                <button class="nav-link active" id="product-tab" data-bs-toggle="tab"
                         data-bs-target="#product" type="button" role="tab">
                   <i class="bi bi-box-seam me-2"></i> Producto
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="custom-tab" data-bs-toggle="tab" 
+                <button class="nav-link" id="custom-tab" data-bs-toggle="tab"
                         data-bs-target="#custom" type="button" role="tab">
                   <i class="bi bi-gear me-2"></i> Personalización
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="summary-tab" data-bs-toggle="tab" 
+                <button class="nav-link" id="summary-tab" data-bs-toggle="tab"
                         data-bs-target="#summary" type="button" role="tab">
                   <i class="bi bi-receipt me-2"></i> Resumen
                 </button>

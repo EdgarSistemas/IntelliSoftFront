@@ -12,16 +12,17 @@ import { DocumentsComponent } from './pages/home/documents/components/documents/
 import { EmpresaComponent } from './pages/home/empresa/components/empresa/empresa.component';
 import { InicioComponent } from './pages/home/inicio/components/inicio/inicio.component';
 import { CotizacionComponent } from './pages/home/cotizacion/components/cotizacion/cotizacion.component';
+import { LoginGuard } from './guard/login.guard';
 
 const routes: Routes = [
   //RUTAS GENERALES SIN ESTAR LOGUEADOS
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'inicio', component: InicioComponent },
-  { path: 'empresa', component: EmpresaComponent },
-  { path: 'documentos', component: DocumentsComponent },
-  { path: 'ayuda', component: AyudaComponent },
-  { path: 'cotizacion', component: CotizacionComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] },
+  { path: 'inicio', component: InicioComponent, canActivate: [LoginGuard] },
+  { path: 'empresa', component: EmpresaComponent, canActivate: [LoginGuard] },
+  { path: 'documentos', component: DocumentsComponent, canActivate: [LoginGuard] },
+  { path: 'ayuda', component: AyudaComponent, canActivate: [LoginGuard] },
+  { path: 'cotizacion', component: CotizacionComponent, canActivate: [LoginGuard] },
 
   {
     path: 'admin',

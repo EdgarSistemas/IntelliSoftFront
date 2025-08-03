@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -21,6 +21,8 @@ import { LayoutVentasComponent } from './ventas/pages/layout-ventas/layout-venta
 import { NavbarAdminComponent } from "./home/pages/navbar-admin/navbar-admin.component";
 import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.component";
 import { HeaderComponent } from './proveedores/components/proveedor-header/header/header.component';
+import { UnidadesComponent } from './unidades/unidades.component';
+import { InsumosComponent } from './insumos/insumos.component';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     ProveedorFormularioComponent,
     HeaderComponent,
     UsersComponent,
+    UnidadesComponent,
+    InsumosComponent,
     VentasComponent,
     LayoutComentariosComponent,
     LayoutComprasComponent,
@@ -50,7 +54,8 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     RouterModule,
     AdminRoutingModule,
     RouterOutlet,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
 ]
 })
 export class AdminModule { }

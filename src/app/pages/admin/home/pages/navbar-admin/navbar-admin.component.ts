@@ -12,7 +12,7 @@ scrolled = false;
    @HostListener('window:scroll', [])
   onWindowScroll() {
     const offset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    this.scrolled = offset > 50; // Cambia 50 por el número de píxeles que prefieras
+    this.scrolled = offset > 50;
   }
 constructor(public auth: AuthService) {}
 
