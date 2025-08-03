@@ -13,8 +13,8 @@ import { LayoutDashboardComponent } from "./dashboard/pages/layout-dashboard/lay
 import { LayoutProductosComponent } from "./productos/pages/layout-productos/layout-productos.component";
 import { LayoutUsersComponent } from "./users/pages/layout-users/layout-users.component";
 import { LayoutVentasComponent } from "./ventas/pages/layout-ventas/layout-ventas.component";
-import { UnidadesComponent } from "./unidades/unidades.component";
-import { InsumosComponent } from "./insumos/insumos.component";
+import { LayoutUnidadesComponent } from "./unidades/pages/layout-unidades/layout-unidades.component";
+import { LayoutInsumosComponent } from "./insumos/pages/layout-insumos/layout-insumos.component";
 
 
 const routes: Routes = [
@@ -24,8 +24,8 @@ const routes: Routes = [
     data: { expectedRole: 'admin' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      {path: 'unidades', component: UnidadesComponent},
-      {path: 'insumos', component: InsumosComponent},
+      {path: 'unidades', component: LayoutUnidadesComponent},
+      {path: 'insumos', component: LayoutInsumosComponent},
       { path: 'proveedores', component: LayoutProveedoresComponent },
       { path: 'compras', component: LayoutComprasComponent},
       { path: 'productos', component: LayoutProductosComponent },

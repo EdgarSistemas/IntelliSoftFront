@@ -1,0 +1,106 @@
+<div class="card-body" [formGroup]="form">
+  <!-- Proveedor -->
+  <div class="mb-3">
+    <label class="form-label">Proveedor</label>
+    <input
+      type="text"
+      class="form-control"
+      [ngModel]="nombreProveedorSeleccionado"
+      (ngModelChange)="onProveedorInput($event)"
+      [ngModelOptions]="{ standalone: true }"
+      list="proveedorList"
+      placeholder="Busca o selecciona un proveedor" />
+    <datalist id="proveedorList">
+      <option *ngFor="let p of proveedores" [value]="p.nombre"></option>
+    </datalist>
+  </div>
+
+  <!-- Observación -->
+  <div class="mb-3">
+    <label class="form-label">Observación</label>
+    <textarea class="form-control" rows="2" formControlName="observacion"></textarea>
+  </div>
+
+  <!-- Agregar detalle de compra -->
+  <div class="mb-3">
+    <label class="form-label">Agregar Insumo</label>
+    <div class="row g-2">
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control"
+          [ngModel]="detalleNombreInsumo"
+          (ngModelChange)="onInsumoInput($event)"
+          [ngModelOptions]="{ standalone: true }"
+          list="insumoList"
+          placeholder="Busca o selecciona un insumo" />
+        <datalist id="insumoList">
+          <option *ngFor="let insumo of insumos" [value]="insumo.nombre"></option>
+        </datalist>
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Presentación"
+               [(ngModel)]="detalle.presentacion" [ngModelOptions]="{ standalone: true }" />
+      </div>
+      <div class="col-md-2">
+        <input type="number" class="form-control" placeholder="Precio unitario"
+               [(ngModel)]="detalle.precioUnitario" [ngModelOptions]="{ standalone: true }" />
+      </div>
+      <div class="col-md-2">
+        <input type="number" class="form-control" placeholder="Cantidad"
+               [(ngModel)]="detalle.cantidad" [ngModelOptions]="{ standalone: true }" />
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-success w-100"
+                (click)="agregarDetalle()" [disabled]="!detalleCompleto()">
+          <i class="bi bi-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de detalles -->
+  <div class="table-responsive" *ngIf="detalles.length > 0">
+    <table class="table table-sm align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Insumo</th>
+          <th>Presentación</th>
+          <th>Precio Unitario</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+          <th class="text-end">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of detalles; let i = index">
+          <td>{{ obtenerNombreInsumo(d.insumoId) }}</td>
+          <td>{{ d.presentacion }}</td>
+          <td>${{ d.precioUnitario | number: '1.2-2' }}</td>
+          <td>{{ d.cantidad }}</td>
+          <td>${{ d.precioUnitario * d.cantidad | number: '1.2-2' }}</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-danger" (click)="eliminarDetalle(i)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-end mt-2">
+      <strong>Total: ${{ calcularTotal() | number: '1.2-2' }}</strong>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="mt-4 d-flex justify-content-center gap-2">
+    <button class="btn btn-primary" type="button"
+            (click)="guardarCompra()" [disabled]="!form.valid || detalles.length === 0">
+      <i class="bi bi-check-circle me-1"></i>Guardar
+    </button>
+    <button class="btn btn-outline-secondary" type="button" (click)="onCancelar.emit()">
+      <i class="bi bi-x-circle me-1"></i>Cancelar
+    </button>
+  </div>
+</div>

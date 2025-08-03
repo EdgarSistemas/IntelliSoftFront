@@ -1,38 +1,38 @@
 <div class="container-fluid p-5 mb-5 portada">
   <div class="container">
     <h1 class="display-5 fw-bold">Panel de Administración</h1>
-    <p class="fs-4">Gestiona proveedores y servicios</p>
+    <p class="fs-4">Gestiona unidades</p>
   </div>
 </div>
 
 <div class="container mt-5">
   <div class="card shadow-sm">
-    <ng-container *ngIf="mostrarFormulario; else tablaProveedores">
+    <ng-container *ngIf="mostrarFormulario; else tablaUnidades">
       <div class="card-header text-white" style="background-color: #0062BA;">
         <h5 class="mb-0">
-          {{ proveedorSeleccionado ? 'Editar proveedor' : 'Registrar nuevo proveedor' }}
+          {{ unidadSeleccionada ? 'Editar unidad' : 'Registrar nueva unidad' }}
         </h5>
       </div>
       <div class="card-body">
-        <app-proveedor-formulario
-          [proveedor]="proveedorSeleccionado"
-          (onProveedorCreado)="onProveedorCreado()"
+        <admin-unidad-formulario
+          [unidad]="unidadSeleccionada"
+          (onUnidadGuardada)="onUnidadGuardada()"
           (onCancelar)="toggleFormulario()">
-        </app-proveedor-formulario>
+        </admin-unidad-formulario>
       </div>
     </ng-container>
 
-    <ng-template #tablaProveedores>
+    <ng-template #tablaUnidades>
       <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <h5 class="mb-0">Lista de Proveedores</h5>
+        <h5 class="mb-0">Lista de Unidades</h5>
         <div class="d-flex gap-2 flex-wrap">
           <div class="input-group input-group-sm" style="width: 220px;">
             <input
               type="text"
               class="form-control"
-              placeholder="Buscar proveedor..."
+              placeholder="Buscar unidad..."
               [(ngModel)]="filtro"
-              (input)="filtrarProveedores()"
+              (input)="filtrarUnidades()"
             />
             <span class="input-group-text bg-white">
               <i class="bi bi-search"></i>
@@ -40,49 +40,43 @@
           </div>
 
           <button class="btn btn-sm btn-primary" (click)="toggleFormulario()">
-            <i class="bi bi-plus-circle me-1"></i> Nuevo Proveedor
+            <i class="bi bi-plus-circle me-1"></i> Nueva Unidad
           </button>
         </div>
       </div>
 
       <div class="card-body">
         <div *ngIf="isLoading" class="text-center py-5">
-          <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-            <span class="visually-hidden">Cargando...</span>
-          </div>
-          <p class="mt-3 text-muted">Cargando proveedores...</p>
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+          <p class="mt-3 text-muted">Cargando unidades...</p>
         </div>
 
-        <div *ngIf="proveedoresFiltrados.length > 0" class="table-responsive">
+        <div *ngIf="unidadesFiltradas.length > 0" class="table-responsive">
           <table class="table table-hover align-middle mb-0">
             <thead>
               <tr>
                 <th>Nombre</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-                <th>Contacto</th>
+                <th>Símbolo</th>
                 <th>Descripción</th>
                 <th>Estatus</th>
                 <th class="text-end">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let proveedor of proveedoresFiltrados">
-                <td>{{ proveedor.nombre }}</td>
-                <td>{{ proveedor.telefono }}</td>
-                <td>{{ proveedor.correoElectronico }}</td>
-                <td>{{ proveedor.contacto }}</td>
-                <td>{{ proveedor.descripcionServicio }}</td>
+              <tr *ngFor="let unidad of unidadesFiltradas">
+                <td>{{ unidad.nombre }}</td>
+                <td>{{ unidad.simbolo }}</td>
+                <td>{{ unidad.descripcion }}</td>
                 <td>
-                  <span class="badge" [ngClass]="proveedor.estatus ? 'bg-success' : 'bg-danger'">
-                    {{ proveedor.estatus ? 'Activo' : 'Inactivo' }}
+                  <span class="badge" [ngClass]="unidad.estatus ? 'bg-success' : 'bg-danger'">
+                    {{ unidad.estatus ? 'Activo' : 'Inactivo' }}
                   </span>
                 </td>
                 <td class="text-end">
-                  <button class="btn btn-sm btn-outline-primary me-2" (click)="editarProveedor(proveedor)">
+                  <button class="btn btn-sm btn-outline-primary me-2" (click)="editarUnidad(unidad)">
                     <i class="bi bi-pencil-square"></i> Editar
                   </button>
-                  <button class="btn btn-sm btn-outline-danger" (click)="eliminarProveedor(proveedor)">
+                  <button class="btn btn-sm btn-outline-danger" (click)="eliminarUnidad(unidad)">
                     <i class="bi bi-trash"></i> Eliminar
                   </button>
                 </td>
@@ -91,12 +85,12 @@
           </table>
         </div>
 
-        <div *ngIf="proveedoresFiltrados.length === 0" class="text-center py-5">
-          <p>No hay proveedores coincidentes.</p>
+        <div *ngIf="unidadesFiltradas.length === 0 && !isLoading" class="text-center py-5">
+          <p>No hay unidades coincidentes.</p>
         </div>
 
         <div class="mt-3 text-end text-muted small">
-          Mostrando {{ proveedoresFiltrados.length }} de {{ proveedores.length }} proveedores
+          Mostrando {{ unidadesFiltradas.length }} de {{ unidades.length }} unidades
         </div>
       </div>
     </ng-template>

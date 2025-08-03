@@ -37,7 +37,7 @@ loadUsers(): void {
         this.filteredUsers = [...this.users];
         this.loading = false;
         this.applyFilters();
-        
+
       },
       (error) => {
         console.error('Error loading users', error);
@@ -50,13 +50,13 @@ loadUsers(): void {
     this.filteredUsers = this.users.filter(user => {
       // Filtro por rol
       const roleMatch = this.selectedRole === 'all' || user.rol === this.selectedRole;
-      
+
       // Filtro por búsqueda (nombre, apellido o email)
-      const searchMatch = this.searchTerm === '' || 
-        user.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-        user.apellidos.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      const searchMatch = this.searchTerm === '' ||
+        user.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        user.apellidos.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
+
       return roleMatch && searchMatch;
     });
   }

@@ -1,0 +1,105 @@
+<div class="container-fluid p-5 mb-5 portada">
+  <div class="container">
+    <h1 class="display-5 fw-bold">Panel de Administración</h1>
+    <p class="fs-4">Gestiona compras de insumos</p>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <ng-container *ngIf="mostrarFormulario; else tablaCompras">
+      <div class="card-header text-white" style="background-color: #0062BA;">
+        <h5 class="mb-0">Registrar nueva Compra</h5>
+      </div>
+      <div class="card-body">
+        <admin-compra-formulario (onCompraGuardada)="onCompraGuardada()" (onCancelar)="toggleFormulario()">
+        </admin-compra-formulario>
+      </div>
+    </ng-container>
+
+    <ng-template #tablaCompras>
+      <div class="card-header bg-white border-0 d-flex justify-content-between flex-wrap gap-2">
+        <h5 class="mb-0">Lista de Compras</h5>
+        <div class="d-flex gap-2 flex-wrap">
+          <div class="input-group input-group-sm" style="width: 220px;">
+            <input type="text" class="form-control" placeholder="Buscar compra..." [(ngModel)]="filtro"
+              (input)="filtrarCompras()" />
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          </div>
+          <div class="input-group input-group-sm" style="width: 180px;">
+            <select class="form-select" [(ngModel)]="filtroEstatus" (change)="filtrarCompras()">
+              <option value="">Todos los estatus</option>
+              <option value="0">Pendiente</option>
+              <option value="1">Inventariada</option>
+              <option value="2">Cancelada</option>
+            </select>
+          </div>
+          <button class="btn btn-sm btn-primary" (click)="toggleFormulario()">
+            <i class="bi bi-plus-circle me-1"></i> Nueva Compra
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div *ngIf="isLoading" class="text-center py-5">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-3 text-muted">Cargando compras...</p>
+        </div>
+
+        <div *ngIf="comprasFiltradas.length > 0" class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Clave</th>
+                <th>Proveedor</th>
+                <th>Fecha</th>
+                <th>Observación</th>
+                <th>Estatus</th>
+                <th>Total</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let compra of comprasFiltradas">
+                <td>{{ compra.claveCompra }}</td>
+                <td>{{ compra.proveedor?.nombre }}</td>
+                <td>{{ compra.fechaCompra | date:'shortDate' }}</td>
+                <td>{{ compra.observacion }}</td>
+                <td>
+                  <span class="badge"
+                    [ngClass]="compra.estatus === 0 ? 'bg-secondary' : compra.estatus === 1 ? 'bg-success' : 'bg-danger'">
+                    {{ compra.estatus === 0 ? 'Pendiente' : compra.estatus === 1 ? 'Inventariada' : 'Cancelada' }}
+                  </span>
+                </td>
+                <td>${{ compra.total | number:'1.2-2' }}</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-primary me-2" (click)="verDetalle(compra.idCompra)">
+                    <i class="bi bi-eye"></i> Detalle
+                  </button>
+                  <button class="btn btn-sm btn-outline-success me-2" [disabled]="compra.estatus !== 0"
+                    (click)="inventariarCompra(compra.idCompra)">
+                    <i class="bi bi-clipboard-check"></i> Inventariar
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" [disabled]="compra.estatus !== 0"
+                    (click)="cancelarCompra(compra.idCompra)">
+                    <i class="bi bi-x-circle"></i> Cancelar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="comprasFiltradas.length === 0 && !isLoading" class="text-center py-5">
+          <p>No hay compras coincidentes.</p>
+        </div>
+
+        <div class="mt-3 text-end text-muted small">
+          Mostrando {{ comprasFiltradas.length }} de {{ compras.length }} compras
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

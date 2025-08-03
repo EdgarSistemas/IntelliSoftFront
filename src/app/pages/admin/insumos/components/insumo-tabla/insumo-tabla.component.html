@@ -1,0 +1,94 @@
+<div class="container-fluid p-5 mb-5 portada">
+  <div class="container">
+    <h1 class="display-5 fw-bold">Panel de Administración</h1>
+    <p class="fs-4">Gestiona insumos</p>
+  </div>
+</div>
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <ng-container *ngIf="mostrarFormulario; else tablaInsumos">
+      <div class="card-header text-white" style="background-color: #0062BA;">
+        <h5 class="mb-0">
+          {{ insumoSeleccionado ? 'Editar Insumo' : 'Registrar nuevo Insumo' }}
+        </h5>
+      </div>
+      <div class="card-body">
+        <admin-insumo-formulario [insumo]="insumoSeleccionado" (onInsumoGuardado)="onInsumoGuardado()"
+          (onCancelar)="toggleFormulario()">
+        </admin-insumo-formulario>
+      </div>
+    </ng-container>
+
+    <ng-template #tablaInsumos>
+      <div class="card-header bg-white border-0 d-flex justify-content-between flex-wrap gap-2">
+        <h5 class="mb-0">Lista de Insumos</h5>
+        <div class="d-flex gap-2 flex-wrap">
+          <div class="input-group input-group-sm" style="width: 220px;">
+            <input type="text" class="form-control" placeholder="Buscar insumo..." [(ngModel)]="filtro"
+              (input)="filtrarInsumos()" />
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          </div>
+
+          <button class="btn btn-sm btn-primary" (click)="toggleFormulario()">
+            <i class="bi bi-plus-circle me-1"></i> Nuevo Insumo
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div *ngIf="isLoading" class="text-center py-5">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-3 text-muted">Cargando insumos...</p>
+        </div>
+
+        <div *ngIf="insumosFiltrados.length > 0" class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Unidad</th>
+                <th>Existencias</th>
+                <th>Precio Promedio</th>
+                <th>Estatus</th>
+                <th class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let insumo of insumosFiltrados">
+                <td>{{ insumo.nombre }}</td>
+                <td>{{ insumo.descripcion }}</td>
+                <td>{{ insumo.unidad?.nombre }} ({{ insumo.unidad?.simbolo }})</td>
+                <td>{{ insumo.existencias || 0 }}</td>
+                <td>${{ insumo.precioPromedio || 0 | number: '1.2-2' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="insumo.estatus ? 'bg-success' : 'bg-danger'">
+                    {{ insumo.estatus ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-primary me-2" (click)="editarInsumo(insumo)">
+                    <i class="bi bi-pencil-square"></i> Editar
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="eliminarInsumo(insumo)">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="insumosFiltrados.length === 0 && !isLoading" class="text-center py-5">
+          <p>No hay insumos coincidentes.</p>
+        </div>
+
+        <div class="mt-3 text-end text-muted small">
+          Mostrando {{ insumosFiltrados.length }} de {{ insumos.length }} insumos
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
