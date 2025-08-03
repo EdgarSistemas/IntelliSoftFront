@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -11,6 +11,7 @@ import { ProveedorTableComponent } from './proveedores/components/proveedor-tabl
 import { ProveedorFormularioComponent } from './proveedores/components/proveedor-formulario/proveedor-formulario.component';
 import { UsersComponent } from './users/components/users/users.component';
 import { VentasComponent } from './ventas/components/ventas/ventas.component';
+import { VentasTableComponent } from './ventas/components/ventas-table/ventas-table.component';
 import { LayoutComentariosComponent } from './comentarios/pages/layout-comentarios/layout-comentarios.component';
 import { LayoutComprasComponent } from './compras/pages/layout-compras/layout-compras.component';
 import { LayoutDashboardComponent } from './dashboard/pages/layout-dashboard/layout-dashboard.component';
@@ -21,7 +22,8 @@ import { LayoutVentasComponent } from './ventas/pages/layout-ventas/layout-venta
 import { NavbarAdminComponent } from "./home/pages/navbar-admin/navbar-admin.component";
 import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.component";
 import { HeaderComponent } from './proveedores/components/proveedor-header/header/header.component';
-
+import { NgChartsModule } from 'ng2-charts';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     HeaderComponent,
     UsersComponent,
     VentasComponent,
+    VentasTableComponent,
     LayoutComentariosComponent,
     LayoutComprasComponent,
     LayoutDashboardComponent,
@@ -50,7 +53,10 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     RouterModule,
     AdminRoutingModule,
     RouterOutlet,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule,
+    DatePipe,
+    FormsModule
 ]
 })
 export class AdminModule { }
