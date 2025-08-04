@@ -16,6 +16,7 @@ import { InsumoFormularioComponent } from './insumos/components/insumo-formulari
 import { InsumoTablaComponent } from './insumos/components/insumo-tabla/insumo-tabla.component';
 import { CompraTablaComponent } from './compras/components/compra-tabla/compra-tabla.component';
 import { CompraFormularioComponent } from './compras/components/compra-formulario/compra-formulario.component';
+import { VentasTableComponent } from './ventas/components/ventas-table/ventas-table.component';
 import { LayoutComentariosComponent } from './comentarios/pages/layout-comentarios/layout-comentarios.component';
 import { LayoutComprasComponent } from './compras/pages/layout-compras/layout-compras.component';
 import { LayoutDashboardComponent } from './dashboard/pages/layout-dashboard/layout-dashboard.component';
@@ -30,7 +31,6 @@ import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.com
 import { HeaderComponent } from './proveedores/components/proveedor-header/header/header.component';
 
 
-
 @NgModule({
   declarations: [
     ComentariosComponent,
@@ -41,12 +41,6 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     HeaderComponent,
     UsersComponent,
     VentasComponent,
-    UnidadFormularioComponent,
-    UnidadTablaComponent,
-    InsumoFormularioComponent,
-    InsumoTablaComponent,
-    CompraFormularioComponent,
-    CompraTablaComponent,
     LayoutComentariosComponent,
     LayoutComprasComponent,
     LayoutDashboardComponent,
@@ -66,6 +60,9 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     AdminRoutingModule,
     RouterOutlet,
     ReactiveFormsModule,
+    FormsModule,
+    NgChartsModule,
+    DatePipe,
     FormsModule
 ]
 })
