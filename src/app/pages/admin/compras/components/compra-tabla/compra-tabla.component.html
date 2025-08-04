@@ -64,7 +64,7 @@
             <tbody>
               <tr *ngFor="let compra of comprasFiltradas">
                 <td>{{ compra.claveCompra }}</td>
-                <td>{{ compra.proveedor?.nombre }}</td>
+                <td>{{ compra.proveedor.nombre }}</td>
                 <td>{{ compra.fechaCompra | date:'shortDate' }}</td>
                 <td>{{ compra.observacion }}</td>
                 <td>
@@ -79,7 +79,7 @@
                     <i class="bi bi-eye"></i> Detalle
                   </button>
                   <button class="btn btn-sm btn-outline-success me-2" [disabled]="compra.estatus !== 0"
-                    (click)="inventariarCompra(compra.idCompra)">
+                    (click)="abrirModalInventario(compra.idCompra)">
                     <i class="bi bi-clipboard-check"></i> Inventariar
                   </button>
                   <button class="btn btn-sm btn-outline-danger" [disabled]="compra.estatus !== 0"
@@ -101,5 +101,129 @@
         </div>
       </div>
     </ng-template>
+  </div>
+
+  <!-- Modal Detalle de Compra -->
+  <div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': mostrarModalDetalle }"
+    [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detalle de Compra #{{ compraSeleccionada?.claveCompra }}</h5>
+          <button type="button" class="btn-close" (click)="cerrarModalDetalle()"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Proveedor:</strong> {{ compraSeleccionada?.proveedor?.nombre }}</p>
+          <p><strong>Observación:</strong> {{ compraSeleccionada?.observacion }}</p>
+          <p><strong>Fecha:</strong> {{ compraSeleccionada?.fechaCompra | date: 'medium' }}</p>
+          <p>
+            <strong>Estatus:</strong>
+            <span class="badge" [ngClass]="{
+              'bg-secondary': compraSeleccionada?.estatus === 0,
+              'bg-success': compraSeleccionada?.estatus === 1,
+              'bg-danger': compraSeleccionada?.estatus === 2
+            }">
+              {{
+              compraSeleccionada?.estatus === 0
+              ? 'Pendiente'
+              : compraSeleccionada?.estatus === 1
+              ? 'Inventariada'
+              : 'Cancelada'
+              }}
+            </span>
+          </p>
+
+          <h6>Detalles de la Compra</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Insumo</th>
+                  <th>Presentación</th>
+                  <th>Unidad</th>
+                  <th>Precio Unitario (presentación)</th>
+                  <th>Cantidad</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of compraSeleccionada?.detalles">
+                  <td>{{ d.insumoNombre }}</td>
+                  <td>{{ d.presentacion }}</td>
+                  <td>{{ d.unidad.nombre }}</td>
+                  <td>{{ d.precioUnitario | currency }}</td>
+                  <td>{{ d.cantidad }}</td>
+                  <td>{{ d.precioUnitario * d.cantidad | currency }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="cerrarModalDetalle()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Inventario -->
+  <div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': mostrarModalInventario }"
+    style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Inventariar Compra #{{ compraAInventariar?.claveCompra }}</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModalInventario()"></button>
+        </div>
+
+        <div class="modal-body" *ngIf="detallesInventario.length > 0">
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+              <thead class="table-light">
+                <tr>
+                  <th>Insumo</th>
+                  <th>Presentación</th>
+                  <th>Unidad</th>
+                  <th>Cant. comprada (presentación)</th>
+                  <th>Precio presentación</th>
+                  <th>Unid. por Presentación</th>
+                  <th>Total en Unidad Base</th>
+                  <th>Costo Unitario Real</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of detallesInventario; let i = index">
+                  <td>{{ item.insumoNombre }}</td>
+                  <td>{{ item.presentacion }}</td>
+                  <td>{{ item.unidad.nombre }} ({{ item.unidad.simbolo }})</td>
+                  <td>{{ item.cantidad }}</td>
+                  <td>${{ item.precioUnitario | number: '1.2-2' }}</td>
+                  <td>
+                    <input type="number" min="0" class="form-control form-control-sm"
+                      [(ngModel)]="insumosInventariados[i].unidadesPorPresentacion"
+                      (ngModelChange)="actualizarCantidadUnidad(i)" />
+                  </td>
+                  <td>
+                    <input type="number" min="0" class="form-control form-control-sm"
+                      [value]="insumosInventariados[i].cantidadUnidad" readonly disabled  />
+                  </td>
+                  <td>
+                    <input type="number" min="0" class="form-control form-control-sm"
+                      [(ngModel)]="insumosInventariados[i].costoUnitario" readonly disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="cerrarModalInventario()">Cancelar</button>
+          <button class="btn btn-success" (click)="confirmarInventario()">Guardar Inventario</button>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>

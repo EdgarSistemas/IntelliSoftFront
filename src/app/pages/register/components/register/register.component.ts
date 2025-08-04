@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { CotizacionService } from '../../../home/cotizacion/services/cotizacion.service'; // Asegúrate de crear este servicio
+import { CotizacionService } from '../../../home/cotizacion/services/cotizacion.service';
 import { User } from '../../interface/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { Productos } from '../../../admin/productos/interface/productos'; // Asegúrate de que esta ruta sea correcta
+import { Productos } from '../../../admin/productos/interface/productos';
 
 @Component({
   selector: 'app-register',

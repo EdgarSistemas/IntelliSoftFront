@@ -60,7 +60,7 @@
               <tr *ngFor="let insumo of insumosFiltrados">
                 <td>{{ insumo.nombre }}</td>
                 <td>{{ insumo.descripcion }}</td>
-                <td>{{ insumo.unidad?.nombre }} ({{ insumo.unidad?.simbolo }})</td>
+                <td>{{ insumo.unidad.nombre }} ({{ insumo.unidad.simbolo }})</td>
                 <td>{{ insumo.existencias || 0 }}</td>
                 <td>${{ insumo.precioPromedio || 0 | number: '1.2-2' }}</td>
                 <td>

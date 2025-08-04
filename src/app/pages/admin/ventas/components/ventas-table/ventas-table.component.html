@@ -1,25 +1,21 @@
 <div class="container" style="margin-top: 100px;">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0">Lista de Pedidos</h4>
-   <!--<button class="btn btn-primary" (click)="toggleFormulario()">
+    <!--<button class="btn btn-primary" (click)="toggleFormulario()">
       <i class="bi bi-plus-circle me-1"></i>
       {{ mostrarFormulario ? 'Cancelar' : 'Nuevo Pedido' }}
-    </button>--> 
+    </button>-->
   </div>
 
- <!-- <div *ngIf="mostrarFormulario" class="mb-4">
+  <!-- <div *ngIf="mostrarFormulario" class="mb-4">
     <app-ventas-formulario (onPedidoCreado)="onPedidoCreado()"></app-ventas-formulario>
   </div>-->
-    <div class="row mb-3">
-       <div class="mb-3">
-        <input
-            type="text"
-            class="form-control"
-            placeholder="Buscar por nombre de cliente"
-            [(ngModel)]="filtroNombre"
-            (input)="filtrarPedidos()" />
-        </div>
+  <div class="row mb-3">
+    <div class="mb-3">
+      <input type="text" class="form-control" placeholder="Buscar por nombre de cliente" [(ngModel)]="filtroNombre"
+        (input)="filtrarPedidos()" />
     </div>
+  </div>
 
   <div class="table-responsive">
     <table class="table table-hover table-bordered align-middle">
@@ -40,8 +36,7 @@
           <td>{{ pedido.comentario }}</td>
           <td>{{ pedido.fechaPedido | date: 'dd/MM/yyyy' }}</td>
           <td>
-            <span class="badge" 
-              [ngClass]="{
+            <span class="badge" [ngClass]="{
                 'bg-secondary': pedido.estatus === 1,
                 'bg-warning': pedido.estatus === 2,
                 'bg-success': pedido.estatus === 3
@@ -50,19 +45,17 @@
             </span>
           </td>
           <td>
-            <button class="btn btn-sm btn-primary me-1" (click)="abrirDetallePedido(pedido.idPedido)" title="Ver detalle">
-                <i class="bi bi-info-circle"></i>
+            <button class="btn btn-sm btn-primary me-1" (click)="abrirDetallePedido(pedido.idPedido)"
+              title="Ver detalle">
+              <i class="bi bi-info-circle"></i>
             </button>
-            <button class="btn btn-sm btn-danger me-1" (click)="eliminarPedido(pedido.idPedido)" title="Eliminar pedido">
-                <i class="bi bi-trash"></i>
+            <button class="btn btn-sm btn-danger me-1" (click)="eliminarPedido(pedido.idPedido)"
+              title="Eliminar pedido">
+              <i class="bi bi-trash"></i>
             </button>
-            <button
-                class="btn btn-sm btn-info"
-                (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
-                [disabled]="pedido.estatus === 3"
-                title="Avanzar estatus"
-            >
-                <i class="bi bi-arrow-right-circle"></i>
+            <button class="btn btn-sm btn-info" (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
+              [disabled]="pedido.estatus === 3" title="Avanzar estatus">
+              <i class="bi bi-arrow-right-circle"></i>
             </button>
           </td>
         </tr>
@@ -76,7 +69,8 @@
 
 
 <!-- Modal detalle pedido -->
-<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': mostrarModalDetalle}" [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
+<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': mostrarModalDetalle}"
+  [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -87,14 +81,14 @@
         <p><strong>Cliente:</strong> {{ pedidoDetalle?.nombreCliente }}</p>
         <p><strong>Comentario:</strong> {{ pedidoDetalle?.comentario }}</p>
         <p><strong>Fecha pedido:</strong> {{ pedidoDetalle?.fechaPedido | date:'medium' }}</p>
-        <p><strong>Estatus:</strong> 
-          <span class="badge"
-            [ngClass]="{
+        <p><strong>Estatus:</strong>
+          <span class="badge" [ngClass]="{
               'bg-secondary': pedidoDetalle?.estatus === 1,
               'bg-warning': pedidoDetalle?.estatus === 2,
               'bg-success': pedidoDetalle?.estatus === 3
             }">
-            {{ pedidoDetalle?.estatus === 1 ? 'Pendiente' : pedidoDetalle?.estatus === 2 ? 'En Proceso' : 'Completado' }}
+            {{ pedidoDetalle?.estatus === 1 ? 'Pendiente' : pedidoDetalle?.estatus === 2 ? 'En Proceso' : 'Completado'
+            }}
           </span>
         </p>
 
@@ -127,4 +121,3 @@
     </div>
   </div>
 </div>
-
