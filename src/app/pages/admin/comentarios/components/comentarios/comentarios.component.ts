@@ -22,6 +22,8 @@ export class ComentariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarDatosIniciales();
+     const comentariosGuardados = localStorage.getItem('comentarios');
+  this.comentarios = comentariosGuardados ? JSON.parse(comentariosGuardados) : []
   }
 
 
@@ -70,40 +72,45 @@ export class ComentariosComponent implements OnInit {
 
  
   responderOpinion(opinion: opiniones): void {
-    Swal.fire({
-      title: `Responder a ${opinion.usuarioNombre}`,
-      html: `<p>Producto: ${opinion.productoNombre}</p>
-             <p>Opinión: "${opinion.comentario}"</p>`,
-      input: 'textarea',
-      inputPlaceholder: 'Escribe tu respuesta aquí...',
-      showCancelButton: true,
-      confirmButtonText: 'Enviar respuesta',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed && result.value) {
-        const mensajeRespuesta = `Respuesta a opinión #${opinion.idOpinion}: ${result.value}`;
-        
-        const comentarioRespuesta: Comentarios = {
-        idComentario: 0 ,// 
-          mensaje: mensajeRespuesta,
-          usuarioId: 'admin-id-ejemplo',
-          nombreUsuario: 'Administrador', 
-          fecha: new Date() //
-        };
+  Swal.fire({
+    title: `Responder a ${opinion.usuarioNombre}`,
+    html: `<p>Producto: ${opinion.productoNombre}</p>
+           <p>Opinión: "${opinion.comentario}"</p>`,
+    input: 'textarea',
+    inputPlaceholder: 'Escribe tu respuesta aquí...',
+    showCancelButton: true,
+    confirmButtonText: 'Enviar respuesta',
+    cancelButtonText: 'Cancelar',
+  }).then((result) => {
+    if (result.isConfirmed && result.value) {
+      const mensajeRespuesta = `Respuesta a opinión #${opinion.idOpinion}: ${result.value}`;
+      
+  
+      const comentarioRespuesta: Comentarios = {
+        idComentario: Date.now(), 
+        mensaje: mensajeRespuesta,
+        usuarioId: 'admin-id-ejemplo',
+        nombreUsuario: 'Administrador',
+        fecha: new Date()
+      };
 
-        this.comentariosService.crearComentario(comentarioRespuesta).subscribe({
-          next: (nuevoComentario) => {
-            this.comentarios.push(nuevoComentario); 
-            Swal.fire('Éxito', 'Respuesta asociada correctamente', 'success');
-          },
-          error: (error) => {
-            console.error('Error al guardar comentario:', error);
-            Swal.fire('Error', 'No se pudo guardar la respuesta', 'error');
-          }
-        });
-      }
-    });
-  }
+    
+      const comentariosGuardadosJson = localStorage.getItem('comentarios');
+      let comentariosGuardados: Comentarios[] = comentariosGuardadosJson ? JSON.parse(comentariosGuardadosJson) : [];
+
+    
+      comentariosGuardados.push(comentarioRespuesta);
+
+      localStorage.setItem('comentarios', JSON.stringify(comentariosGuardados));
+
+
+      this.comentarios.push(comentarioRespuesta);
+
+      Swal.fire('Éxito', 'Respuesta guardada', 'success');
+    }
+  });
+}
+
 
   eliminarComentario(idComentario: number): void {
     Swal.fire({
