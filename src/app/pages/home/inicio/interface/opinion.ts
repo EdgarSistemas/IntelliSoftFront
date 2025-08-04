@@ -1,5 +1,5 @@
 export interface opiniones {
-idOpion: number;
+idOpinion: number;
 usuadioId: string;
 usuarioNombre: string;
 productoId: number;
