@@ -12,7 +12,7 @@ private apiUrl = 'https://localhost:5000/api';
 
     // Endpoint para registro de cliente 'anonimo'
   registrarUsuario(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, userData);
+    return this.http.post(`${this.apiUrl}/auth/anonimo-verificar-o-crear`, userData);
   }
   // Endpoint para registro de cliente
   registrarCliente(userData: any): Observable<any> {

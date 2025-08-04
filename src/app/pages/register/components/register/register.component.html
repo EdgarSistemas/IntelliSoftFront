@@ -28,13 +28,6 @@
               <span class="focus-border"></span>
             </div>
           </div>
-          <div class="form-group mb-3">
-            <div class="input-field">
-              <input type="tel" formControlName="phoneNumber" required />
-              <label>Teléfono</label>
-              <span class="focus-border"></span>
-            </div>
-          </div>
           <div class="d-grid gap-2 mt-4">
             <button
               type="submit"
@@ -58,14 +51,22 @@
         </div>
         <form [formGroup]="formularioCotizacion" (ngSubmit)="enviarCotizacion()">
           <input type="hidden" formControlName="idUsuario" />
-
           <div class="form-group mb-3">
-            <label for="productos">Productos</label>
-                  <div *ngFor="let producto of productos">
-                      <h4>{{ producto.nombre }}</h4>
-                      <button (click)="seleccionarProducto(producto)">Seleccionar</button>
-                  </div>
-          </div>
+  <label for="productos">Productos</label>
+  <div class="row">
+    <div *ngFor="let producto of productos" class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ producto.nombre }}</h4>
+              <button type="button" class="btn btn-primary w-100" 
+                (click)="seleccionarProducto(producto)">
+                Seleccionar
+              </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
           <div class="form-group mb-3">
             <label for="hectareas">Hectáreas</label>
