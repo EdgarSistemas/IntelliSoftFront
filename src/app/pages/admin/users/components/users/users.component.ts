@@ -38,6 +38,7 @@ export class UsersComponent implements OnInit {
         this.filteredUsers = [...data]; // Copia el array
         this.loading = false;
         this.applyFilters();
+
       },
       (error) => {
         console.error('Error loading users', error);
@@ -49,11 +50,13 @@ export class UsersComponent implements OnInit {
   applyFilters(): void {
     this.filteredUsers = this.users.filter(user => {
       const roleMatch = this.selectedRole === 'all' || user.rol === this.selectedRole;
-      const searchMatch = this.searchTerm === '' || 
-        user.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-        user.apellidos.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+
+      // Filtro por búsqueda (nombre, apellido o email)
+      const searchMatch = this.searchTerm === '' ||
+        user.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        user.apellidos.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
+
       return roleMatch && searchMatch;
     });
   }

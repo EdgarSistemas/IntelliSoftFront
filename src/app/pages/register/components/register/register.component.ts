@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { CotizacionService } from '../../../home/cotizacion/services/cotizacion.service'; // Asegúrate de crear este servicio
-import { User } from '../../interface/user';
+import { CotizacionService } from '../../../home/cotizacion/services/cotizacion.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Productos } from '../../../admin/productos/interface/productos'; // Asegúrate de que esta ruta sea correcta
 import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-register',
@@ -34,6 +34,8 @@ export class RegisterComponent implements OnInit {
   productos: Productos[] = [];
   usuarioId: string | null = null;
   productoIdSeleccionado: number | null = null;
+   loading = true;
+  errorMessage = '';
 
   constructor(
     private userService: UserService,
@@ -172,8 +174,17 @@ allProducts() {
     this.formularioCotizacion.patchValue({ producto: null });
   }
 }
+
+esMasVendido(index: number): boolean {
+    return index === 0; // Mostrar solo en el primer producto como ejemplo
+  }
+
+  // Método para determinar si mostrar el badge "Nuevo"
+  esNuevo(index: number): boolean {
+    return index === 2; // Mostrar solo en el tercer producto como ejemplo
+  }
+
 }
 
-function lastValueFrom(arg0: Observable<any>) {
-  throw new Error('Function not implemented.');
-}
+  
+

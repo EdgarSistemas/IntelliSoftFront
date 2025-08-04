@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['/inicio']);
+      this.router.navigate(['/inicio'], { replaceUrl: true });
       return false;
     }
     return true;

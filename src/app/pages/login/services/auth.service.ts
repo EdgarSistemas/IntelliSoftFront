@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { LoginResponse } from '../interface/loginResponse.interface';
 import Swal from 'sweetalert2';
 
 @Injectable({
@@ -14,11 +15,22 @@ export class AuthService {
 
 
  login(model: { email: string; password: string }) {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, model).subscribe({
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, model).subscribe({
       next: (res) => {
-        this.loading = false; 
+        if (!res.token) {
+          Swal.fire('Error', res.message || 'Error en autenticación', 'error');
+          return;
+        }
+        this.loading = false;
         localStorage.setItem('token', res.token);
         const decoded = this.jwtHelper.decodeToken(res.token);
+        // Extraer usuarioId del token (ajusta la clave según lo que viste en el console.log)
+const usuarioId = decoded['sub']; // o 'id', o la clave real
+if (usuarioId) {
+  localStorage.setItem('usuarioId', usuarioId);
+} else {
+  console.warn('El token no contiene usuarioId');
+}
 
         // Ya confirmamos con la imagen que esta clave funciona
         const rol = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
@@ -30,11 +42,11 @@ export class AuthService {
         switch (rol) {
           case 'admin':
             console.log('Redirigiendo a /admin');
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/admin'], { replaceUrl: true });
             break;
           case 'cliente':
             console.log('Redirigiendo a /cliente');
-            this.router.navigate(['/cliente']);
+            this.router.navigate(['/cliente'], { replaceUrl: true });
             break;
           default:
             // Si el rol no es 'admin' ni 'cliente', o si el rol es nulo/indefinido,
@@ -43,7 +55,9 @@ export class AuthService {
             // para usuarios autenticados pero sin roles específicos 'admin' o 'cliente'.
             // O, si no hay una página para "roles generales", puedes redirigirlo de nuevo al login o a un mensaje de error.
             console.warn('Rol no reconocido:', rol, 'Redirigiendo a /login o /inicio como fallback.');
-            this.router.navigate(['/inicio']); // O a la ruta que consideres para roles por defecto / no reconocidos
+            this.router.navigate(['/inicio'], { replaceUrl: true }
+
+            ); // O a la ruta que consideres para roles por defecto / no reconocidos
             break;
         }
       },
@@ -70,15 +84,15 @@ this.loading = false;
 }
 
     });
- 
+
   }
 
   logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('rol');
-  console.log('Token después del logout:', localStorage.getItem('token')); // debe ser null
-  this.router.navigate(['/login']);
-}
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    console.log('Token después del logout:', localStorage.getItem('token')); // debe ser null
+    this.router.navigate(['/login'], { replaceUrl: true });
+  }
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem('token');

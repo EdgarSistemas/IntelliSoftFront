@@ -1,133 +1,82 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CotizacionService } from '../../../../home/cotizacion/services/cotizacion.service';
+import Swal from 'sweetalert2';
+import { Productos } from '../../../../admin/productos/interface/productos';
+
 @Component({
   selector: 'app-cliente-cotizacion',
   standalone: false,
   templateUrl: './cliente-cotizacion.component.html',
-  styleUrl: './cliente-cotizacion.component.css'
+  styleUrls: ['./cliente-cotizacion.component.css']
 })
-export class ClienteCotizacionComponent {
-// Datos del cliente (simulados - en producción vendrían de tu API)
-  clientData = {
-    id: '12345',
-    name: 'Juan Pérez',
-    email: 'juan.perez@empresa.com',
-    company: 'AgroTech Solutions'
-  };
+export class ClienteCotizacionComponent implements OnInit {
+  formularioCotizacion = new FormGroup({
+    producto: new FormControl<number | null>(null, [Validators.required]),
+    hectareas: new FormControl(0, [Validators.required, Validators.min(1)]),
+    detalles: new FormControl('')
+  });
 
-  // Número de cotización (simulado)
-  quoteNumber = 'COT-' + Math.floor(100000 + Math.random() * 900000);
+  productos: Productos[] = [];
+  productoIdSeleccionado: number | null = null;
+  usuarioId: string | null = null;
 
-  // Productos disponibles (simulados - en producción vendrían de tu API)
-  products = [
-    {
-      id: 'AQP-1000',
-      name: 'AquaPro 3000',
-      description: 'Sistema acuapónico premium con automatización IoT',
-      price: 24999,
-      image: 'assets/img/products/aqua-pro.jpg',
-      features: [
-        'Para 1-2 hectáreas',
-        'Monitoreo remoto',
-        'Control automático de parámetros',
-        'Garantía de 2 años'
-      ]
-    },
-    // Agregar más productos según sea necesario
-  ];
-
-  // Costos adicionales
-  installationCost = 5000;
-  maintenanceCost = 3000;
-
-  // Variables del formulario
-  quoteForm: FormGroup;
-  selectedProduct: any = null;
-  loading = false;
-
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute
-  ) {
-    this.quoteForm = this.fb.group({
-      product: ['', Validators.required],
-      quantity: [1, [Validators.required, Validators.min(1)]],
-      cropType: ['', Validators.required],
-      area: ['', [Validators.required, Validators.min(10)]],
-      requirements: [''],
-      installation: [false],
-      maintenance: [false]
-    });
-  }
+  constructor(private cotizacionService: CotizacionService) {}
 
   ngOnInit(): void {
-    // Aquí iría la llamada a tu API para cargar datos iniciales si es necesario
-    // Ejemplo:
-    // this.loadClientData();
-    // this.loadProducts();
-  }
+    this.usuarioId = localStorage.getItem('usuarioId');
 
-  updateProductDetails(): void {
-    const selectedProductId = this.quoteForm.get('product')?.value;
-    this.selectedProduct = this.products.find(p => p.id === selectedProductId?.id);
-  }
-
-  calculateTotal(): number {
-    if (!this.selectedProduct) return 0;
-    
-    const quantity = this.quoteForm.get('quantity')?.value || 1;
-    let total = this.selectedProduct.price * quantity;
-    
-    if (this.quoteForm.get('installation')?.value) {
-      total += this.installationCost;
+    if (!this.usuarioId) {
+      Swal.fire('Error', 'No se encontró el ID de usuario en el localStorage', 'error');
+      this.formularioCotizacion.disable(); // Desactiva el formulario si no hay usuario
+      return;
     }
-    
-    if (this.quoteForm.get('maintenance')?.value) {
-      total += this.maintenanceCost;
-    }
-    
-    return total;
+
+    this.cargarProductos();
   }
 
-  saveDraft(): void {
-    // Lógica para guardar borrador en API
-    console.log('Guardando borrador:', this.quoteForm.value);
-    // Ejemplo de llamada a API:
-    // this.quoteService.saveDraft(this.quoteForm.value).subscribe(...);
-  }
-
-  generateQuote(): void {
-    if (this.quoteForm.invalid) return;
-    
-    this.loading = true;
-    const quoteData = {
-      ...this.quoteForm.value,
-      client: this.clientData,
-      total: this.calculateTotal(),
-      quoteNumber: this.quoteNumber
-    };
-    
-    // Simulación de llamada a API
-    console.log('Enviando a API:', quoteData);
-    /*
-    this.quoteService.generateQuote(quoteData).subscribe({
-      next: (response) => {
-        // Redirigir a vista de cotización generada
-        this.router.navigate(['/cliente/cotizaciones', response.id]);
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.loading = false;
+  cargarProductos(): void {
+    this.cotizacionService.allProducts().subscribe({
+      next: (data) => this.productos = data,
+      error: (error) => {
+        console.error('Error al obtener productos', error);
+        Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
       }
     });
-    */
-    
-    // Simulación de respuesta
-    setTimeout(() => {
-      this.loading = false;
-      // this.router.navigate(['/cliente/cotizaciones', '123']);
-    }, 1500);
+  }
+
+  enviarCotizacion(): void {
+    if (this.formularioCotizacion.valid && this.productoIdSeleccionado && this.usuarioId) {
+      const cotizacionData = {
+        productoId: this.productoIdSeleccionado,
+        hectareas: this.formularioCotizacion.value.hectareas || 0,
+        usuarioId: this.usuarioId,
+        detalleCotizacion: this.formularioCotizacion.value.detalles || ''
+      };
+
+      this.cotizacionService.enviarCotizacion(cotizacionData).subscribe({
+        next: () => {
+          Swal.fire('Éxito', 'Cotización enviada correctamente', 'success');
+          this.formularioCotizacion.reset();
+          this.productoIdSeleccionado = null;
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          Swal.fire('Error', 'No se pudo enviar la cotización', 'error');
+        }
+      });
+    } else {
+      Swal.fire('Error', 'Completa todos los campos y selecciona un producto', 'error');
+      this.formularioCotizacion.markAllAsTouched();
+    }
+  }
+
+  seleccionarProducto(producto: Productos): void {
+    if (producto?.idProductos) {
+      this.productoIdSeleccionado = producto.idProductos;
+      this.formularioCotizacion.patchValue({ producto: producto.idProductos });
+    } else {
+      console.error("Producto no válido");
+    }
   }
 }
-

@@ -24,10 +24,10 @@ export class ProveedorService {
     return this.http.post(`${this.apiUrl}/create`, proveedor);
   }
 
-  update(proveedor: Proveedor): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update`, proveedor);
+  update(id: number, proveedor: Partial<Proveedor>): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id}`, proveedor);
   }
-
+  
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete/${id}`);
   }

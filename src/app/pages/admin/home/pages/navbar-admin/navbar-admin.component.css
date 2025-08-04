@@ -99,3 +99,50 @@ background: rgb(26, 98, 192)!important;
   opacity: 0.9;
   color: #001dc0 !important; /* Texto azul para el botón sólido */
 }
+
+/* Estilos para scroll horizontal SIMPLE */
+.nav-scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: calc(100vw - 250px); /* Reserva espacio para los botones */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.nav-scroll-container::-webkit-scrollbar {
+  height: 3px;
+}
+
+.nav-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 1px;
+}
+
+.nav-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.5);
+}
+
+/* Asegurar que los nav-items no se compriman */
+.nav-scroll-container .nav-item {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Responsive: En pantallas pequeñas, el menú se apila verticalmente */
+@media (max-width: 991.98px) {
+  .nav-scroll-container {
+    max-width: none;
+    overflow: visible;
+    flex-direction: column;
+  }
+  
+  .nav-scroll-container .nav-item {
+    margin-bottom: 0.5rem;
+  }
+}

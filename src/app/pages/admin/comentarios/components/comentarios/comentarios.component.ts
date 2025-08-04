@@ -21,24 +21,19 @@ export class ComentariosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Cargar ambos al inicio
     this.cargarDatosIniciales();
   }
 
-  /**
-   * Carga las opiniones y luego los comentarios del administrador.
-   * Es importante cargar las opiniones primero para que el método
-   * getComentarioAdminParaOpinion tenga las opiniones disponibles.
-   */
+
   cargarDatosIniciales(): void {
     this.opinionesService.obetenerOpiniones().subscribe({
       next: (data: opiniones[]) => {
-        // Mapea las fechas de string a Date para las opiniones
+     
         this.opiniones = data.map(opinion => ({
           ...opinion,
           fecha: new Date(opinion.fecha)
         }));
-        // Una vez que las opiniones están cargadas, cargar los comentarios del admin
+     
         this.cargarComentarios();
       },
       error: (error) => {
@@ -48,13 +43,11 @@ export class ComentariosComponent implements OnInit {
     });
   }
 
-  /**
-   * Carga todos los comentarios del administrador.
-   */
+
   cargarComentarios(): void {
     this.comentariosService.getComentarios().subscribe({
       next: (data: Comentarios[]) => {
-        // Mapea las fechas de string a Date para los comentarios
+     
         this.comentarios = data.map(comentario => ({
           ...comentario,
           fecha: new Date(comentario.fecha)
@@ -67,25 +60,15 @@ export class ComentariosComponent implements OnInit {
     });
   }
 
-  /**
-   * Busca y retorna el comentario del administrador asociado a una opinión.
-   * La asociación se hace buscando en el mensaje del comentario el patrón
-   * "Respuesta a opinión #{idOpinion}:".
-   * @param idOpinion El ID de la opinión para la cual buscar el comentario.
-   * @returns El objeto Comentarios si se encuentra, de lo contrario, undefined.
-   */
+ 
   getComentarioAdminParaOpinion(idOpinion: number): Comentarios | undefined {
-    // Buscamos en todos los comentarios si alguno empieza con "Respuesta a opinión #<idOpinion>:"
+
     return this.comentarios.find(comentario =>
       comentario.mensaje.startsWith(`Respuesta a opinión #${idOpinion}:`)
     );
   }
 
-  /**
-   * Abre un cuadro de diálogo para que el administrador responda a una opinión.
-   * La respuesta se guarda como un nuevo comentario del administrador.
-   * @param opinion La opinión del cliente a la que se va a responder.
-   */
+ 
   responderOpinion(opinion: opiniones): void {
     Swal.fire({
       title: `Responder a ${opinion.usuarioNombre}`,
@@ -98,20 +81,18 @@ export class ComentariosComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed && result.value) {
-        // Creamos el mensaje del comentario con el prefijo para poder relacionarlo después
         const mensajeRespuesta = `Respuesta a opinión #${opinion.idOpinion}: ${result.value}`;
         
         const comentarioRespuesta: Comentarios = {
-        idComentario: 0 ,// El backend debe asignar el ID real, no lo necesitamos aquí al crear
+        idComentario: 0 ,// 
           mensaje: mensajeRespuesta,
-          usuarioId: 'admin-id-ejemplo', // **IMPORTANTE: Reemplazar con el ID real del admin que está logueado**
-          nombreUsuario: 'Administrador', // O el nombre real del admin logueado
-          fecha: new Date() // La fecha actual en el frontend
+          usuarioId: 'admin-id-ejemplo',
+          nombreUsuario: 'Administrador', 
+          fecha: new Date() //
         };
 
         this.comentariosService.crearComentario(comentarioRespuesta).subscribe({
           next: (nuevoComentario) => {
-            // Agrega el nuevo comentario a la lista local para que se muestre inmediatamente
             this.comentarios.push(nuevoComentario); 
             Swal.fire('Éxito', 'Respuesta asociada correctamente', 'success');
           },
@@ -124,10 +105,6 @@ export class ComentariosComponent implements OnInit {
     });
   }
 
-  /**
-   * Elimina un comentario del administrador.
-   * @param idComentario El ID del comentario a eliminar.
-   */
   eliminarComentario(idComentario: number): void {
     Swal.fire({
       title: '¿Estás seguro?',

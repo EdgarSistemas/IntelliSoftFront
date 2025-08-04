@@ -1,0 +1,71 @@
+<div class="card-body" *ngIf="!isLoading; else cargando">
+  <form [formGroup]="formulario" (ngSubmit)="guardarCambios()">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Nombre del producto</label>
+        <input formControlName="nombre" type="text" class="form-control" placeholder="Nombre" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Descripción</label>
+        <input formControlName="descripcion" type="text" class="form-control" placeholder="Descripción" />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">% Ganancia</label>
+        <input formControlName="porcentajeGanancia" type="number" class="form-control" min="0" step="0.01" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">% Riesgo</label>
+        <input formControlName="porcentajeRiesgo" type="number" class="form-control" min="0" step="0.01" />
+      </div>
+    </div>
+
+    <hr />
+    <h5>Insumos del producto</h5>
+
+    <div class="table-responsive mb-3">
+      <table class="table table-sm align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Nombre</th>
+            <th class="text-center">Cantidad</th>
+            <th>Unidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of insumosEditables">
+            <td>{{ obtenerNombreInsumo(i.insumoId) }}</td>
+            <td class="text-center" style="width: 150px;">
+              <input type="number" class="form-control form-control-sm text-center"
+                     [(ngModel)]="i.cantidad"
+                     (ngModelChange)="actualizarCantidad(i.insumoId, $event)"
+                     [ngModelOptions]="{ standalone: true }"
+                     min="0.01" step="0.01" />
+            </td>
+            <td>{{ obtenerUnidadSimbolo(i.insumoId) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-center gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-circle me-1"></i>Guardar
+      </button>
+      <button type="button" class="btn btn-outline-secondary" (click)="cancelar()">
+        <i class="bi bi-x-circle"></i> Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+
+<ng-template #cargando>
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-3">Cargando producto...</p>
+  </div>
+</ng-template>
