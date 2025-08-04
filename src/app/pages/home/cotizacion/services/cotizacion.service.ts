@@ -15,7 +15,13 @@ export class CotizacionService {
     return this.http.get(`${this.apiUrl}/producto/GetAll`);
   }
 
-  enviarCotizacion(cotizacionData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cotizacion/crear`, cotizacionData);
-  }
+  enviarCotizacion(cotizacionData: {
+  productoId: number,
+  hectareas: number,
+  usuarioId: string,
+  detalleCotizacion: string,
+  usuarioEmail?: string
+}): Observable<any> {
+  return this.http.post(`${this.apiUrl}/cotizacion/crear`, cotizacionData);
+}
 }

@@ -189,71 +189,28 @@
 
 
 <!-- Sección 4: Testimonios -->
-<section class="py-5"style="background-color: #f8f9fa;">
+<section class="py-5" style="background-color: #f8f9fa;">
   <div class="container">
     <div class="text-center mb-5">
       <h2 class="fw-bold display-5">Lo que dicen nuestros clientes</h2>
     </div>
     <div class="row g-4">
-      <div class="col-md-4">
+      <!-- Tarjeta por cada comentario -->
+      <div class="col-md-4" *ngFor="let opinion of opiniones| slice:0:3">
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
             <div class="mb-3 text-warning">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-            </div>
-            <p class="fst-italic">"Increíble el cambio que ha dado nuestra producción desde que implementamos este sistema."</p>
+  <ng-container *ngFor="let tipoEstrella of getEstrellas(opinion.calificacion)">
+    <i *ngIf="tipoEstrella === 'fill'" class="bi bi-star-fill"></i>
+    <i *ngIf="tipoEstrella === 'half'" class="bi bi-star-half"></i>
+    <i *ngIf="tipoEstrella === 'empty'" class="bi bi-star"></i>
+  </ng-container>
+</div>
+            <p class="fst-italic">"{{opinion.comentario}}"</p>
             <div class="d-flex align-items-center mt-3">
-              <i class="bi bi-person-fill me-3 fa-lg" ></i>
+              <i class="bi bi-person-fill me-3 fa-lg"></i>
               <div>
-                <h6 class="mb-0">María González</h6>
-                <small class="text-muted">Agricultora orgánica</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="mb-3 text-warning">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-            </div>
-            <p class="fst-italic">"Increíble el cambio que ha dado nuestra producción desde que implementamos este sistema."</p>
-            <div class="d-flex align-items-center mt-3">
-              <i class="bi bi-person-fill me-3 fa-lg" ></i>
-              <div>
-                <h6 class="mb-0">María González</h6>
-                <small class="text-muted">Agricultora orgánica</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-     <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="mb-3 text-warning">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-            </div>
-            <p class="fst-italic">"Increíble el cambio que ha dado nuestra producción desde que implementamos este sistema."</p>
-            <div class="d-flex align-items-center mt-3">
-              <i class="bi bi-person-fill me-3 fa-lg" ></i>
-              <div>
-                <h6 class="mb-0">María González</h6>
-                <small class="text-muted">Agricultora orgánica</small>
+                <h6 class="mb-0">{{opinion.usuarioNombre}}</h6>
               </div>
             </div>
           </div>

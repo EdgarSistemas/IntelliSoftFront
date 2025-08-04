@@ -5,6 +5,7 @@ import { User } from '../../interface/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Productos } from '../../../admin/productos/interface/productos'; // Asegúrate de que esta ruta sea correcta
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ export class RegisterComponent implements OnInit {
   // Segundo formulario (cotización)
   formularioCotizacion = new FormGroup({
     idUsuario: new FormControl('', [Validators.required]),
-    producto: new FormControl(''),
+     producto: new FormControl<number | null>(null, [Validators.required]),
     hectareas: new FormControl(0, [Validators.required, Validators.min(1)]),
     detalles: new FormControl(''),
   });
@@ -39,101 +40,98 @@ export class RegisterComponent implements OnInit {
     private CotizacionService: CotizacionService
   ) {}
 
-  ngOnInit(): void {
-    this.CotizacionService.allProducts().subscribe({
-      next: (data) => {
-        this.productos = data;
-      },
-      error: (error) => {
-        console.error('Error al obtener productos', error);
-        Swal.fire({
-          icon: 'error',
-          title: '¡Error!',
-          text: 'No se pudieron cargar los productos. Por favor, recarga la página.',
-        });
-      },
-    });
+ ngOnInit(): void {
+  // Cargar productos
+  this.CotizacionService.allProducts().subscribe({
+    next: (data) => this.productos = data,
+    error: (error) => {
+      console.error('Error al obtener productos', error);
+      Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
+    }
+  });
 
-  }
-
-  // Se activa al dar clic en el botón "Continuar" del formulario de registro
-  registrarUsuario() {
-  if (this.formulario.valid) {
-    const formValue = this.formulario.value;
-    const user: User = {
-      nombre: formValue.nombre ?? '',
-      apellidos: formValue.apellidos ?? '',
-      email: formValue.email ?? '',
-      password: '', // Para anónimos siempre va vacío
-      rol: '' // El backend lo asignará como "anonimo"
-    };
-
-    this.userService.registrarUsuario(user).subscribe({
-      next: (response) => {
-        console.log('Respuesta del servidor:', response);
-        
-        if (response.creado) {
-          // Usuario nuevo creado
-          Swal.fire('Éxito', response.message, 'success');
-          
-          // Guardamos el email en localStorage para referencia futura
-          localStorage.setItem('usuarioEmail', response.usuario.email);
-          
-          // Mostramos el formulario de cotización
-          this.mostrarFormularioCotizacion();
-        } else {
-          // Usuario ya existente
-          Swal.fire('Información', response.message, 'info');
-          
-          // Guardamos el email igualmente y mostramos cotización
-          localStorage.setItem('usuarioEmail', response.usuario.email);
-          this.mostrarFormularioCotizacion();
-        }
-      },
-      error: (error) => {
-        console.error('Error al registrar:', error);
-        console.error('datos enviados:', user);
-        Swal.fire('Error', 'Ocurrió un problema al registrar', 'error');
-      }
+  // Cargar usuarioId si existe
+  const usuarioId = localStorage.getItem('usuarioId');
+  if (usuarioId) {
+    this.formularioCotizacion.patchValue({
+      idUsuario: usuarioId
     });
   }
 }
 
-  // Nueva función para obtener la lista de productos
-  allProducts() {
-    this.CotizacionService.allProducts().subscribe({
-      next: (data) => {
-        this.productos = data;
+  // Se activa al dar clic en el botón "Continuar" del formulario de registro
+// register.component.ts
+// register.component.ts
+registrarUsuario() {
+  if (this.formulario.valid) {
+    const formValue = this.formulario.value;
+    
+    this.userService.registrarOVerificarAnonimo({
+      email: formValue.email ?? '',
+      nombre: formValue.nombre ?? '',
+      apellidos: formValue.apellidos ?? ''
+    }).subscribe({
+      next: (response) => {
+        // Verificar que el ID existe
+        if (!response.usuario.id) {
+          throw new Error('El servidor no devolvió un ID válido');
+        }
+
+        // Guardar en localStorage
+        localStorage.setItem('usuarioId', response.usuario.id);
+        localStorage.setItem('usuarioEmail', formValue.email ?? '');
+        
+        // Actualizar formulario de cotización
+        this.formularioCotizacion.patchValue({
+          idUsuario: response.usuario.id
+        });
+
+        console.log('Usuario ID:', response.usuario.id); // Para depuración
+        this.mostrarFormularioCotizacion();
       },
       error: (error) => {
-        console.error('Error al obtener productos', error);
-        Swal.fire({
-          icon: 'error',
-          title: '¡Error!',
-          text: 'No se pudieron cargar los productos. Por favor, recarga la página.',
-        });
-      },
+        console.error('Error:', error);
+        Swal.fire('Error', 'No se pudo verificar/registrar el usuario', 'error');
+      }
     });
   }
+}
+  // Nueva función para obtener la lista de productos
+  
 
-   enviarCotizacion() {
-    if (this.formularioCotizacion.valid) {
-      const cotizacionData = this.formularioCotizacion.value;
+enviarCotizacion() {
+  if (this.formularioCotizacion.valid && this.productoIdSeleccionado) {
+    const usuarioId = localStorage.getItem('usuarioId');
     
-      console.log('Cotización enviada:', cotizacionData);
-      Swal.fire('¡Éxito!', 'Tu cotización ha sido enviada.', 'success');
-      this.formularioCotizacion.reset();
-      localStorage.removeItem('usuarioId');
+    if (!usuarioId) {
+      Swal.fire('Error', 'No se encontró el ID de usuario', 'error');
+      return;
     }
-    else {
-      Swal.fire('Error', 'Por favor, completa todos los campos requeridos.', 'error');
-      console.error('datos faltantes:', this.formularioCotizacion.value);
-      console.error('Formulario de cotización inválido', this.formularioCotizacion.errors);
-      // Aquí podrías agregar lógica adicional para manejar errores específicos del formulario
-      this.formularioCotizacion.markAllAsTouched(); // Marca todos los campos como tocados para mostrar errores
-    }
-  }
 
+    const cotizacionData = {
+      productoId: this.productoIdSeleccionado,
+      hectareas: this.formularioCotizacion.value.hectareas || 0,
+      usuarioId: usuarioId,
+      detalleCotizacion: this.formularioCotizacion.value.detalles || ''
+    };
+
+    console.log('Datos a enviar:', cotizacionData);
+
+    this.CotizacionService.enviarCotizacion(cotizacionData).subscribe({
+      next: (response) => {
+        Swal.fire('Éxito', 'Cotización enviada correctamente', 'success');
+        this.formularioCotizacion.reset();
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        Swal.fire('Error', 'No se pudo enviar la cotización', 'error');
+      }
+    });
+  } else {
+    Swal.fire('Error', 'Completa todos los campos y selecciona un producto', 'error');
+    this.formularioCotizacion.markAllAsTouched();
+  }
+}
   mostrarFormularioCotizacion() {
     const registroDiv = document.getElementById('formulario-registro');
     const cotizacionDiv = document.getElementById('formulario-cotizacion');
@@ -143,19 +141,39 @@ export class RegisterComponent implements OnInit {
       cotizacionDiv.classList.remove('d-none');
     }
   }
-
- seleccionarProducto(producto: any) {
-  if (producto && producto.idProductos) {
-    this.productoIdSeleccionado = producto.idProductos;
-    // Actualiza el valor en el formulario
-    this.formularioCotizacion.patchValue({
-      producto: this.productoIdSeleccionado
+allProducts() {
+    this.CotizacionService.allProducts().subscribe({
+      next: (data) => {
+        this.productos = data;
+      },
+      error: (error) => {
+        console.error('Error al obtener productos', error);
+        Swal.fire({
+          icon: 'error',
+          title: '¡Error!',
+          text: 'No se pudieron cargar los productos. Por favor, recarga la página.',
+        });
+      },
     });
-    console.log('Producto seleccionado:', this.productoIdSeleccionado);
+  }
+ seleccionarProducto(producto: Productos) {
+  if (producto?.idProductos) {
+    this.productoIdSeleccionado = producto.idProductos;
+    
+    // Actualizar el formulario con el producto seleccionado
+    this.formularioCotizacion.patchValue({
+      producto: producto.idProductos
+    });
+    
+    console.log('Producto seleccionado:', producto.idProductos);
   } else {
-    console.error("El producto o su ID no están definidos.");
+    console.error("Producto no válido");
     this.productoIdSeleccionado = null;
     this.formularioCotizacion.patchValue({ producto: null });
   }
 }
+}
+
+function lastValueFrom(arg0: Observable<any>) {
+  throw new Error('Function not implemented.');
 }

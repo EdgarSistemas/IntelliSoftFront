@@ -3,8 +3,8 @@
     <div class="col-lg-6">
       <div class="register-card" data-aos="zoom-in">
         <div class="text-center mb-4">
-          <h3 class="fw-light text-dark mb-2">Crea tu cuenta</h3>
-          <p class="text-muted">Completa tus datos para comenzar</p>
+          <h3 class="fw-light text-dark mb-2">Ingresa tus datos</h3>
+          <p class="text-muted">y genera tu cotización</p>
         </div>
         <form [formGroup]="formulario" (ngSubmit)="registrarUsuario()">
           <div class="form-group mb-3">
@@ -52,16 +52,19 @@
         <form [formGroup]="formularioCotizacion" (ngSubmit)="enviarCotizacion()">
           <input type="hidden" formControlName="idUsuario" />
           <div class="form-group mb-3">
-  <label for="productos">Productos</label>
-  <div class="row">
-    <div *ngFor="let producto of productos" class="col-md-4 mb-3">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ producto.nombre }}</h4>
-              <button type="button" class="btn btn-primary w-100" 
-                (click)="seleccionarProducto(producto)">
-                Seleccionar
-              </button>
+              <div class="form-group mb-3">
+    <label>Productos</label>
+    <div class="row">
+      <div *ngFor="let producto of productos" class="col-md-4 mb-3">
+        <div class="card" [class.border-primary]="productoIdSeleccionado === producto.idProductos">
+          <div class="card-body">
+            <h5>{{producto.nombre}}</h5>
+            <button type="button" 
+                    class="btn btn-primary"
+                    (click)="seleccionarProducto(producto)">
+              {{productoIdSeleccionado === producto.idProductos ? 'Seleccionado' : 'Seleccionar'}}
+            </button>
+          </div>
         </div>
       </div>
     </div>
