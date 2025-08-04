@@ -1,216 +1,194 @@
 <div class="purchases-container">
   <!-- Header con datos del cliente -->
-  <div class="purchase-header p-4 rounded-top">
+  <div class="purchase-header p-4 rounded-top bg-light">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-8">
-          <h3 class="mb-3">Historial de compras de <strong>{{clientData?.name}}</strong></h3>
-          <div class="divider"></div>
-          <p class="mb-0">
-            <i class="bi bi-building me-1"></i> {{clientData?.company || 'Sin empresa registrada'}} | 
-            <i class="bi bi-envelope me-1"></i> {{clientData?.email}} |
-            <i class="bi bi-phone me-1"></i> {{clientData?.phone || 'Sin teléfono registrado'}}
-          </p>
-        </div>
-        <div class="col-md-4 text-md-end mt-3 mt-md-0">
-          <span class="badge bg-light text-dark fs-6">Cliente desde: {{joinDate | date}}</span>
+      <h2 class="mb-0">Historial de compras de <strong>{{ details?.nombre }} {{ details?.apellidos }}</strong></h2>
+    </div>
+  </div>
+
+  <!-- Cuerpo -->
+ <!-- Cuerpo mejorado -->
+<div class="purchase-body p-4 rounded-bottom bg-white shadow-sm">
+  <div *ngIf="pedidos.length > 0; else noPurchases">
+    <div class="accordion custom-accordion" id="pedidosAccordion">
+      <div class="accordion-item mb-3 border-0 shadow-sm" *ngFor="let pedido of pedidos; let i = index">
+        <h2 class="accordion-header" [id]="'heading' + i">
+          <button class="accordion-button collapsed py-3" type="button"
+                  data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapse' + i"
+                  [attr.aria-expanded]="false"
+                  [attr.aria-controls]="'collapse' + i">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+              <div class="d-flex align-items-center">
+                <span class="badge rounded-pill me-3" [ngClass]="{
+                  'bg-secondary': pedido.estatus === 1,
+                  'bg-warning text-dark': pedido.estatus === 2,
+                  'bg-success': pedido.estatus === 3
+                }" style="min-width: 100px; padding: 8px 12px;">
+                  <i class="bi me-2" [ngClass]="{
+                    'bi-hourglass-split': pedido.estatus === 1,
+                    'bi-truck': pedido.estatus === 2,
+                    'bi-check-circle': pedido.estatus === 3
+                  }"></i>
+                  {{ getNombreEstatus(pedido.estatus) }}
+                </span>
+                <div>
+                  <h5 class="mb-0 fw-bold">Pedido #{{ pedido.idPedido }}</h5>
+                  <small class="text-muted">{{ pedido.fechaPedido | date: 'dd/MM/yyyy HH:mm' }}</small>
+                </div>
+              </div>
+              <i class="bi bi-chevron-down accordion-arrow"></i>
+            </div>
+          </button>
+        </h2>
+        <div [id]="'collapse' + i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + i" data-bs-parent="#pedidosAccordion">
+          <div class="accordion-body px-4 py-3">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p class="mb-2"><strong><i class="bi bi-box-seam me-2"></i>Producto:</strong> {{ pedido.nombreProducto }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-2"><strong><i class="bi bi-chat-left-text me-2"></i>Comentario:</strong> 
+                  <span class="{{ !pedido.comentario ? 'text-muted' : '' }}">
+                    {{ pedido.comentario || 'Sin comentarios' }}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div class="table-responsive mt-3">
+              <table class="table table-hover table-sm">
+                <thead class="table-light">
+                  <tr>
+                    <th class="ps-3"><i class="bi bi-box me-2"></i>Insumo</th>
+                    <th class="text-center"><i class="bi bi-hash me-2"></i>Cantidad</th>
+                    <th class="text-end"><i class="bi bi-currency-dollar me-2"></i>Precio</th>
+                    <th class="text-end pe-3"><i class="bi bi-calculator me-2"></i>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of pedido.detalles" class="align-middle">
+                    <td class="ps-3">{{ d.nombreInsumo }}</td>
+                    <td class="text-center">{{ d.cantidad }}</td>
+                    <td class="text-end">{{ d.precioPromedio | currency }}</td>
+                    <td class="text-end pe-3">{{ d.cantidad * d.precioPromedio | currency }}</td>
+                  </tr>
+                </tbody>
+                <tfoot class="table-group-divider">
+                  <tr>
+                    <td colspan="3" class="text-end fw-bold pe-3">Total:</td>
+                    <td class="text-end fw-bold pe-3">{{ getTotalPedido(pedido) | currency }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+              <button class="btn btn-primary rounded-pill px-4" (click)="abrirModal(pedido.productoId)">
+                <i class="bi bi-chat-left-text me-2"></i> Agregar opinión
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Cuerpo del historial -->
-   <div class="purchase-body p-4 rounded-bottom bg-white">
-    <!-- Filtros -->
-    <div class="mb-4 p-4 bg-light rounded" style="border-left: 4px solid #004aad;">
-      <h5 class="mb-3">
-        <i class="bi bi-funnel-fill me-2" style="color: #004aad;"></i> Filtros
-      </h5>
-      <div class="row g-3">
-        <div class="col-md-4">
-          <label class="form-label">Rango de fechas</label>
-          <div class="input-group">
-            <input type="date" class="form-control" [(ngModel)]="dateFrom">
-            <span class="input-group-text">a</span>
-            <input type="date" class="form-control" [(ngModel)]="dateTo">
-          </div>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Estado</label>
-          <select class="form-select" [(ngModel)]="statusFilter">
-            <option value="">Todos los estados</option>
-            <option value="completed">Completadas</option>
-            <option value="pending">Pendientes</option>
-            <option value="cancelled">Canceladas</option>
-          </select>
-        </div>
-        <div class="col-md-4 d-flex align-items-end">
-          <button class="btn btn-success me-2" (click)="applyFilters()">
-            <i class="bi bi-filter-circle me-2"></i> Aplicar
-          </button>
-          <button class="btn btn-outline-secondary" (click)="resetFilters()">
-            <i class="bi bi-arrow-counterclockwise me-2"></i> Reiniciar
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Listado de compras -->
-    <div *ngIf="purchases.length > 0; else noPurchases">
-      <h5 class="mb-4">
-        <i class="bi bi-list-check me-2" style="color: #004aad;"></i> Compras realizadas
-        <span class="badge bg-primary ms-2">{{filteredPurchases.length}}</span>
-      </h5>
-
-      <div class="accordion" id="purchasesAccordion">
-        <div class="accordion-item mb-3" *ngFor="let purchase of paginatedPurchases; let i = index">
-          <h2 class="accordion-header" [id]="'heading'+i">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                    [attr.data-bs-target]="'#collapse'+i" [attr.aria-expanded]="i === 0 ? 'true' : 'false'" 
-                    [attr.aria-controls]="'collapse'+i">
-              <div class="d-flex justify-content-between w-100 me-3">
-                <div>
-                  <span class="badge me-2" [ngClass]="{
-                    'bg-success': purchase.status === 'completed',
-                    'bg-warning': purchase.status === 'pending',
-                    'bg-danger': purchase.status === 'cancelled'
-                  }">
-                    {{purchase.status | titlecase}}
-                  </span>
-                  <strong>Orden #{{purchase.orderNumber}}</strong>
-                </div>
-                <div class="text-end">
-                  <span class="me-3">{{purchase.date | date}}</span>
-                  <span class="fw-bold">{{purchase.total | currency}}</span>
-                </div>
-              </div>
-            </button>
-          </h2>
-          <div [id]="'collapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading'+i" 
-               data-bs-parent="#purchasesAccordion">
-            <div class="accordion-body">
-              <!-- Detalles del producto comprado -->
-              <div class="row mb-3">
-                <div class="col-md-4">
-                  <img [src]="purchase.product.image" class="img-fluid rounded" alt="Invernadero acuapónico">
-                </div>
-                <div class="col-md-8">
-                  <h5>{{purchase.product.name}}</h5>
-                  <p class="text-muted">{{purchase.product.description}}</p>
-                  <ul class="list-unstyled">
-                    <li>
-                      <i class="bi bi-check-circle-fill text-success me-2"></i> 
-                      <strong>Tipo:</strong> {{purchase.product.type}}
-                    </li>
-                    <li>
-                      <i class="bi bi-check-circle-fill text-success me-2"></i> 
-                      <strong>Tamaño:</strong> {{purchase.product.size}}
-                    </li>
-                    <li>
-                      <i class="bi bi-check-circle-fill text-success me-2"></i> 
-                      <strong>Capacidad:</strong> {{purchase.product.capacity}}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Detalles de la compra -->
-              <div class="row">
-                <div class="col-md-6">
-                  <h6 class="border-bottom pb-2">Información de envío</h6>
-                  <p *ngIf="purchase.shipping">
-                    <i class="bi bi-truck me-2"></i> 
-                    {{purchase.shipping.address}}<br>
-                    {{purchase.shipping.city}}, {{purchase.shipping.state}}<br>
-                    Código Postal: {{purchase.shipping.zipCode}}<br>
-                    <span class="text-muted small">
-                      Método: {{purchase.shipping.method}} | 
-                      Estado: {{purchase.shipping.status || 'En preparación'}}
-                    </span>
-                  </p>
-                  <p *ngIf="!purchase.shipping" class="text-muted">
-                    <i class="bi bi-info-circle me-2"></i> Recogida en tienda
-                  </p>
-                </div>
-                <div class="col-md-6">
-                  <h6 class="border-bottom pb-2">Resumen de pago</h6>
-                  <div class="table-responsive">
-                    <table class="table table-sm">
-                      <tbody>
-                        <tr>
-                          <td>Subtotal:</td>
-                          <td class="text-end">{{purchase.subtotal | currency}}</td>
-                        </tr>
-                        <tr *ngIf="purchase.shipping">
-                          <td>Envío:</td>
-                          <td class="text-end">{{purchase.shipping.cost | currency}}</td>
-                        </tr>
-                        <tr *ngIf="purchase.discount > 0">
-                          <td>Descuento:</td>
-                          <td class="text-end text-danger">-{{purchase.discount | currency}}</td>
-                        </tr>
-                        <tr>
-                          <td class="fw-bold">Total:</td>
-                          <td class="text-end fw-bold">{{purchase.total | currency}}</td>
-                        </tr>
-                        <tr>
-                          <td>Método de pago:</td>
-                          <td class="text-end">
-                            <span class="badge bg-secondary">
-                              {{purchase.paymentMethod | titlecase}}
-                            </span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Acciones -->
-              <div class="d-flex justify-content-end pt-3 border-top">
-                <button *ngIf="purchase.status === 'pending'" class="btn btn-outline-danger me-2" 
-                        (click)="cancelOrder(purchase)">
-                  <i class="bi bi-x-circle me-2"></i> Cancelar orden
-                </button>
-                <button class="btn btn-outline-success me-2" (click)="downloadInvoice(purchase)">
-                  <i class="bi bi-file-earmark-pdf me-2"></i> Factura
-                </button>
-                <button *ngIf="purchase.status === 'completed'" class="btn btn-success" 
-                        (click)="requestSupport(purchase)">
-                  <i class="bi bi-headset me-2"></i> Soporte técnico
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Paginación -->
-      <nav aria-label="Page navigation" class="mt-4" *ngIf="totalPages > 1">
-        <ul class="pagination justify-content-center">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" (click)="changePage(currentPage - 1)">Anterior</a>
-          </li>
-          <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
-            <a class="page-link" (click)="changePage(page)">{{page}}</a>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <a class="page-link" (click)="changePage(currentPage + 1)">Siguiente</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
-    <ng-template #noPurchases>
-      <div class="text-center py-5">
-        <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
-        <h4 class="mt-3">No se encontraron compras registradas</h4>
-        <p class="text-muted">Parece que este cliente aún no ha realizado compras en nuestro sistema.</p>
-        <button class="btn btn-success mt-3" routerLink="/productos">
-          <i class="bi bi-arrow-right-circle me-2"></i> Ver productos disponibles
+  <!-- Sin compras - diseño mejorado -->
+  <ng-template #noPurchases>
+    <div class="text-center py-5 px-3">
+      <div class="empty-state">
+        <i class="bi bi-cart-x text-muted" style="font-size: 4rem; opacity: 0.7;"></i>
+        <h3 class="mt-4 fw-bold">Aún no has realizado ningún pedido</h3>
+        <p class="text-muted mb-4">Descubre nuestros productos y realiza tu primera compra</p>
+        <button class="btn btn-success rounded-pill px-4 py-2" routerLink="/productos">
+          <i class="bi bi-arrow-right-circle me-2"></i> Explorar productos
         </button>
       </div>
-    </ng-template>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+  .custom-accordion .accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    box-shadow: none;
+  }
+  .custom-accordion .accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+  }
+  .accordion-arrow {
+    transition: transform 0.3s ease;
+  }
+  .accordion-button:not(.collapsed) .accordion-arrow {
+    transform: rotate(180deg);
+  }
+  .empty-state {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 12px;
+    background-color: #f8fafc;
+  }
+</style>
+
+<!-- Modal para agregar opinión -->
+<div class="modal fade show" tabindex="-1" [ngClass]="{'d-block': modalAbierto}" [style.background]="'rgba(0,0,0,0.5)'" role="dialog" *ngIf="modalAbierto">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 10px;">
+      <!-- Encabezado con color sólido -->
+      <div class="modal-header text-white" style="background-color: #4a6bdf; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-chat-square-text me-2"></i>Agregar Tu Opinión
+        </h5>
+        <button type="button" class="btn-close btn-close-white" aria-label="Cerrar" (click)="cerrarModal()"></button>
+      </div>
+      
+      <div class="modal-body p-4">
+        <form>
+          <!-- Sistema de calificación con estrellas mejorado -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold text-secondary d-block mb-3">
+              <i class="bi bi-star-fill text-warning me-2"></i>Calificación
+            </label>
+            <div class="rating-stars d-flex justify-content-center">
+              <div *ngFor="let star of [1,2,3,4,5]" 
+                   (click)="nuevaOpinion.calificacion = star"
+                   [ngClass]="{'text-warning': star <= nuevaOpinion.calificacion, 'text-secondary': star > nuevaOpinion.calificacion}">
+                <i class="bi bi-star-fill" style="font-size: 2rem; cursor: pointer;"></i>
+              </div>
+            </div>
+            <input type="hidden" [(ngModel)]="nuevaOpinion.calificacion" name="calificacion">
+          </div>
+          
+          <div class="mb-4">
+            <label for="comentario" class="form-label fw-semibold text-secondary">
+              <i class="bi bi-pencil-square me-2"></i>Comentario
+            </label>
+            <textarea id="comentario" 
+                      class="form-control border-2 border-secondary" 
+                      rows="4"
+                      [(ngModel)]="nuevaOpinion.comentario" 
+                      name="comentario"
+                      placeholder="Escribe tu experiencia con el producto..."></textarea>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer border-top-0 bg-light">
+        <button type="button" 
+                class="btn btn-outline-secondary rounded-pill px-4"
+                (click)="cerrarModal()">
+          <i class="bi bi-x-circle me-2"></i>Cancelar
+        </button>
+        <button type="button" 
+                class="btn btn-primary rounded-pill px-4 shadow-sm"
+                (click)="enviarOpinion()">
+          <i class="bi bi-send-check me-2"></i>Enviar Opinión
+        </button>
+      </div>
+    </div>
   </div>
 </div>
