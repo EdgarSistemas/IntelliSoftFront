@@ -5,34 +5,31 @@
       <div class="row align-items-center">
         <div class="col-md-2 text-center text-md-start">
           <div class="profile-avatar hover-lift">
-            <img [src]="clientData.avatar || 'assets/images/default-avatar.png'" 
+            <img [src]="'assets/images/default-avatar.png'" 
                  class="img-thumbnail rounded-circle shadow-sm" 
                  alt="Avatar del cliente" width="120">
           </div>
         </div>
-        <div class="col-md-7 mt-4 mt-md-0">
-          <h2 class="mb-2">{{clientData.name}}</h2>
+        <div class="col-md-7 mt-4 mt-md-0" *ngIf="details">
+          <h2 class="mb-2">{{ details.nombre }} {{ details.apellidos }}</h2>
           <p class="mb-1">
-            <i class="bi bi-building me-2"></i> {{clientData.company || 'No especificada'}}
+            <i class="bi bi-phone me-2"></i> {{ details.phoneNumber}}
           </p>
           <p class="mb-1">
-            <i class="bi bi-geo-alt me-2"></i> {{clientData.address || 'Dirección no registrada'}}
+            <i class="bi bi-envelope-at-fill me-2"></i> {{ details.email}}
           </p>
           <div class="d-flex flex-wrap gap-2 mt-2">
             <span class="badge bg-light text-dark">
-              <i class="bi bi-star-fill text-warning me-1"></i> Cliente desde: {{clientData.joinDate | date}}
+              <i class="bi bi-star-fill text-warning me-1"></i> Cliente desde: {{ details.fechaRegistro | date: 'dd/MM/yyyy' }}
             </span>
             <span class="badge bg-light text-dark">
-              <i class="bi bi-cart-check-fill text-success me-1"></i> {{purchaseHistory.length}} compras
+              <i class="bi bi-cart-check-fill text-success me-1"></i>  compras
             </span>
           </div>
         </div>
         <div class="col-md-3 text-md-end mt-4 mt-md-0">
-          <button class="btn btn-outline-light me-2" (click)="editProfile()">
+          <button class="btn btn-outline-light me-2" (click)="abrirModal()">
             <i class="bi bi-pencil-square me-1"></i> Editar
-          </button>
-          <button class="btn btn-light text-primary">
-            <i class="bi bi-printer me-1"></i> Imprimir
           </button>
         </div>
       </div>
@@ -40,262 +37,210 @@
   </div>
 
   <!-- Cuerpo del perfil con pestañas -->
-  <div class="profile-body bg-white p-4 rounded-bottom shadow-sm">
-    <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" 
-                data-bs-target="#info" type="button" role="tab">
-          <i class="bi bi-person-lines-fill me-2"></i> Información
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="purchases-tab" data-bs-toggle="tab" 
-                data-bs-target="#purchases" type="button" role="tab">
-          <i class="bi bi-cart-check me-2"></i> Compras
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="projects-tab" data-bs-toggle="tab" 
-                data-bs-target="#projects" type="button" role="tab">
-          <i class="bi bi-tree-fill me-2"></i> Mis Invernaderos
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="support-tab" data-bs-toggle="tab" 
-                data-bs-target="#support" type="button" role="tab">
-          <i class="bi bi-headset me-2"></i> Soporte
-        </button>
-      </li>
-    </ul>
+<div class="profile-body bg-white p-4 rounded-bottom shadow-sm">
+  <!-- Pestañas mejoradas -->
+  <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active d-flex align-items-center py-3 px-4" 
+              id="info-tab" data-bs-toggle="tab" 
+              data-bs-target="#info" type="button" role="tab"
+              style="border-bottom: 3px solid #4a6bdf;">
+        <i class="bi bi-person-lines-fill me-2 fs-5"></i> 
+        <span class="fw-semibold">Información Personal</span>
+      </button>
+    </li>
+  </ul>
 
-    <div class="tab-content" id="profileTabsContent">
-      <!-- Pestaña de Información -->
-      <div class="tab-pane fade show active" id="info" role="tabpanel">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card mb-4 border-0 hover-lift">
-              <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i> Datos Básicos</h5>
-              </div>
-              <div class="card-body">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">Nombre completo:</span>
-                    <span>{{clientData.name}}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">Correo electrónico:</span>
-                    <span>{{clientData.email}}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">Teléfono:</span>
-                    <span>{{clientData.phone || 'No registrado'}}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">Empresa:</span>
-                    <span>{{clientData.company || 'No especificada'}}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between">
-                    <span class="fw-bold">Tipo de cliente:</span>
-                    <span class="badge bg-primary">{{clientData.type || 'Standard'}}</span>
-                  </li>
-                </ul>
-              </div>
+  <!-- Contenido de pestañas -->
+  <div class="tab-content p-2" id="profileTabsContent">
+    <!-- Pestaña de Información - Diseño mejorado -->
+    <div class="tab-pane fade show active" id="info" role="tabpanel">
+      <div class="row g-4">
+        <!-- Tarjeta de Datos Básicos -->
+        <div class="col-lg-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-gradient-primary text-white py-3">
+              <h5 class="mb-0 d-flex align-items-center">
+                <i class="bi bi-person-badge fs-4 me-3"></i>
+                <span>Datos Básicos</span>
+              </h5>
             </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="card mb-4 border-0 hover-lift">
-              <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-geo-alt me-2"></i> Dirección</h5>
-              </div>
-              <div class="card-body">
-                <div *ngIf="clientData.address; else noAddress">
-                  <p>{{clientData.address}}</p>
-                  <p>{{clientData.city}}, {{clientData.state}}</p>
-                  <p>Código Postal: {{clientData.zipCode}}</p>
-                  <p>País: {{clientData.country || 'México'}}</p>
-                  
-                  <div class="mt-3">
-                    <button class="btn btn-outline-primary btn-sm">
-                      <i class="bi bi-map me-1"></i> Ver en mapa
-                    </button>
+            <div class="card-body p-0">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-person-circle text-primary me-3 fs-5"></i>
+                    <div>
+                      <small class="text-muted d-block">Nombre completo</small>
+                      <span class="fw-bold fs-5">{{details?.nombre || 'No especificado'}}</span>
+                    </div>
                   </div>
-                </div>
-                <ng-template #noAddress>
-                  <div class="text-center py-3 text-muted">
-                    <i class="bi bi-exclamation-circle fs-1"></i>
-                    <p class="mt-2">No hay dirección registrada</p>
-                    <button class="btn btn-primary btn-sm" (click)="editProfile()">
-                      <i class="bi bi-plus-circle me-1"></i> Agregar dirección
-                    </button>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-envelope text-primary me-3 fs-5"></i>
+                    <div>
+                      <small class="text-muted d-block">Correo electrónico</small>
+                      <span class="fw-bold fs-5">{{details?.email || 'No especificado'}}</span>
+                    </div>
                   </div>
-                </ng-template>
-              </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-telephone text-primary me-3 fs-5"></i>
+                    <div>
+                      <small class="text-muted d-block">Teléfono</small>
+                      <span class="fw-bold fs-5">{{details?.phoneNumber || 'No especificado'}}</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <div class="card border-0 hover-lift">
-          <div class="card-header bg-primary text-white">
-            <h5 class="mb-0"><i class="bi bi-graph-up me-2"></i> Estadísticas</h5>
-          </div>
-          <div class="card-body">
-            <div class="row text-center">
-              <div class="col-md-3">
-                <div class="stat-card">
-                  <h3 class="text-primary">{{purchaseHistory.length}}</h3>
-                  <p class="text-muted">Compras totales</p>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="stat-card">
-                  <h3 class="text-primary">{{totalSpent | currency}}</h3>
-                  <p class="text-muted">Total invertido</p>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="stat-card">
-                  <h3 class="text-primary">{{activeProjects}}</h3>
-                  <p class="text-muted">Invernaderos activos</p>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="stat-card">
-                  <h3 class="text-primary">{{supportTickets}}</h3>
-                  <p class="text-muted">Tickets de soporte</p>
-                </div>
-              </div>
+        <!-- Tarjeta de Dirección -->
+        <div class="col-lg-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-gradient-primary text-white py-3">
+              <h5 class="mb-0 d-flex align-items-center">
+                <i class="bi bi-geo-alt fs-4 me-3"></i>
+                <span>Dirección</span>
+              </h5>
             </div>
-          </div>
-        </div>
-      </div>
-
-    
-
-      <!-- Pestaña de Invernaderos -->
-      <div class="tab-pane fade" id="projects" role="tabpanel">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h5><i class="bi bi-tree-fill text-success me-2"></i> Mis Sistemas Acuapónicos</h5>
-          <button class="btn btn-primary" (click)="registerNewProject()">
-            <i class="bi bi-plus-circle me-1"></i> Registrar nuevo
-          </button>
-        </div>
-
-        <div *ngIf="aquaponicProjects.length > 0; else noProjects">
-          <div class="row row-cols-1 row-cols-md-2 g-4">
-            <div class="col" *ngFor="let project of aquaponicProjects">
-              <div class="card h-100 project-card hover-lift">
-                <img [src]="project.image || 'assets/images/default-greenhouse.jpg'" 
-                     class="card-img-top" alt="Invernadero" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                  <h5 class="card-title">{{project.name}}</h5>
-                  <div class="d-flex justify-content-between mb-2">
-                    <span class="badge bg-primary">{{project.model}}</span>
-                    <span class="badge" [ngClass]="{
-                      'bg-success': project.status === 'active',
-                      'bg-warning': project.status === 'maintenance',
-                      'bg-secondary': project.status === 'inactive'
-                    }">{{project.status | titlecase}}</span>
+            <div class="card-body p-0">
+              <div *ngIf="false; else noAddress" class="p-4">
+                <div class="d-flex align-items-start mb-3">
+                  <i class="bi bi-house-door text-primary me-3 fs-5 mt-1"></i>
+                  <div>
+                    <small class="text-muted d-block">Dirección</small>
+                    <p class="fw-bold mb-2">Calle Ejemplo #123</p>
+                    <p class="mb-1">Colonia Centro, Ciudad de México</p>
+                    <p class="mb-1">Código Postal: 06000</p>
+                    <p class="mb-3">México</p>
                   </div>
-                
-                  <ul class="list-group list-group-flush mb-3">
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span>Instalación:</span>
-                      <span>{{project.installationDate | date}}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span>Último mantenimiento:</span>
-                      <span>{{project.lastMaintenance || 'Nunca'}}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span>Producción estimada:</span>
-                      <span>{{project.estimatedProduction}}</span>
-                    </li>
-                  </ul>
                 </div>
-                <div class="card-footer bg-transparent">
-                  <button class="btn btn-outline-primary btn-sm me-2" (click)="viewProjectDetails(project)">
-                    <i class="bi bi-eye me-1"></i> Detalles
+                <div class="text-end">
+                  <button class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="bi bi-pencil-square me-2"></i> Editar
                   </button>
-                  <button class="btn btn-outline-success btn-sm" (click)="requestMaintenance(project)">
-                    <i class="bi bi-tools me-1"></i> Soporte
+                  <button class="btn btn-primary rounded-pill px-4 ms-2">
+                    <i class="bi bi-map me-2"></i> Ver en mapa
                   </button>
                 </div>
               </div>
+              
+              <ng-template #noAddress>
+                <div class="text-center p-5">
+                  <div class="py-4">
+                    <i class="bi bi-geo text-muted" style="font-size: 3rem; opacity: 0.5;"></i>
+                    <h5 class="mt-3 fw-semibold">No hay dirección registrada</h5>
+                    <p class="text-muted mb-4">Agrega una dirección para recibir tus pedidos</p>
+                    <button class="btn btn-primary rounded-pill px-4 py-2">
+                      <i class="bi bi-plus-circle me-2"></i> Agregar dirección
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <ng-template #noProjects>
-          <div class="text-center py-5">
-            <i class="bi bi-tree text-muted" style="font-size: 3rem;"></i>
-            <h4 class="mt-3">No tienes invernaderos registrados</h4>
-            <p class="text-muted">Registra tu primer sistema acuapónico para comenzar a monitorearlo</p>
-            <button class="btn btn-primary" (click)="registerNewProject()">
-              <i class="bi bi-plus-circle me-1"></i> Registrar invernadero
-            </button>
-          </div>
-        </ng-template>
+<!-- Estilos personalizados -->
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #4a6bdf 0%, #8a9ef5 100%);
+  }
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 10px !important;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+  .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    transition: background-color 0.2s ease;
+  }
+  .list-group-item:hover {
+    background-color: #f8f9fa;
+  }
+  .nav-tabs .nav-link.active {
+    color: #4a6bdf;
+    background-color: transparent;
+  }
+</style>
+
+
+
+<!-- MODAL -->
+<div class="modal" tabindex="-1" [ngClass]="{'d-block': editMode}" style="background: rgba(0,0,0,0.5)" *ngIf="editMode">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title fw-bold">Editar Perfil</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="cerrarModal()"></button>
       </div>
 
-      <!-- Pestaña de Soporte -->
-      <div class="tab-pane fade" id="support" role="tabpanel">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h5><i class="bi bi-headset me-2"></i> Mis Tickets de Soporte</h5>
-          <button class="btn btn-primary" (click)="createNewTicket()">
-            <i class="bi bi-plus-circle me-1"></i> Nuevo ticket
-          </button>
-        </div>
-
-        <div *ngIf="supportTicketsList.length > 0; else noTickets">
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead class="table-light">
-                <tr>
-                  <th>ID</th>
-                  <th>Asunto</th>
-                  <th>Invernadero</th>
-                  <th>Estado</th>
-                  <th>Fecha</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let ticket of supportTicketsList">
-                  <td class="fw-bold">#{{ticket.id}}</td>
-                  <td>{{ticket.subject}}</td>
-                  <td>{{ticket.project || 'General'}}</td>
-                  <td>
-                    <span class="badge" [ngClass]="{
-                      'bg-success': ticket.status === 'resolved',
-                      'bg-warning': ticket.status === 'in_progress',
-                      'bg-danger': ticket.status === 'pending'
-                    }">{{ticket.status | titlecase}}</span>
-                  </td>
-                  <td>{{ticket.date | date}}</td>
-                  <td>
-                    <button class="btn btn-sm btn-outline-primary" (click)="viewTicket(ticket)">
-                      <i class="bi bi-eye"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="modal-body p-4">
+        <form #editForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary">Nombre</label>
+            <input type="text" [(ngModel)]="updateUserData.nombre" name="nombre" 
+                   class="form-control rounded-1 border-secondary" />
           </div>
-        </div>
-
-        <ng-template #noTickets>
-          <div class="text-center py-5">
-            <i class="bi bi-headset text-muted" style="font-size: 3rem;"></i>
-            <h4 class="mt-3">No hay tickets de soporte</h4>
-            <p class="text-muted">Crea un nuevo ticket si necesitas asistencia con tus sistemas acuapónicos</p>
-            <button class="btn btn-primary" (click)="createNewTicket()">
-              <i class="bi bi-plus-circle me-1"></i> Crear ticket
-            </button>
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary">Apellidos</label>
+            <input type="text" [(ngModel)]="updateUserData.apellidos" name="apellidos" 
+                   class="form-control rounded-1 border-secondary" />
           </div>
-        </ng-template>
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary">Email</label>
+            <input type="email" [(ngModel)]="updateUserData.email" name="email" 
+                   class="form-control rounded-1 border-secondary" />
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary">Teléfono</label>
+            <input type="text" [(ngModel)]="updateUserData.phoneNumber" name="phoneNumber" 
+                   class="form-control rounded-1 border-secondary" />
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary">Nueva contraseña</label>
+            <input type="password" [(ngModel)]="updateUserData.newPassword" name="newPassword" 
+                   class="form-control rounded-1 border-secondary" 
+                   placeholder="Dejar en blanco para no cambiar" />
+          </div>
+          
+          <div class="mb-4">
+            <label class="form-label fw-semibold text-secondary">Contraseña actual</label>
+            <input type="password" [(ngModel)]="updateUserData.currentPassword" name="currentPassword" 
+                   class="form-control rounded-1 border-secondary" 
+                   placeholder="Solo necesaria si cambias la contraseña" />
+          </div>
+        </form>
       </div>
+
+      <div class="modal-footer border-0 bg-light">
+        <button class="btn btn-outline-secondary rounded-pill px-4" (click)="cerrarModal()">
+          <i class="bi bi-x-circle me-2"></i>Cancelar
+        </button>
+        <button class="btn btn-primary rounded-pill px-4" (click)="guardarCambios(editForm.value)">
+          <i class="bi bi-check-circle me-2"></i>Guardar cambios
+        </button>
+      </div>
+
     </div>
   </div>
 </div>
