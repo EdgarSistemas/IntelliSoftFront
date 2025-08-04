@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
+import { ManualesService } from '../../services/manuales.service';
+import { Documento, Producto } from '../../interface/manuales';
 
 @Component({
   selector: 'app-manuales',
@@ -6,7 +8,29 @@ import { Component } from '@angular/core';
   templateUrl: './manuales.component.html',
   styleUrl: './manuales.component.css'
 })
-export class ManualesComponent {
+export class ManualesComponent implements OnInit{
+
+  productos: Producto[] = [];
+  cargando: boolean = true;
+
+  constructor(private documentosService: ManualesService) {}
+
+  ngOnInit(): void {
+    this.cargarDocumentos();
+  }
+
+  cargarDocumentos() {
+    this.documentosService.obtenerDocumentos().subscribe({
+      next: (data) => {
+        this.productos = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar productos:', err);
+        this.cargando = false;
+      }
+    });
+  }
   manuals = [
     {
       title: 'Manual de Usuario Pro',
