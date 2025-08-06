@@ -1,3 +1,23 @@
 <app-navbar-admin></app-navbar-admin>
-<app-comentarios></app-comentarios>
+<app-portada></app-portada>
+<div class="accordion" id="opinionesAccordion">
+  <div class="accordion-item" *ngFor="let op of opiniones; let i = index">
+    <h2 class="accordion-header" [id]="'heading' + i">
+      <button class="accordion-button collapsed" type="button"
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#collapse' + i"
+        aria-expanded="false"
+        [attr.aria-controls]="'collapse' + i">
+        {{ op.usuarioNombre }} — {{ op.productoNombre }}
+      </button>
+    </h2>
+   <div [id]="'collapse' + i"
+         class="accordion-collapse collapse"
+         [attr.aria-labelledby]="'heading' + i">
+      <div class="accordion-body">
+        <app-comentarios [opinion]="op"></app-comentarios>
+      </div>
+    </div>
+  </div>
+</div>
 <app-footer-admin></app-footer-admin>

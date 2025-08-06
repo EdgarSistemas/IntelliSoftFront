@@ -1,13 +1,13 @@
 <!-- products-grid.component.html -->
 <section id="productos" class="py-5 bg-light">
   <div class="container py-4">
-    <div class="text-center mb-5">
-      <h2 class="fw-light">Nuestros <span class="fw-bold text-primary">Sistemas</span></h2>
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="fw-light display-5">Nuestros <span class="fw-bold text-primary">Sistemas</span></h2>
       <div class="divider mx-auto"></div>
-      <p class="text-muted">Soluciones completas para cultivos eficientes</p>
+      <h5 class="text-muted">Soluciones completas para cultivos eficientes</h5>
     </div>
 
-  <section class="py-5 bg-light">
+<section class="py-5 bg-light">
   <div class="container">
     <div class="row g-4">
       <!-- Producto - Iteración con *ngFor -->
@@ -31,7 +31,7 @@
               <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Solución completa</li>
             </ul>
             <div class="d-flex justify-content-between align-items-center">
-              <h5 class="mb-0 text-primary">{{ producto.precioActual | currency }}</h5>
+              <h5 class="mb-0 text-primary">{{ producto.precioConRiesgo | currency }}</h5>
               
             </div>
           </div>
@@ -47,8 +47,8 @@
     <div class="col-lg-10">
       <div class="p-4 rounded-4 bg-white shadow-sm" data-aos="fade-up">
         <div class="text-center mb-4">
-          <h3 class="fw-light text-dark">Ingresa tus datos</h3>
-          <p class="text-secondary small">y genera tu cotización</p>
+          <h3 class="fw-light text-dark display-5">Ingresa tus datos</h3>
+          <h5 class="text-secondary">y genera tu cotización</h5>
         </div>
 
         <form [formGroup]="formulario" (ngSubmit)="registrarUsuario()">
@@ -91,21 +91,29 @@
 
           <!-- Productos -->
           <div class="mb-4">
-            <label class="form-label">Productos</label>
-            <div class="row">
-              <div *ngFor="let producto of productos" class="col-md-4 mb-3">
-                <div class="border rounded-3 p-3 h-100 text-center" 
-                     [class.border-primary]="productoIdSeleccionado === producto.idProductos">
-                  <h6 class="fw-normal">{{ producto.nombre }}</h6>
-                  <button type="button"
-                          class="btn btn-outline-dark btn-sm rounded-pill mt-2"
-                          (click)="seleccionarProducto(producto)">
-                    {{ productoIdSeleccionado === producto.idProductos ? 'Seleccionado' : 'Seleccionar' }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+  <label class="form-label">Productos</label>
+  <div class="row">
+    <div *ngFor="let producto of productos" class="col-md-4 mb-3">
+      <div class="card h-100" 
+           [class.border-primary]="productoIdSeleccionado === producto.idProductos"
+           [class.bg-light]="productoIdSeleccionado === producto.idProductos">
+        <div class="card-body text-center">
+          <h6 class="card-title fw-normal">{{ producto.nombre }}</h6>
+          <p class="card-text text-muted small mb-3">
+            {{ producto.descripcion  }}
+          </p>
+          <button type="button"
+                  class="btn btn-sm rounded-pill"
+                  [class.btn-primary]="productoIdSeleccionado === producto.idProductos"
+                  [class.btn-outline-primary]="productoIdSeleccionado !== producto.idProductos"
+                  (click)="seleccionarProducto(producto)">
+            {{ productoIdSeleccionado === producto.idProductos ? '✓ Seleccionado' : 'Seleccionar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
           <!-- Hectáreas -->
           <div class="mb-3">
@@ -120,7 +128,7 @@
           </div>
 
           <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-dark rounded-pill py-2">
+            <button type="submit" class="btn btn-primary rounded-pill py-2">
               Enviar Cotización
             </button>
           </div>

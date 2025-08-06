@@ -1,0 +1,8 @@
+.portada{
+background: linear-gradient(rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.85))!important;
+ color: white !important;
+ height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

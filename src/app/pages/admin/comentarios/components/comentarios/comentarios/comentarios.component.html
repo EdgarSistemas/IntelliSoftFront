@@ -1,0 +1,49 @@
+<!-- opinion-card.component.html -->
+<div class="card my-3 shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">{{ opinion.usuarioNombre }}</h5>
+    <h6 class="card-subtitle text-muted mb-2">
+      Producto: {{ opinion.productoNombre }}
+    </h6>
+
+    <p class="mb-1">⭐ Calificación: {{ opinion.calificacion }}</p>
+    <p class="mb-1"><strong>Comentario:</strong> {{ opinion.comentario }}</p>
+    <p class="text-muted"><small>{{ opinion.fecha | date: 'medium' }}</small></p>
+
+    <ng-container *ngIf="opinion.comentarioAdmin; else responder">
+      <hr>
+      <p class="mb-1"><strong>Respuesta del administrador:</strong></p>
+      <p>{{ opinion.comentarioAdmin }}</p>
+      <p class="text-muted"><small>{{ opinion.fechaComentarioAdmin | date: 'medium' }}</small></p>
+
+      <!-- Botones -->
+      <div class="mt-2 d-flex gap-2">
+        <button class="btn btn-outline-primary btn-sm" (click)="toggleForm()">
+          Agregar otro comentario
+        </button>
+        <button class="btn btn-outline-danger btn-sm" (click)="eliminarComentario()">
+          Eliminar comentario
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #responder>
+      <button class="btn btn-outline-primary btn-sm mt-2" (click)="toggleForm()">
+        {{ showForm ? 'Cancelar' : 'Responder' }}
+      </button>
+    </ng-template>
+
+    <!-- Formulario -->
+    <div *ngIf="showForm" class="mt-3">
+      <form [formGroup]="comentarioForm" (ngSubmit)="enviarComentario()">
+        <div class="mb-2">
+          <label class="form-label">Comentario del administrador</label>
+          <textarea formControlName="mensaje" rows="3" class="form-control" required></textarea>
+        </div>
+        <button class="btn btn-success btn-sm" type="submit" [disabled]="comentarioForm.invalid">
+          Enviar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
