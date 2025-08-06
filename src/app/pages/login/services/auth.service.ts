@@ -24,6 +24,13 @@ export class AuthService {
         this.loading = false;
         localStorage.setItem('token', res.token);
         const decoded = this.jwtHelper.decodeToken(res.token);
+        // Extraer usuarioId del token (ajusta la clave según lo que viste en el console.log)
+const usuarioId = decoded['sub']; // o 'id', o la clave real
+if (usuarioId) {
+  localStorage.setItem('usuarioId', usuarioId);
+} else {
+  console.warn('El token no contiene usuarioId');
+}
 
         // Ya confirmamos con la imagen que esta clave funciona
         const rol = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];

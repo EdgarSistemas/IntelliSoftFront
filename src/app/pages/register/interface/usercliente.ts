@@ -7,3 +7,9 @@ export interface Usercliente {
   password: string;
   rol: string;
 }
+
+export interface datosCliente{
+  nombre: string;
+  apelliedos: string;
+  email: string;
+}

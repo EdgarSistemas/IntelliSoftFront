@@ -25,7 +25,7 @@
             <p class="text-muted">Completa tus datos para comenzar</p>
           </div>
 
-          <form [formGroup]="formulario" (ngSubmit)="registrarCliente()">
+          <form [formGroup]="formulario" (ngSubmit)="registrarUsuario()">
             <div class="form-group mb-3">
               <div class="input-field">
                 <input type="text" formControlName="nombre" required>
@@ -50,33 +50,10 @@
               </div>
             </div>
 
-            <div class="form-group mb-3">
-              <div class="input-field">
-                <input type="text" formControlName="direccion">
-                <label>Dirección (opcional)</label>
-                <span class="focus-border"></span>
-              </div>
-            </div>
-
-            <div class="form-group mb-3">
-              <div class="input-field">
-                <input type="tel" formControlName="phoneNumber" required>
-                <label>Teléfono</label>
-                <span class="focus-border"></span>
-              </div>
-            </div>
-
-            <div class="form-group mb-4">
-              <div class="input-field">
-                <input type="password" formControlName="password" required>
-                <label>Contraseña</label>
-                <span class="focus-border"></span>
-              </div>
-            </div>
-
             <div class="d-grid mb-3">
-              <button class="btn btn-futurist" [disabled]="loading">
-                <span *ngIf="!loading">Crear cuenta</span>
+              <button type="submit" class="btn btn-futurist" [disabled]="loading">
+
+                <span *ngIf="!loading">Enviar datos</span>
                 <span *ngIf="loading">
                   <span class="spinner-border spinner-border-sm me-2"></span>
                   Procesando...
@@ -106,12 +83,12 @@
         <div class="futurist-icon mb-3">
           <i class="bi bi-envelope-check"></i>
         </div>
-        <h4 class="mb-3">¡Registro exitoso!</h4>
-        <p>Hemos enviado un enlace de verificación a <strong>{{registeredEmail}}</strong></p>
-        <p class="small text-muted">Por favor revisa tu bandeja de entrada para activar tu cuenta.</p>
+        <h4 class="mb-3">Se ha enviado tu información</h4>
+        <p>Al hacer tu cotización enviaremos un correo a: <strong>{{registeredEmail}}</strong></p>
+        <p class="small text-muted">Por favor estate atento a tu correo</p>
       </div>
       <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-futurist px-4" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-futurist px-4" data-bs-dismiss="modal" routerLink="/inicio">
           Entendido
         </button>
       </div>

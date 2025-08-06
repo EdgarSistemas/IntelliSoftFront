@@ -1,241 +1,66 @@
-<div class="quote-hero  py-5">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 text-center text-white">
-        <h1 class="display-5 fw-bold mb-4">Cotización de Invernadero Acuapónico</h1>
-        <p class="lead">Complete los siguientes datos para generar una cotización personalizada</p>
+<div class="row justify-content-center mt-5"> <!-- Eliminado d-none -->
+  <div class="col-lg-12"> <!-- Aumenté el tamaño para coincidir con tu diseño deseado -->
+    <div class="card hover-lift border-0 shadow-sm"> <!-- Añadí clases de estilo -->
+      <div class="card-header bg-primary text-white py-4"> <!-- Añadí header como en tu diseño -->
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">Realiza tu cotización</h3>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="card hover-lift border-0 shadow-sm">
-        <!-- Header con datos del cliente -->
-        <div class="card-header bg-primary text-white py-4">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <!-- <h3 class="mb-1">Cotización para <strong>{{clientData?.name}}</strong></h3>
-              <p class="mb-0 small opacity-75">
-                <i class="bi bi-building me-1"></i> {{clientData?.company || 'Sin empresa registrada'}} |
-                <i class="bi bi-envelope me-1"></i> {{clientData?.email}}
-              </p> -->
+      
+      <div class="card-body p-4 p-lg-5">
+        <form [formGroup]="formularioCotizacion" (ngSubmit)="enviarCotizacion()">
+          <input type="hidden"  />
+          
+          <div class="mb-4">
+            <h5 class="d-flex align-items-center mb-4">
+              <div class="icon-box bg-primary bg-opacity-10 text-primary rounded me-3">
+                <i class="bi bi-box-seam fs-4"></i>
+              </div>
+              Selecciona tus productos
+            </h5>
+            
+            <div class="row g-4">
+              <div *ngFor="let producto of productos" class="col-md-4">
+                <div class="card h-100" [class.border-primary]="productoIdSeleccionado === producto.idProductos">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">{{producto.nombre}}</h5>
+                    <p class="text-muted small">{{producto.descripcion}}</p>
+                    <button type="button" 
+                            class="btn btn-sm"
+                            [class.btn-primary]="productoIdSeleccionado === producto.idProductos"
+                            [class.btn-outline-primary]="productoIdSeleccionado !== producto.idProductos"
+                            (click)="seleccionarProducto(producto)">
+                      {{productoIdSeleccionado === producto.idProductos ? 'Seleccionado' : 'Seleccionar'}}
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <span class="badge bg-white text-primary fs-6">#{{quoteNumber}}</span>
           </div>
-        </div>
 
-        <!-- Formulario -->
-        <div class="card-body p-4 p-lg-5">
-          <form [formGroup]="quoteForm" (ngSubmit)="generateQuote()">
-            <!-- Pestañas para secciones del formulario -->
-            <ul class="nav nav-tabs mb-4" id="quoteTabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="product-tab" data-bs-toggle="tab"
-                        data-bs-target="#product" type="button" role="tab">
-                  <i class="bi bi-box-seam me-2"></i> Producto
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="custom-tab" data-bs-toggle="tab"
-                        data-bs-target="#custom" type="button" role="tab">
-                  <i class="bi bi-gear me-2"></i> Personalización
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="summary-tab" data-bs-toggle="tab"
-                        data-bs-target="#summary" type="button" role="tab">
-                  <i class="bi bi-receipt me-2"></i> Resumen
-                </button>
-              </li>
-            </ul>
-
-            <div class="tab-content" id="quoteTabsContent">
-              <!-- Selección de Producto -->
-              <div class="tab-pane fade show active" id="product" role="tabpanel">
-                <h5 class="mb-4 d-flex align-items-center">
-                  <div class="icon-box bg-primary bg-opacity-10 text-primary rounded me-3">
-                    <i class="bi bi-box-seam fs-4"></i>
-                  </div>
-                  Producto a cotizar
-                </h5>
-
-                <div class="row g-4">
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Sistema IntelliSoft</label>
-                    <select class="form-select" formControlName="product" (change)="updateProductDetails()">
-                      <option value="">Seleccionar producto...</option>
-                      <option *ngFor="let product of products" [ngValue]="product">
-                        {{product.name}} - {{product.price | currency}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Cantidad</label>
-                    <input type="number" class="form-control" formControlName="quantity" min="1" value="1">
-                  </div>
-                </div>
-
-                <!-- Detalles del Producto Seleccionado -->
-                <div class="product-details mt-4 p-4 bg-light rounded" *ngIf="selectedProduct">
-                  <div class="row align-items-center">
-                    <div class="col-md-4 mb-3 mb-md-0">
-                      <img [src]="selectedProduct.image" class="img-fluid rounded shadow-sm" alt="Producto">
-                    </div>
-                    <div class="col-md-8">
-                      <h5 class="mb-3">{{selectedProduct.name}}</h5>
-                      <p class="text-muted mb-4">{{selectedProduct.description}}</p>
-                      <ul class="list-unstyled">
-                        <li *ngFor="let feature of selectedProduct.features" class="mb-2">
-                          <i class="bi bi-check-circle-fill text-primary me-2"></i> {{feature}}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Personalización -->
-              <div class="tab-pane fade" id="custom" role="tabpanel">
-                <h5 class="mb-4 d-flex align-items-center">
-                  <div class="icon-box bg-primary bg-opacity-10 text-primary rounded me-3">
-                    <i class="bi bi-gear fs-4"></i>
-                  </div>
-                  Personalización
-                </h5>
-
-                <div class="row g-4">
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Tipo de cultivo principal</label>
-                    <select class="form-select" formControlName="cropType">
-                      <option value="">Seleccionar...</option>
-                      <option>Hortalizas (lechuga, espinaca, kale)</option>
-                      <option>Hierbas aromáticas (albahaca, menta, cilantro)</option>
-                      <option>Frutales (fresas, tomates, pimientos)</option>
-                      <option>Ornamentales (plantas decorativas)</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label fw-semibold">Área de instalación (m²)</label>
-                    <input type="number" class="form-control" formControlName="area" placeholder="Ej. 20">
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-semibold">Requerimientos adicionales</label>
-                    <textarea class="form-control" rows="3" formControlName="requirements"
-                      placeholder="Describe cualquier necesidad especial (tipo de peces, automatización requerida, etc.)"></textarea>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Resumen de Cotización -->
-              <div class="tab-pane fade" id="summary" role="tabpanel">
-                <h5 class="mb-4 d-flex align-items-center">
-                  <div class="icon-box bg-primary bg-opacity-10 text-primary rounded me-3">
-                    <i class="bi bi-receipt fs-4"></i>
-                  </div>
-                  Resumen de cotización
-                </h5>
-
-                <div *ngIf="selectedProduct">
-                  <div class="table-responsive mb-4">
-                    <table class="table">
-                      <thead class="table-light">
-                        <tr>
-                          <th>Concepto</th>
-                          <th class="text-end">Precio unitario</th>
-                          <th class="text-end">Cantidad</th>
-                          <th class="text-end">Subtotal</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{selectedProduct.name}}</td>
-                          <td class="text-end">{{selectedProduct.price | currency}}</td>
-                          <td class="text-end">{{quoteForm.value.quantity || 1}}</td>
-                          <td class="text-end">{{(selectedProduct.price * (quoteForm.value.quantity || 1)) | currency}}</td>
-                        </tr>
-                        <tr *ngIf="quoteForm.value.installation">
-                          <td>Instalación profesional</td>
-                          <td class="text-end">{{installationCost | currency}}</td>
-                          <td class="text-end">1</td>
-                          <td class="text-end">{{installationCost | currency}}</td>
-                        </tr>
-                        <tr *ngIf="quoteForm.value.maintenance">
-                          <td>Mantenimiento (1 año)</td>
-                          <td class="text-end">{{maintenanceCost | currency}}</td>
-                          <td class="text-end">1</td>
-                          <td class="text-end">{{maintenanceCost | currency}}</td>
-                        </tr>
-                        <tr class="fw-bold">
-                          <td colspan="3" class="text-end">Total:</td>
-                          <td class="text-end fs-5 text-primary">
-                            {{calculateTotal() | currency}}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <!-- Opciones Adicionales -->
-                  <div class="bg-light p-4 rounded mb-4">
-                    <div class="form-check form-switch mb-3">
-                      <input class="form-check-input" type="checkbox" id="installation" formControlName="installation">
-                      <label class="form-check-label fw-semibold" for="installation">
-                        Incluir instalación profesional (+{{installationCost | currency}})
-                      </label>
-                      <p class="small text-muted mt-1">Nuestro equipo realizará la instalación completa y puesta en marcha del sistema</p>
-                    </div>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="maintenance" formControlName="maintenance">
-                      <label class="form-check-label fw-semibold" for="maintenance">
-                        Contrato de mantenimiento (1 año) (+{{maintenanceCost | currency}})
-                      </label>
-                      <p class="small text-muted mt-1">Visitas trimestrales de mantenimiento y soporte prioritario</p>
-                    </div>
-                  </div>
-
-                  <div class="alert alert-primary">
-                    <div class="d-flex">
-                      <i class="bi bi-info-circle-fill fs-4 me-3"></i>
-                      <div>
-                        <h6 class="alert-heading">¿Necesitas financiamiento?</h6>
-                        <p class="mb-0">Ofrecemos opciones de crédito a 6, 12 y 24 meses con aprobación rápida.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div *ngIf="!selectedProduct" class="text-center py-5 bg-light rounded">
-                  <i class="bi bi-box-seam text-muted fs-1"></i>
-                  <h5 class="mt-3">No has seleccionado un producto</h5>
-                  <p class="text-muted">Por favor regresa a la pestaña de Producto para seleccionar un sistema acuapónico</p>
-                </div>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Hectáreas</label>
+              <input type="number" class="form-control" formControlName="hectareas"
+                    [class.is-invalid]="formularioCotizacion.get('hectareas')?.invalid && formularioCotizacion.get('hectareas')?.touched">
+              <div *ngIf="formularioCotizacion.get('hectareas')?.invalid && formularioCotizacion.get('hectareas')?.touched" 
+                   class="invalid-feedback">
+                Mínimo 1 hectárea
               </div>
             </div>
-
-            <!-- Botones -->
-            <div class="d-flex justify-content-between pt-4 mt-3 border-top">
-              <button type="button" class="btn btn-outline-secondary" routerLink="/productos">
-                <i class="bi bi-arrow-left me-2"></i> Volver a productos
-              </button>
-              <div>
-                <button type="button" class="btn btn-outline-primary me-2" (click)="saveDraft()">
-                  <i class="bi bi-save me-2"></i> Guardar borrador
-                </button>
-                <button type="submit" class="btn btn-primary" [disabled]="!quoteForm.valid || loading">
-                  <span *ngIf="!loading">
-                    <i class="bi bi-file-earmark-pdf me-2"></i> Generar cotización
-                  </span>
-                  <span *ngIf="loading">
-                    <span class="spinner-border spinner-border-sm me-2"></span> Procesando...
-                  </span>
-                </button>
-              </div>
+            
+            <div class="col-12">
+              <label class="form-label fw-semibold">Detalles adicionales</label>
+              <textarea class="form-control" rows="3" formControlName="detalles"></textarea>
             </div>
-          </form>
-        </div>
+          </div>
+
+          <div class="d-flex justify-content-end pt-4 mt-3 border-top">
+            <button type="submit" class="btn btn-primary" [disabled]="formularioCotizacion.invalid || !productoIdSeleccionado">
+              <i class="bi bi-send me-2"></i> Enviar Cotización
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

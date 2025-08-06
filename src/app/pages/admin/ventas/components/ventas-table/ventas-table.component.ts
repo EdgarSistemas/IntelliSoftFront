@@ -16,8 +16,8 @@ export class VentasTableComponent implements OnInit {
 
   //Filtros
   pedidosFiltrados: Pedido[] = [];
-  filtroNombre: string = '';
-  pedidoSeleccionado?: Pedido;
+  filtroEstatus: string = '';
+  filtro: string = '';
 
   constructor(private ventasService: VentasService) {}
 
@@ -27,7 +27,10 @@ export class VentasTableComponent implements OnInit {
 
   cargarPedidos(): void {
     this.ventasService.getAllPedidos().subscribe({
-      next: (data) => this.pedidos = data,
+      next: (data) => {
+        this.pedidos = data;
+        this.pedidosFiltrados = [...data]; // Copia inicial para mostrar todos
+      },
       error: (err) => console.error('Error cargando pedidos', err)
     });
   }
@@ -133,14 +136,33 @@ export class VentasTableComponent implements OnInit {
     this.pedidoDetalle = null;
   }
 
-  filtrarPedidos(): void {
-    const filtro = this.filtroNombre.trim().toLowerCase();
-    if (!filtro) {
+  aplicarFiltros(): void {
+    // Si no hay filtros, muestra todos los pedidos
+    if (!this.filtro && !this.filtroEstatus) {
       this.pedidosFiltrados = [...this.pedidos];
-    } else {
-      this.pedidosFiltrados = this.pedidos.filter(p =>
-        p.nombreCliente.toLowerCase().includes(filtro)
-      );
+      return;
     }
+
+    const textoFiltro = this.filtro.toLowerCase().trim();
+    
+    this.pedidosFiltrados = this.pedidos.filter(pedido => {
+      // Filtro por texto
+      const coincideTexto = 
+        (pedido.nombreCliente && pedido.nombreCliente.toLowerCase().includes(textoFiltro)) ||
+        (pedido.idPedido && pedido.idPedido.toString().includes(this.filtro))
+
+      // Filtro por estatus
+      const coincideEstatus = 
+        !this.filtroEstatus || 
+        (pedido.estatus && pedido.estatus.toString() === this.filtroEstatus);
+
+      return coincideTexto && coincideEstatus;
+    });
+  }
+
+  limpiarFiltros(): void {
+    this.filtro = '';
+    this.filtroEstatus = '';
+    this.aplicarFiltros();
   }
 }

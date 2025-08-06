@@ -14,21 +14,47 @@
   </div>
 
   <!-- Barra de búsqueda mejorada -->
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <div class="input-group">
-        <span class="input-group-text bg-white border-end-0">
-          <i class="bi bi-search text-muted"></i>
-        </span>
-        <input type="text" 
-               class="form-control border-start-0 ps-0"
-               placeholder="Buscar por nombre de cliente..."
-               [(ngModel)]="filtroNombre"
-               (input)="filtrarPedidos()">
+<div class="card mb-4 border-0 shadow-sm">
+  <div class="card-body p-3">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input
+            type="text"
+            [(ngModel)]="filtro"
+            (input)="aplicarFiltros()"
+            placeholder="Buscar por cliente, ID o folio..."
+            class="form-control border-0 bg-light"
+          >
+        </div>
+      </div>
+      <div class="col-md-4">
+        <select
+          [(ngModel)]="filtroEstatus"
+          (change)="aplicarFiltros()"
+          class="form-select border-0 bg-light"
+        >
+          <option value="">Todos los estados</option>
+          <option value="1">Pendiente</option>
+          <option value="2">En proceso</option>
+          <option value="3">Completado</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button
+          (click)="limpiarFiltros()"
+          class="btn btn-outline-secondary w-100"
+          [disabled]="!filtro && !filtroEstatus"
+        >
+          <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+        </button>
       </div>
     </div>
   </div>
-
+</div>
   <!-- Tabla de pedidos mejorada -->
   <div class="card border-0 shadow-sm">
     <div class="table-responsive">
@@ -44,13 +70,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let pedido of pedidos" class="position-relative">
+          <tr *ngFor="let pedido of pedidosFiltrados" class="position-relative">
             <td class="ps-4 fw-bold">{{ pedido.idPedido }}</td>
             <td>
               <div class="d-flex align-items-center">
-                <div class="avatar-sm bg-light rounded-circle d-flex align-items-center justify-content-center me-3">
-                  <i class="bi bi-person-fill text-primary"></i>
-                </div>
                 <span>{{ pedido.nombreCliente || 'Sin nombre' }}</span>
               </div>
             </td>
@@ -61,13 +84,13 @@
             </td>
             <td>{{ pedido.fechaPedido | date: 'dd/MM/yyyy' }}</td>
             <td class="text-center">
-              <span class="badge rounded-pill py-2 px-3" 
+              <span class="badge rounded-pill py-2 px-3"
                 [ngClass]="{
                   'bg-secondary': pedido.estatus === 1,
                   'bg-warning text-dark': pedido.estatus === 2,
                   'bg-success': pedido.estatus === 3
                 }">
-                <i class="bi me-1" 
+                <i class="bi me-1"
                   [ngClass]="{
                     'bi-hourglass': pedido.estatus === 1,
                     'bi-arrow-repeat': pedido.estatus === 2,
@@ -77,27 +100,30 @@
               </span>
             </td>
             <td class="text-end pe-4">
-              <div>
-                <button class="btn btn-sm btn-outline-primary" 
-                        (click)="abrirDetallePedido(pedido.idPedido)" 
+              <div class="btn-group" role="group">
+                <button class="btn btn-sm btn-outline-primary rounded-start-pill"
+                        (click)="abrirDetallePedido(pedido.idPedido)"
                         title="Ver detalle">
+                        Detalle
                   <i class="bi bi-eye"></i>
                   Detalle
                 </button>
-                <button class="btn btn-sm btn-outline-danger" 
-                        (click)="eliminarPedido(pedido.idPedido)" 
+                <button class="btn btn-sm btn-outline-danger me-1"
+                        (click)="eliminarPedido(pedido.idPedido)"
                         title="Eliminar">
+                        Eliminar
                   <i class="bi bi-trash"></i>
                   Eliminar
                 </button>
-                <button class="btn btn-sm btn-outline-success "
+                <button class="btn btn-sm btn-outline-success"
                         (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
                         [disabled]="pedido.estatus === 3"
                         title="Avanzar estatus">
+                        Avanzar
                   <i class="bi bi-arrow-right"></i>
                   Avanzar
                 </button>
-              </div>
+
             </td>
           </tr>
           <tr *ngIf="pedidos.length === 0">
@@ -118,7 +144,6 @@
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">
-          <i class="bi bi-file-text me-2"></i>
           Detalle del Pedido #{{ pedidoDetalle?.idPedido }}
         </h5>
         <button type="button" class="btn-close btn-close-white" aria-label="Cerrar" (click)="cerrarModalDetalle()"></button>
@@ -127,7 +152,6 @@
         <div class="row mb-4">
           <div class="col-md-6">
             <div class="d-flex align-items-center mb-3">
-              <i class="bi bi-person-circle fs-4 text-primary me-3"></i>
               <div>
                 <small class="text-muted">Cliente</small>
                 <p class="mb-0 fw-bold">{{ pedidoDetalle?.nombreCliente || 'No especificado' }}</p>
@@ -136,7 +160,6 @@
           </div>
           <div class="col-md-6">
             <div class="d-flex align-items-center mb-3">
-              <i class="bi bi-calendar-date fs-4 text-primary me-3"></i>
               <div>
                 <small class="text-muted">Fecha</small>
                 <p class="mb-0 fw-bold">{{ pedidoDetalle?.fechaPedido | date:'dd/MM/yyyy HH:mm' }}</p>
@@ -145,7 +168,6 @@
           </div>
           <div class="col-md-6">
             <div class="d-flex align-items-center mb-3">
-              <i class="bi bi-chat-left-text fs-4 text-primary me-3"></i>
               <div>
                 <small class="text-muted">Comentario</small>
                 <p class="mb-0 fw-bold">{{ pedidoDetalle?.comentario || 'Sin comentario' }}</p>
@@ -154,11 +176,10 @@
           </div>
           <div class="col-md-6">
             <div class="d-flex align-items-center mb-3">
-              <i class="bi bi-tag fs-4 text-primary me-3"></i>
               <div>
                 <small class="text-muted">Estatus</small>
                 <p class="mb-0">
-                  <span class="badge rounded-pill py-1 px-3" 
+                  <span class="badge rounded-pill py-1 px-3"
                     [ngClass]="{
                       'bg-secondary': pedidoDetalle?.estatus === 1,
                       'bg-warning text-dark': pedidoDetalle?.estatus === 2,
@@ -198,7 +219,7 @@
                 </td>
               </tr>
             </tbody>
-            
+
           </table>
         </div>
       </div>

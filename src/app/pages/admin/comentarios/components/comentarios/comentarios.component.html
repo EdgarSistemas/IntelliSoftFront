@@ -5,20 +5,67 @@
     </div>
 </div>
 
-<div class="container mt-5">
-  <h2>Comentarios y Preguntas</h2>
-  <div class="row mt-3" *ngFor="let comentario of comentarios">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          {{comentario.nombre}}
+<div class="container my-4" style="max-width: 900px;">
+  <h2 class="mb-4 fw-semibold text-dark">Gestión de Opiniones y Comentarios</h2>
+
+  <!-- Opiniones de Clientes -->
+  <section class="mb-5">
+    <h3 class="mb-3 fw-medium text-secondary">Opiniones de Clientes</h3>
+    <div *ngIf="opiniones.length === 0" class="text-muted fst-italic">No hay opiniones disponibles.</div>
+
+    <div *ngFor="let opinion of opiniones" class="card mb-4 shadow-sm border-1">
+      <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <h5 class="card-title mb-0 text-dark fw-semibold">{{ opinion.usuarioNombre }}</h5>
+          <small class="text-muted">{{ opinion.fecha | date:'short' }}</small>
         </div>
-        <div class="card-body">
-          <p>{{comentario.comentario}}</p>
-          <p *ngIf="comentario.respuesta">Respuesta: {{comentario.respuesta}}</p>
-          <button class="btn btn-primary" (click)="responderComentario(comentario)">Responder</button>
+        <p class="mb-1"><strong>Producto:</strong> {{ opinion.productoNombre }}</p>
+        <p class="mb-2"><strong>Calificación:</strong> {{ opinion.calificacion }} &#9733;</p>
+        <blockquote class="blockquote fst-italic text-secondary mb-3 ps-3 border-start border-3 border-light">
+          "{{ opinion.comentario }}"
+        </blockquote>
+
+        <div *ngIf="getComentarioAdminParaOpinion(opinion.idOpinion) as adminComentario" 
+             class="alert alert-light border-start border-3 border-primary p-3 mb-3">
+          <p class="fw-semibold mb-1">Respuesta del Administrador ({{ adminComentario.nombreUsuario }}):</p>
+          <p class="mb-1 text-primary">{{ adminComentario.mensaje }}</p>
+          <small class="text-muted">{{ adminComentario.fecha | date:'short' }}</small>
+        </div>
+
+        <div class="text-end">
+          <button (click)="responderOpinion(opinion)" 
+                  class="btn btn-sm btn-outline-success">
+            Responder
+          </button>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <hr>
+
+  <!-- Comentarios del Administrador -->
+  <section>
+    <h3 class="mb-3 fw-medium text-secondary">Todos los Comentarios del Administrador</h3>
+    <div *ngIf="comentarios.length === 0" class="text-muted fst-italic">No hay comentarios de administrador disponibles.</div>
+
+    <div *ngFor="let comentario of comentarios" class="card mb-3 shadow-sm border-1">
+      <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="card-title mb-0 text-primary fw-semibold">{{ comentario.nombreUsuario }}</h5>
+          <small class="text-muted">{{ comentario.fecha | date:'short' }}</small>
+        </div>
+        <blockquote class="blockquote fst-italic text-secondary mb-3">
+          "{{ comentario.mensaje }}"
+        </blockquote>
+        <div class="text-end">
+          <button (click)="eliminarComentario(comentario.idComentario)" 
+                  class="btn btn-sm btn-outline-danger">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
+

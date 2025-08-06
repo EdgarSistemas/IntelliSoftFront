@@ -23,6 +23,7 @@ export class ShopComponent implements OnInit{
     calificacion: 5,
     comentario: ''
   };
+  activePanelIndex: number | null = null;
 
   constructor(
     private profileService: ProfileService,
@@ -59,9 +60,10 @@ export class ShopComponent implements OnInit{
   }
 
   getTotalPedido(pedido: PedidoResponse): number {
-    return pedido.detalles.reduce((total, item) => total + item.subtotal, 0);
+    const totalBase = pedido.detalles.reduce((total, item) => total + item.subtotal, 0);
+    const ganancia = totalBase * (pedido.porcentajeGanancia / 100);
+    return totalBase + ganancia;
   }
-
   getNombreEstatus(estatus: number): string {
     switch (estatus) {
       case 1: return 'Pendiente';
@@ -112,6 +114,13 @@ export class ShopComponent implements OnInit{
           console.error(err);
         }
       });
+    }
+
+    
+
+    // Método para manejar el toggle
+    togglePanel(index: number): void {
+      this.activePanelIndex = this.activePanelIndex === index ? null : index;
     }
 
 

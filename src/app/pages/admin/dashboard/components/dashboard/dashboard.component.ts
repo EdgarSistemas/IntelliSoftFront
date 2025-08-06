@@ -81,21 +81,41 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  obtenerProductosMasVendidos() {
-    this.dashboardService.obtenerProductosMasVendidos().subscribe((data) => {
-      this.productosVendidosChartLabels = data.map((item: any) => item.nombreProducto);
+ obtenerProductosMasVendidos() {
+  this.dashboardService.obtenerProductosMasVendidos().subscribe({
+    next: (response: any) => {
+      // Convierte cualquier respuesta a un array válido
+      const data = Array.isArray(response) ? response : 
+                  response?.data ? response.data : 
+                  response?.productos ? response.productos : 
+                  [];
+
+      // Si no hay datos, crea un array con un elemento vacío
+      const datosFinales = data.length > 0 ? data : [{ nombreProducto: "Sin datos", totalVendido: 0 }];
+
+      // Asigna directamente a la gráfica
       this.productosVendidosChartData = {
-        labels: this.productosVendidosChartLabels,
-        datasets: [
-          {
-            data: data.map((item: any) => item.totalVendido),
-            label: 'Cantidad vendida',
-            backgroundColor: '#66BB6A',
-          },
-        ],
+        labels: datosFinales.map((item: any) => item.nombreProducto || 'Producto'),
+        datasets: [{
+          data: datosFinales.map((item: any) => item.totalVendido || 0),
+          label: 'Cantidad vendida',
+          backgroundColor: '#66BB6A'
+        }]
       };
-    });
-  }
+    },
+    error: () => {
+      // Gráfica vacía si hay error
+      this.productosVendidosChartData = {
+        labels: ['Error'],
+        datasets: [{
+          data: [0],
+          label: 'Datos no disponibles',
+          backgroundColor: '#FF6384'
+        }]
+      };
+    }
+  });
+}
 
   obtenerProductosMejorCalificados() {
     this.dashboardService.obtenerProductosMejorCalificados().subscribe((data) => {

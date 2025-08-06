@@ -18,4 +18,8 @@ private apiUrl = 'https://localhost:5000/api';
   deleteUser(id: string): Observable<Users> {
     return this.http.delete<Users>(`${this.apiUrl}/auth/delete/${id}`);
   }
+
+editarUser(datos: { id: string; email: string; password: string }): Observable<Users> {
+    return this.http.put<Users>(`${this.apiUrl}/auth/editar/`, datos);
+}
 }
