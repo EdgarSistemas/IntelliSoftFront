@@ -6,6 +6,7 @@ export interface ProductoResumen {
   hectareaBase: number;
   porcentajeGanancia: number;
   porcentajeRiesgo: number;
+  ganancia: number;
   precioCosto: number;
   precioConGanancia: number;
   precioConRiesgo: number;

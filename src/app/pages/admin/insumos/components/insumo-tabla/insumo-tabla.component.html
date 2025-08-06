@@ -59,12 +59,17 @@
             <tbody>
               <tr *ngFor="let insumo of insumosFiltrados">
                 <td>{{ insumo.nombre }}</td>
-                <td>{{ insumo.descripcion }}</td>
-                <td>{{ insumo.unidad.nombre }} ({{ insumo.unidad.simbolo }})</td>
+                <td class="text-wrap">{{ insumo.descripcion }}</td>
+                <td class="text-wrap">{{ insumo.unidad.nombre }} ({{ insumo.unidad.simbolo }})</td>
                 <td>{{ insumo.existencias || 0 }}</td>
                 <td>${{ insumo.precioPromedio || 0 | number: '1.2-2' }}</td>
                 <td>
                   <span class="badge" [ngClass]="insumo.estatus ? 'bg-success' : 'bg-danger'">
+                    <i class="bi me-1"
+                    [ngClass]="{
+                      'bi-check-circle': insumo.estatus === 1,
+                      'bi-arrow-repeat': insumo.estatus === 0,
+                    }"></i>
                     {{ insumo.estatus ? 'Activo' : 'Inactivo' }}
                   </span>
                 </td>

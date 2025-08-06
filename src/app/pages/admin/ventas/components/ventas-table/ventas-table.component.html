@@ -77,22 +77,25 @@
               </span>
             </td>
             <td class="text-end pe-4">
-              <div class="btn-group" role="group">
-                <button class="btn btn-sm btn-outline-primary rounded-start-pill" 
+              <div>
+                <button class="btn btn-sm btn-outline-primary" 
                         (click)="abrirDetallePedido(pedido.idPedido)" 
                         title="Ver detalle">
                   <i class="bi bi-eye"></i>
+                  Detalle
                 </button>
                 <button class="btn btn-sm btn-outline-danger" 
                         (click)="eliminarPedido(pedido.idPedido)" 
                         title="Eliminar">
                   <i class="bi bi-trash"></i>
+                  Eliminar
                 </button>
-                <button class="btn btn-sm btn-outline-success rounded-end-pill"
+                <button class="btn btn-sm btn-outline-success "
                         (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
                         [disabled]="pedido.estatus === 3"
                         title="Avanzar estatus">
                   <i class="bi bi-arrow-right"></i>
+                  Avanzar
                 </button>
               </div>
             </td>

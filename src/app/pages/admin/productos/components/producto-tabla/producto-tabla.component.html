@@ -65,25 +65,23 @@
                 <tr>
                   <th>Nombre</th>
                   <th>Descripción</th>
-                  <th class="text-center">Hectárea Base</th>
+                  <th class="text-wrap text-center">Hectárea Base</th>
                   <th class="text-center">% Ganancia</th>
-                  <th class="text-center">% Riesgo</th>
-                  <th class="text-end">Costo Base</th>
-                  <th class="text-end">+Ganancia</th>
-                  <th class="text-end">+Riesgo</th>
-                  <th class="text-center">Acciones</th>
+                  <th class="text-wrap text-center">Costo desarrollo</th>
+                  <th class="text-end">Ganancia</th>
+                  <th class="text-end">Precio</th>
+                  <th class="text-wrap text-center">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let producto of productosFiltrados">
-                  <td>{{ producto.nombre }}</td>
-                  <td>{{ producto.descripcion }}</td>
+                  <td class="text-wrap">{{ producto.nombre }}</td>
+                  <td class="text-wrap">{{ producto.descripcion }}</td>
                   <td class="text-center">{{ producto.hectareaBase }}</td>
                   <td class="text-center">{{ producto.porcentajeGanancia }}%</td>
-                  <td class="text-center">{{ producto.porcentajeRiesgo }}%</td>
-                  <td class="text-end">$ {{ producto.precioCosto.toFixed(2) }}</td>
+                  <td class="text-center">$ {{ producto.precioCosto.toFixed(2) }}</td>
+                  <td class="text-end">$ {{ producto.ganancia.toFixed(2) }}</td>
                   <td class="text-end">$ {{ producto.precioConGanancia.toFixed(2) }}</td>
-                  <td class="text-end">$ {{ producto.precioConRiesgo.toFixed(2) }}</td>
                   <td class="text-end">
                     <button class="btn btn-sm btn-outline-primary me-1"
                       (click)="editarProducto(producto.idProductos)">

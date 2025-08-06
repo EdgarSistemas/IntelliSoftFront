@@ -35,29 +35,29 @@
         <table class="table table-hover align-middle mb-0">
           <thead>
             <tr>
-              <th>Clave</th>
-              <th>Cliente</th>
+              <th class="text-wrap text-center">Clave</th>
+              <th class="text-wrap text-center">Cliente</th>
               <th class="text-center">Hectáreas</th>
               <th class="text-center">Estado</th>
-              <th class="text-end">Total base</th>
-              <th class="text-end">Total con ganancias</th>
-              <th class="text-end">Total con presupuesto riesgos</th>
+              <th class="text-wrap text-center">Costo desarrollo</th>
+              <th class="text-end">Ganancia</th>
+              <th class="text-end">Precio</th>
               <th class="text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let cot of cotizacionesFiltradas">
               <td>{{ cot.claveCotizacion }}</td>
-              <td>{{ cot.nombreCliente }}</td>
+              <td class="text-wrap">{{ cot.nombreCliente }}</td>
               <td class="text-center">{{ cot.hectareas }}</td>
               <td class="text-center">
-                <span class="badge bg-secondary" *ngIf="cot.estadoSolicitud === 1">Pendiente</span>
-                <span class="badge bg-success" *ngIf="cot.estadoSolicitud === 2">Aceptada</span>
-                <span class="badge bg-danger" *ngIf="cot.estadoSolicitud === 3">Rechazada</span>
+                <span class="badge bg-secondary" *ngIf="cot.estadoSolicitud === 1"><i class="bi-hourglass"></i>Pendiente</span>
+                <span class="badge bg-success" *ngIf="cot.estadoSolicitud === 2"><i class="bi-check-circle"></i>Aceptada</span>
+                <span class="badge bg-danger" *ngIf="cot.estadoSolicitud === 3"><i class="bi-x-lg"></i>Rechazada</span>
               </td>
               <td class="text-end">$ {{ cot.precioBase.toFixed(2) }}</td>
+              <td class="text-end">$ {{ cot.ganancia.toFixed(2) }}</td>
               <td class="text-center">$ {{ cot.precioConGanancia.toFixed(2) }}</td>
-              <td class="text-center">$ {{ cot.precioConRiesgo.toFixed(2) }}</td>
               <td class="text-end">
                 <button class="btn btn-sm btn-outline-primary me-1" (click)="verCotizacion(cot.idCotizacion)">
                   <i class="bi bi-eye"></i> Ver
@@ -85,7 +85,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- modal -->
   <div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': mostrarModalDetalle }"
     [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
@@ -139,8 +139,7 @@
 
           <div class="text-end mt-3">
             <strong>Total base:</strong> {{ cotizacionSeleccionada?.precioBase | currency }}
-            <strong>Total con ganancia:</strong> {{ cotizacionSeleccionada?.precioConGanancia | currency }}
-            <strong>Total con riesgo:</strong> {{ cotizacionSeleccionada?.precioConRiesgo | currency }}
+            <strong>Total de la cotización:</strong> {{ cotizacionSeleccionada?.precioConGanancia | currency }}
           </div>
         </div>
         <div class="modal-footer">

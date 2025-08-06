@@ -69,6 +69,11 @@
                 <td>{{ unidad.descripcion }}</td>
                 <td>
                   <span class="badge" [ngClass]="unidad.estatus ? 'bg-success' : 'bg-danger'">
+                    <i class="bi me-1"
+                      [ngClass]="{
+                        'bi-check-circle': unidad.estatus === 1,
+                        'bi-arrow-repeat': unidad.estatus === 0,
+                      }"></i>
                     {{ unidad.estatus ? 'Activo' : 'Inactivo' }}
                   </span>
                 </td>

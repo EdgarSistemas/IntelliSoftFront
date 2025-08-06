@@ -6,6 +6,7 @@ export interface CotizacionResumen {
   estadoSolicitud: number;
   fechaSolicitud: string;
   total: number;
+  ganancia: number;
   precioBase: number;
   precioConGanancia: number;
   precioConRiesgo: number;

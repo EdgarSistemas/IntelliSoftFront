@@ -60,10 +60,8 @@
                 <th>Nombre</th>
                 <th>Teléfono</th>
                 <th>Correo</th>
-                <th>Contacto</th>
-                <th>Descripción</th>
                 <th>Estatus</th>
-                <th class="text-end">Acciones</th>
+                <th class="text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -71,10 +69,13 @@
                 <td>{{ proveedor.nombre }}</td>
                 <td>{{ proveedor.telefono }}</td>
                 <td>{{ proveedor.correoElectronico }}</td>
-                <td>{{ proveedor.contacto }}</td>
-                <td>{{ proveedor.descripcionServicio }}</td>
                 <td>
                   <span class="badge" [ngClass]="proveedor.estatus ? 'bg-success' : 'bg-danger'">
+                    <i class="bi me-1"
+                      [ngClass]="{
+                        'bi-check-circle': proveedor.estatus === 1,
+                        'bi-arrow-repeat': proveedor.estatus === 0,
+                      }"></i>
                     {{ proveedor.estatus ? 'Activo' : 'Inactivo' }}
                   </span>
                 </td>

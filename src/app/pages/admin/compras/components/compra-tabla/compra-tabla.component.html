@@ -55,7 +55,6 @@
                 <th>Clave</th>
                 <th>Proveedor</th>
                 <th>Fecha</th>
-                <th>Observación</th>
                 <th>Estatus</th>
                 <th>Total</th>
                 <th class="text-center">Acciones</th>
@@ -66,10 +65,14 @@
                 <td>{{ compra.claveCompra }}</td>
                 <td>{{ compra.proveedor.nombre }}</td>
                 <td>{{ compra.fechaCompra | date:'shortDate' }}</td>
-                <td>{{ compra.observacion }}</td>
                 <td>
                   <span class="badge"
                     [ngClass]="compra.estatus === 0 ? 'bg-secondary' : compra.estatus === 1 ? 'bg-success' : 'bg-danger'">
+                    <i class="bi me-1" [ngClass]="{
+                    'bi-hourglass': compra.estatus === 0,
+                    'bi-check-circle': compra.estatus === 1,
+                    'bi-x-lg': compra.estatus === 2
+                  }"></i>
                     {{ compra.estatus === 0 ? 'Pendiente' : compra.estatus === 1 ? 'Inventariada' : 'Cancelada' }}
                   </span>
                 </td>
@@ -206,7 +209,7 @@
                   </td>
                   <td>
                     <input type="number" min="0" class="form-control form-control-sm"
-                      [value]="insumosInventariados[i].cantidadUnidad" readonly disabled  />
+                      [value]="insumosInventariados[i].cantidadUnidad" readonly disabled />
                   </td>
                   <td>
                     <input type="number" min="0" class="form-control form-control-sm"
