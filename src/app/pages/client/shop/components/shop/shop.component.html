@@ -14,10 +14,9 @@
       <div class="accordion-item mb-3 border-0 shadow-sm" *ngFor="let pedido of pedidos; let i = index">
         <h2 class="accordion-header" [id]="'heading' + i">
           <button class="accordion-button collapsed py-3" type="button"
-                  data-bs-toggle="collapse"
-                  [attr.data-bs-target]="'#collapse' + i"
-                  [attr.aria-expanded]="false"
-                  [attr.aria-controls]="'collapse' + i">
+                  (click)="togglePanel(i)"
+                  [class.collapsed]="activePanelIndex !== i"
+                  [attr.aria-expanded]="activePanelIndex === i">
             <div class="d-flex justify-content-between w-100 align-items-center">
               <div class="d-flex align-items-center">
                 <span class="badge rounded-pill me-3" [ngClass]="{
@@ -41,13 +40,22 @@
             </div>
           </button>
         </h2>
-        <div [id]="'collapse' + i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + i" data-bs-parent="#pedidosAccordion">
+        <div [id]="'collapse' + i" 
+              class="accordion-collapse collapse"
+              [class.show]="activePanelIndex === i"
+              [attr.aria-labelledby]="'heading' + i">
           <div class="accordion-body px-4 py-3">
             <div class="row mb-3">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <p class="mb-2"><strong><i class="bi bi-box-seam me-2"></i>Producto:</strong> {{ pedido.nombreProducto }}</p>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
+                <p class="mb-2">
+                  <strong><i class="bi bi-percent me-2"></i>Porcentaje Ganancia:</strong> 
+                  {{ (pedido.porcentajeGanancia / 100) | percent:'1.0-2' }}
+                </p>
+              </div>
+              <div class="col-md-4">
                 <p class="mb-2"><strong><i class="bi bi-chat-left-text me-2"></i>Comentario:</strong> 
                   <span class="{{ !pedido.comentario ? 'text-muted' : '' }}">
                     {{ pedido.comentario || 'Sin comentarios' }}
@@ -109,30 +117,7 @@
   </ng-template>
 </div>
 
-<!-- Estilos personalizados -->
-<style>
-  .custom-accordion .accordion-button:not(.collapsed) {
-    background-color: #f8f9fa;
-    box-shadow: none;
-  }
-  .custom-accordion .accordion-button:focus {
-    box-shadow: none;
-    border-color: rgba(0,0,0,.125);
-  }
-  .accordion-arrow {
-    transition: transform 0.3s ease;
-  }
-  .accordion-button:not(.collapsed) .accordion-arrow {
-    transform: rotate(180deg);
-  }
-  .empty-state {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 2rem;
-    border-radius: 12px;
-    background-color: #f8fafc;
-  }
-</style>
+
 
 <!-- Modal para agregar opinión -->
 <div class="modal fade show" tabindex="-1" [ngClass]="{'d-block': modalAbierto}" [style.background]="'rgba(0,0,0,0.5)'" role="dialog" *ngIf="modalAbierto">
@@ -192,3 +177,44 @@
     </div>
   </div>
 </div>
+
+
+<!-- Estilos personalizados -->
+<style>
+  .custom-accordion .accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    box-shadow: none;
+  }
+  .custom-accordion .accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+  }
+  .accordion-arrow {
+    transition: transform 0.3s ease;
+  }
+  .accordion-button:not(.collapsed) .accordion-arrow {
+    transform: rotate(180deg);
+  }
+
+  .empty-state {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 12px;
+    background-color: #f8fafc;
+  }
+
+.accordion-button::after {
+  display: none !important; /* Oculta la flecha de Bootstrap */
+}
+
+.accordion-arrow {
+  transition: transform 0.3s ease;
+  margin-left: 10px; /* Espacio entre el texto y tu flecha */
+}
+
+.accordion-button:not(.collapsed) .accordion-arrow {
+  transform: rotate(180deg);
+}
+  
+</style>

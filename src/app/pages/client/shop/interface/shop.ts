@@ -8,6 +8,7 @@ export interface PedidoResponse {
   estatus: number;
   productoId: number;
   nombreProducto: string;
+  porcentajeGanancia: number;
   detalles: CotizacionDetalle[];
 }
 

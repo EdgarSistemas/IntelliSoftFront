@@ -12,45 +12,6 @@
 <div class="dashboard-container">
   <!-- Contenido Principal -->
   <main class="main-content">
-    <!-- Métricas Rápidas -->
-    <section class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-icon bg-primary-light">
-          <i class="bi bi-tree text-primary"></i>
-        </div>
-        <div class="metric-info">
-          <h3>24</h3>
-          <p>Invernaderos activos</p>
-        </div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon bg-success-light">
-          <i class="bi bi-currency-dollar text-success"></i>
-        </div>
-        <div class="metric-info">
-          <h3>$128,450</h3>
-          <p>Ventas este mes</p>
-        </div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon bg-warning-light">
-          <i class="bi bi-people text-warning"></i>
-        </div>
-        <div class="metric-info">
-          <h3>42</h3>
-          <p>Nuevos clientes</p>
-        </div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon bg-danger-light">
-          <i class="bi bi-exclamation-triangle text-danger"></i>
-        </div>
-        <div class="metric-info">
-          <h3>5</h3>
-          <p>Alertas activas</p>
-        </div>
-      </div>
-    </section>
 
     <!-- Gráficos y Datos -->
     <section class="data-section">
@@ -87,6 +48,7 @@
         <div class="chart-container fix-overflow">
           <canvas baseChart
             [data]="productosVendidosChartData"
+            [type]="productosVendidosChartType"
             [options]="chartOptions">
           </canvas>
         </div>
