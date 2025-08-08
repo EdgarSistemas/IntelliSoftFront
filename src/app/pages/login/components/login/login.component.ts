@@ -26,7 +26,7 @@ export class LoginComponent {
       password: ['', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern(/.*[!@#$%^&*.].*/) // Al menos un símbolo
+        Validators.pattern(/.*[!@#$%^=&*\.\[\]].*/)// Al menos un símbolo
       ]]
     });
   }

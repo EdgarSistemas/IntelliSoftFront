@@ -17,6 +17,7 @@ export class ComentariosComponent {
 
   showForm = false;
   comentarioForm: FormGroup;
+  expanded = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,6 +30,9 @@ export class ComentariosComponent {
 
   toggleForm() {
     this.showForm = !this.showForm;
+    if (this.showForm) {
+      this.expanded = true;
+    }
   }
 
   enviarComentario() {
@@ -74,6 +78,12 @@ export class ComentariosComponent {
         });
       }
     });
+  }
+
+  
+  
+  toggleExpanded() {
+    this.expanded = !this.expanded;
   }
 }
 

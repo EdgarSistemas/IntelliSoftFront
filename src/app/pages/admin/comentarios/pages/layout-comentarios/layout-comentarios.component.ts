@@ -19,4 +19,10 @@ opiniones: opiniones[] = [];
       error: () => console.error('Error al obtener opiniones')
     });
   }
+
+   openedIndex: number | null = null;
+
+  toggleAccordion(index: number) {
+    this.openedIndex = this.openedIndex === index ? null : index;
+  }
 }
