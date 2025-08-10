@@ -59,7 +59,7 @@ export class ProductoTablaComponent implements OnInit {
   confirmarEliminacion(id: number): void {
     Swal.fire({
       title: '¿Eliminar producto?',
-      text: 'Esta acción desactivará el producto',
+      text: 'Se eliminará el producto. Esta acción no se puede deshacer.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',

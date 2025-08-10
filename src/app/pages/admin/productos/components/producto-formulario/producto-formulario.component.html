@@ -13,17 +13,16 @@
 
   <!-- Hectárea base, % ganancia, % riesgo -->
   <div class="row mb-3">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label class="form-label">Hectárea base</label>
       <input type="number" class="form-control" formControlName="hectareaBase" min="0.01" step="0.01" />
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label class="form-label">% Ganancia</label>
       <input type="number" class="form-control" formControlName="porcentajeGanancia" min="0" step="0.01" />
     </div>
     <div class="col-md-4">
-      <label class="form-label">% Riesgo</label>
-      <input type="number" class="form-control" formControlName="porcentajeRiesgo" min="0" step="0.01" />
+      <input type="hidden" class="form-control" formControlName="porcentajeRiesgo" min="0" step="0.01" />
     </div>
   </div>
 
@@ -32,21 +31,15 @@
     <label class="form-label">Agregar Insumo</label>
     <div class="row g-2">
       <div class="col-md-6">
-        <input
-          type="text"
-          class="form-control"
-          [ngModel]="nombreInsumoSeleccionado"
-          (ngModelChange)="onInsumoInput($event)"
-          [ngModelOptions]="{ standalone: true }"
-          list="insumoList"
-          placeholder="Busca o selecciona un insumo" />
-        <datalist id="insumoList">
-          <option *ngFor="let i of insumos" [value]="i.nombre"></option>
-        </datalist>
+        <select class="form-select" [(ngModel)]="nombreInsumoSeleccionado" [ngModelOptions]="{ standalone: true }"
+          name="insumoNombreDraft">
+          <option [ngValue]="''" disabled selected>Selecciona un insumo</option>
+          <option *ngFor="let i of insumos" [ngValue]="i.nombre">{{ i.nombre }}</option>
+        </select>
       </div>
       <div class="col-md-4">
         <input type="number" class="form-control" placeholder="Cantidad" [(ngModel)]="cantidadInsumo"
-               [ngModelOptions]="{ standalone: true }" min="0.01" step="0.01" />
+          [ngModelOptions]="{ standalone: true }" min="0.01" step="0.01" />
       </div>
       <div class="col-md-2">
         <button class="btn btn-success w-100" (click)="agregarInsumo()" [disabled]="!puedeAgregarInsumo()">
@@ -85,7 +78,7 @@
   <!-- Botones -->
   <div class="mt-4 d-flex justify-content-center gap-2">
     <button class="btn btn-primary" type="button" (click)="guardarProducto()"
-            [disabled]="!formulario.valid || insumosAgregados.length === 0">
+      [disabled]="!formulario.valid || insumosAgregados.length === 0">
       <i class="bi bi-check-circle me-1"></i>Guardar
     </button>
     <button class="btn btn-outline-secondary" type="button" (click)="cancelar()">

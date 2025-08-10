@@ -4,12 +4,7 @@
     <div class="row h-100 align-items-center">
       <div class="col-lg-6 text-white">
         <h1 class="display-4 fw-bold">Sistemas <span class="text-light">IntelliSoft</span></h1>
-        <p class="lead mb-5">Tecnología integrada para agricultura sostenible</p>
-        <div class="d-flex gap-3">
-          <a routerLink="/cliente/products" class="btn btn-primary btn-lg px-4">
-            <i class="bi bi-box-seam me-2"></i> Ver Productos
-          </a>
-        </div>
+        <p class="lead mb-3">Tecnología integrada para agricultura sostenible</p>
       </div>
     </div>
   </div>
@@ -32,24 +27,24 @@
         <div class="card product-card h-100 border-0 shadow-sm">
           <!-- Badge Más vendido -->
           <div *ngIf="esMasVendido(i)" class="badge bg-success position-absolute top-0 end-0 m-3">Más vendido</div>
-          
+
           <!-- Badge Nuevo -->
           <div *ngIf="esNuevo(i)" class="badge bg-info position-absolute top-0 end-0 m-3">Nuevo</div>
-          
+
           <!-- Imagen del producto (puedes usar una genérica o de tu API) -->
           <img [src]="'/img/' + (i + 1) + '.jpg'" class="card-img-top" [alt]="producto.nombre">
-          
+
           <div class="card-body">
             <h5 class="card-title">{{ producto.nombre }}</h5>
             <p class="text-muted small">{{ producto.descripcion }}</p>
             <ul class="list-unstyled mb-4">
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Para {{ producto.hectareaBase }} hectáreas</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Para {{ producto.precioActual }} hectáreas</li>
               <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Monitoreo avanzado</li>
               <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Solución completa</li>
             </ul>
             <div class="d-flex justify-content-between align-items-center">
               <h5 class="mb-0 text-primary">{{ producto.precioActual | currency }}</h5>
-              
+
             </div>
           </div>
         </div>
@@ -74,7 +69,7 @@
 <section class="py-5 bg-white">
   <div class="container py-4">
     <h2 class="fw-light text-center mb-5">Nuestros <span class="fw-bold text-primary">Productos</span></h2>
-    
+
     <div class="table-responsive">
       <table class="table table-hover">
         <thead>
@@ -107,7 +102,7 @@
       </div>
       <div class="col-lg-6">
         <h2 class="fw-light mb-4">¿Por qué elegir <span class="fw-bold text-primary">IntelliSoft</span>?</h2>
-        
+
         <div class="d-flex mb-4">
           <div class="me-4 text-primary">
             <i class="bi bi-graph-up-arrow fs-1"></i>
@@ -117,7 +112,7 @@
             <p class="text-muted">Sistemas optimizados para maximizar tu producción por metro cuadrado.</p>
           </div>
         </div>
-        
+
         <div class="d-flex mb-4">
           <div class="me-4 text-primary">
             <i class="bi bi-droplet fs-1"></i>
@@ -127,7 +122,7 @@
             <p class="text-muted">Tecnología que reduce el consumo de agua hasta en un 90%.</p>
           </div>
         </div>
-        
+
         <div class="d-flex">
           <div class="me-4 text-primary">
             <i class="bi bi-phone fs-1"></i>

@@ -92,6 +92,13 @@ export class CompraTablaComponent implements OnInit {
     this.compraSeleccionada = null;
   }
 
+  calcularTotal(compra: CompraDetalle | null): number {
+    if (!compra || !compra.detalles) {
+      return 0;
+    }
+    return compra.detalles.reduce((acc, detalle) => acc + (detalle.precioUnitario * detalle.cantidad), 0);
+  }
+
   cancelarCompra(id: number): void {
     Swal.fire({
       title: '¿Cancelar compra?',
@@ -145,12 +152,12 @@ export class CompraTablaComponent implements OnInit {
   actualizarCantidadUnidad(index: number): void {
     const detalle = this.detallesInventario[index];
     const inventario = this.insumosInventariados[index];
-  
+
     if (detalle && inventario && inventario.unidadesPorPresentacion && inventario.unidadesPorPresentacion > 0) {
       const totalUnidades = detalle.cantidad * inventario.unidadesPorPresentacion;
       const costoTotal = detalle.precioUnitario * detalle.cantidad;
       const costoUnitario = costoTotal / totalUnidades;
-  
+
       inventario.cantidadUnidad = totalUnidades;
       inventario.costoUnitario = parseFloat(costoUnitario.toFixed(2)); // redondear a 2 decimales
     }

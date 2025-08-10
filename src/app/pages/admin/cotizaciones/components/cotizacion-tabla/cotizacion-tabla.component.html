@@ -37,9 +37,9 @@
             <tr>
               <th class="text-wrap text-center">Clave</th>
               <th class="text-wrap text-center">Cliente</th>
-              <th class="text-center">Hectáreas</th>
+              <th class="text-center" hidden>Hectáreas</th>
               <th class="text-center">Estado</th>
-              <th class="text-wrap text-center">Costo desarrollo</th>
+              <th class="text-wrap text-center">Costo producción</th>
               <th class="text-end">Ganancia</th>
               <th class="text-end">Precio</th>
               <th class="text-center">Acciones</th>
@@ -49,26 +49,20 @@
             <tr *ngFor="let cot of cotizacionesFiltradas">
               <td>{{ cot.claveCotizacion }}</td>
               <td class="text-wrap">{{ cot.nombreCliente }}</td>
-              <td class="text-center">{{ cot.hectareas }}</td>
+              <td class="text-center" hidden>{{ cot.hectareas }}</td>
               <td class="text-center">
-                <span class="badge bg-secondary" *ngIf="cot.estadoSolicitud === 1"><i class="bi-hourglass"></i>Pendiente</span>
-                <span class="badge bg-success" *ngIf="cot.estadoSolicitud === 2"><i class="bi-check-circle"></i>Aceptada</span>
-                <span class="badge bg-danger" *ngIf="cot.estadoSolicitud === 3"><i class="bi-x-lg"></i>Rechazada</span>
+                <span class="badge bg-secondary" *ngIf="cot.estadoSolicitud === 1"><i class="bi-hourglass"></i>
+                  Pendiente</span>
+                <span class="badge bg-success" *ngIf="cot.estadoSolicitud === 2"><i class="bi-check-circle"></i>
+                  Aceptada</span>
+                <span class="badge bg-danger" *ngIf="cot.estadoSolicitud === 3"><i class="bi-x-lg"></i> Rechazada</span>
               </td>
-              <td class="text-end">$ {{ cot.precioBase.toFixed(2) }}</td>
+              <td class="text-center">$ {{ cot.precioBase.toFixed(2) }}</td>
               <td class="text-end">$ {{ cot.ganancia.toFixed(2) }}</td>
               <td class="text-center">$ {{ cot.precioConGanancia.toFixed(2) }}</td>
               <td class="text-end">
                 <button class="btn btn-sm btn-outline-primary me-1" (click)="verCotizacion(cot.idCotizacion)">
                   <i class="bi bi-eye"></i> Ver
-                </button>
-                <button class="btn btn-sm btn-outline-success me-1" [disabled]="cot.estadoSolicitud !== 1"
-                  (click)="aceptarCotizacion(cot.idCotizacion)">
-                  <i class="bi bi-check2-circle"></i> Aceptar
-                </button>
-                <button class="btn btn-sm btn-outline-danger" [disabled]="cot.estadoSolicitud !== 1"
-                  (click)="rechazarCotizacion(cot.idCotizacion)">
-                  <i class="bi bi-x-circle"></i> Rechazar
                 </button>
               </td>
             </tr>
@@ -86,65 +80,138 @@
     </div>
   </div>
 
-  <!-- modal -->
+  <!-- Modal Detalle -->
   <div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': mostrarModalDetalle }"
     [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
       <div class="modal-content">
+
         <div class="modal-header">
-          <h5 class="modal-title">Detalle de Cotización #{{ cotizacionSeleccionada?.claveCotizacion }}</h5>
+          <h5 class="modal-title">
+            Detalle de Cotización
+            <ng-container *ngIf="cotizacionSeleccionada">#{{ cotizacionSeleccionada.claveCotizacion }}</ng-container>
+          </h5>
           <button type="button" class="btn-close" (click)="cerrarModalDetalle()"></button>
         </div>
+
         <div class="modal-body">
-          <p><strong>Fecha:</strong> {{ cotizacionSeleccionada?.fechaSolicitud | date: 'medium' }}</p>
-          <p><strong>Hectáreas:</strong> {{ cotizacionSeleccionada?.hectareas }}</p>
-          <p>
-            <strong>Estado:</strong>
-            <span class="badge" [ngClass]="{
-            'bg-secondary': cotizacionSeleccionada?.estadoSolicitud === 1,
-            'bg-success': cotizacionSeleccionada?.estadoSolicitud === 2,
-            'bg-danger': cotizacionSeleccionada?.estadoSolicitud === 3
-          }">
-              {{
-              cotizacionSeleccionada?.estadoSolicitud === 1
-              ? 'Pendiente'
-              : cotizacionSeleccionada?.estadoSolicitud === 2
-              ? 'Aceptada'
-              : 'Rechazada'
-              }}
-            </span>
-          </p>
 
-          <h6>Detalle de Insumos</h6>
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Insumo</th>
-                  <th>Cantidad</th>
-                  <th>Precio Promedio</th>
-                  <th>Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let d of cotizacionSeleccionada?.detalles">
-                  <td>{{ d.nombreInsumo }}</td>
-                  <td>{{ d.cantidad }}</td>
-                  <td>{{ d.precioPromedio | currency }}</td>
-                  <td>{{ (d.precioPromedio * d.cantidad) | currency }}</td>
-                </tr>
-              </tbody>
-            </table>
+          <!-- Loader -->
+          <div *ngIf="isDetalleLoading" class="py-5 d-flex flex-column align-items-center justify-content-center">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando detalle de la cotización...</p>
           </div>
 
-          <div class="text-end mt-3">
-            <strong>Total base:</strong> {{ cotizacionSeleccionada?.precioBase | currency }}
-            <strong>Total de la cotización:</strong> {{ cotizacionSeleccionada?.precioConGanancia | currency }}
-          </div>
+          <!-- Contenido -->
+          <ng-container *ngIf="!isDetalleLoading && cotizacionSeleccionada">
+
+            <div class="mb-4">
+              <div><strong>Cliente:</strong> {{ cotizacionSeleccionada.nombreCliente || '—' }}</div>
+              <div><strong>Fecha:</strong> {{ cotizacionSeleccionada.fechaSolicitud | date:'medium' }}</div>
+              <div>
+                <strong>Estado:</strong>
+                <span class="badge" [ngClass]="{
+                      'bg-secondary': cotizacionSeleccionada.estatus === 1,
+                      'bg-success': cotizacionSeleccionada.estatus === 2,
+                      'bg-danger': cotizacionSeleccionada.estatus === 3
+                    }">
+                  {{
+                  cotizacionSeleccionada.estatus === 1 ? 'Pendiente' :
+                  cotizacionSeleccionada.estatus === 2 ? 'Aceptada' : 'Rechazada'
+                  }}
+                </span>
+              </div>
+              <div class="mt-2">
+                <strong>Comentario:</strong> {{ cotizacionSeleccionada.detalleCotizacion || '—' }}
+              </div>
+            </div>
+
+            <div *ngFor="let p of cotizacionSeleccionada.partidas; let idx = index" class="mb-4">
+              <h6 class="mb-2">
+                {{ idx + 1 }}. {{ p.nombreProducto }} · Hectáreas: {{ p.hectareas }}
+                <span class="ms-2 text-muted small">
+                  Gan.: {{ p.porcentajeGanancia }}%
+                </span>
+              </h6>
+
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Insumo</th>
+                      <th class="text-end">Cantidad</th>
+                      <th class="text-end">Precio Promedio</th>
+                      <th class="text-end">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let d of p.detalles">
+                      <td>{{ d.nombreInsumo }}</td>
+                      <td class="text-end">{{ d.cantidad }}</td>
+                      <td class="text-end">$ {{ d.precioPromedio | number:'1.2-2' }}</td>
+                      <td class="text-end">$ {{ d.subtotal | number:'1.2-2' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Totales por partida -->
+              <div class="text-end mt-2">
+                <strong>Costos de producción:</strong> $ {{ p.precioBase | number:'1.2-2' }}<br>
+                <strong>Ganancia:</strong> $ {{ p.ganancia | number:'1.2-2' }}<br>
+                <strong>Precio de venta:</strong> $ {{ p.precioConGanancia | number:'1.2-2' }}
+              </div>
+            </div>
+
+            <!-- Totales consolidados -->
+            <div class="text-end mt-3 border-top pt-3">
+              <div><strong>Total costos de producción:</strong> $ {{ cotizacionSeleccionada.totalPrecioBase |
+                number:'1.2-2' }}</div>
+              <div><strong>Total ganancia:</strong> $ {{ cotizacionSeleccionada.totalGanancia | number:'1.2-2' }}</div>
+              <div><strong>Total precio de venta:</strong> $ {{ cotizacionSeleccionada.totalPrecioConGanancia |
+                number:'1.2-2' }}</div>
+            </div>
+
+          </ng-container>
         </div>
+
         <div class="modal-footer">
-          <button class="btn btn-secondary" (click)="cerrarModalDetalle()">Cerrar</button>
+          <!-- Enviar por correo -->
+          <button class="btn btn-outline-primary" (click)="enviarCotizacionPdf(cotizacionSeleccionada?.idCotizacion)"
+            [disabled]="isEnviarLoading || !cotizacionSeleccionada">
+            <span class="me-1" *ngIf="isEnviarLoading">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </span>
+            <i class="bi bi-envelope"></i> Enviar PDF por correo
+          </button>
+
+          <!-- Descargar PDF -->
+          <button class="btn btn-outline-secondary"
+            (click)="descargarCotizacionPdf(cotizacionSeleccionada?.idCotizacion)"
+            [disabled]="isEnviarLoading || !cotizacionSeleccionada">
+            <i class="bi bi-download"></i> Descargar PDF
+          </button>
+
+          <button class="btn btn-outline-success" *ngIf="cotizacionSeleccionada?.estatus === 1"
+            (click)="aceptarCotizacion(cotizacionSeleccionada?.idCotizacion)"
+            [disabled]="isEnviarLoading || isAceptarLoading">
+            <span class="me-1" *ngIf="isAceptarLoading">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </span>
+            <i class="bi bi-check2-circle"></i> Aceptar
+          </button>
+
+          <button class="btn btn-outline-danger" *ngIf="cotizacionSeleccionada?.estatus === 1"
+            (click)="rechazarCotizacion(cotizacionSeleccionada?.idCotizacion)" [disabled]="isEnviarLoading">
+            <i class="bi bi-x-circle"></i> Rechazar
+          </button>
+
+          <button class="btn btn-outline-secondary" (click)="cerrarModalDetalle()"
+            [disabled]="isEnviarLoading">Cerrar</button>
         </div>
+
       </div>
     </div>
   </div>

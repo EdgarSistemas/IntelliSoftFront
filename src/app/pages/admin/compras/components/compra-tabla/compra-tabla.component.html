@@ -135,6 +135,7 @@
               }}
             </span>
           </p>
+          <p><strong>Total:</strong> {{ calcularTotal(compraSeleccionada) | currency }}</p>
 
           <h6>Detalles de la Compra</h6>
           <div class="table-responsive">
@@ -172,7 +173,7 @@
   <!-- Modal Inventario -->
   <div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': mostrarModalInventario }"
     style="background-color: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
 
         <div class="modal-header">
@@ -187,19 +188,19 @@
                 <tr>
                   <th>Insumo</th>
                   <th>Presentación</th>
-                  <th>Unidad</th>
-                  <th>Cant. comprada (presentación)</th>
-                  <th>Precio presentación</th>
-                  <th>Unid. por Presentación</th>
-                  <th>Total en Unidad Base</th>
-                  <th>Costo Unitario Real</th>
+                  <th class="text-center">Unidad</th>
+                  <th class="text-wrap text-center">Cant. comprada (presentación)</th>
+                  <th class="text-wrap text-center">Precio presentación</th>
+                  <th class="text-wrap text-center">Unid. por Presentación</th>
+                  <th class="text-wrap text-center">Total en Unidad Base</th>
+                  <th class="text-wrap text-center">Costo Unitario Real</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of detallesInventario; let i = index">
-                  <td>{{ item.insumoNombre }}</td>
+                  <td class="text-wrap">{{ item.insumoNombre }}</td>
                   <td>{{ item.presentacion }}</td>
-                  <td>{{ item.unidad.nombre }} ({{ item.unidad.simbolo }})</td>
+                  <td class="text-wrap">{{ item.unidad.nombre }} ({{ item.unidad.simbolo }})</td>
                   <td>{{ item.cantidad }}</td>
                   <td>${{ item.precioUnitario | number: '1.2-2' }}</td>
                   <td>
@@ -221,9 +222,9 @@
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button class="btn btn-secondary" (click)="cerrarModalInventario()">Cancelar</button>
-          <button class="btn btn-success" (click)="confirmarInventario()">Guardar Inventario</button>
+        <div class="modal-footer mt-4 d-flex justify-content-center gap-2">
+          <button class="btn btn-primary" (click)="confirmarInventario()"><i class="bi bi-check-circle me-1"></i>Guardar</button>
+          <button class="btn btn-outline-secondary" (click)="cerrarModalInventario()"><i class="bi bi-x-circle me-1"></i>Cancelar</button>
         </div>
 
       </div>

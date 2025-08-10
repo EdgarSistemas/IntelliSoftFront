@@ -1,32 +1,36 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pedido, PedidoUpdateDto, PedidoDetalleDto } from '../interface/ventas';
 import { environment } from '../../../../../environments/environment';
+import { PedidoResponse } from '../interface/ventas';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class VentasService {
-
-  private apiUrl =  `${environment.apiUrl}/Pedido`;
+  private apiUrl = `${environment.apiUrl}/pedidos`;
 
   constructor(private http: HttpClient) {}
 
-  getAllPedidos(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}/getAll`);
+  getAllPedidos(): Observable<PedidoResponse[]> {
+    return this.http.get<PedidoResponse[]>(`${this.apiUrl}`);
   }
 
-  getPedidoById(id: number): Observable<PedidoDetalleDto> {
-    return this.http.get<PedidoDetalleDto>(`${this.apiUrl}/getById/${id}`);
+  getPedidoById(id: number): Observable<PedidoResponse> {
+    return this.http.get<PedidoResponse>(`${this.apiUrl}/${id}`);
   }
 
-  eliminarPedido(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/eliminar/${id}`);
+  cancelarPedido(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/cancelar`, {});
   }
 
-  actualizarEstatus(id: number, estatus: number): Observable<any> {
-    const dto: PedidoUpdateDto = { estatus };
-    return this.http.put(`${this.apiUrl}/actualizar/${id}`, dto);
+  procesarPedido(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/procesar`, {});
+  }
+
+  finalizarPedido(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/finalizar`, {});
+  }
+
+  getPedidosCliente(): Observable<PedidoResponse[]> {
+    return this.http.get<PedidoResponse[]>(`${this.apiUrl}/cliente`);
   }
 }

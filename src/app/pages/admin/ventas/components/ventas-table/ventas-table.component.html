@@ -1,252 +1,233 @@
-<div class="container py-4" style="margin-top: 80px;">
-  <!-- Encabezado mejorado -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2 class="fw-bold mb-0 text-primary">
-        <i class="bi bi-list-check me-2"></i>Lista de Pedidos
-      </h2>
-      <p class="text-muted mb-0">Administración y seguimiento de pedidos</p>
-    </div>
-    <!--<button class="btn btn-primary rounded-pill px-4 py-2 shadow-sm" (click)="toggleFormulario()">
-      <i class="bi bi-plus-circle me-2"></i>
-      {{ mostrarFormulario ? 'Cancelar' : 'Nuevo Pedido' }}
-    </button>-->
-  </div>
-
-  <!-- Barra de búsqueda mejorada -->
-  <div class="card mb-4 border-0 shadow-sm">
-    <div class="card-body p-3">
-      <div class="row g-3 align-items-center">
-        <div class="col-md-6">
-          <div class="input-group">
-            <span class="input-group-text bg-light border-0">
-              <i class="bi bi-search text-muted"></i>
-            </span>
-            <input type="text" [(ngModel)]="filtro" (input)="aplicarFiltros()"
-              placeholder="Buscar por cliente, ID o folio..." class="form-control border-0 bg-light">
-          </div>
-        </div>
-        <div class="col-md-4">
-          <select [(ngModel)]="filtroEstatus" (change)="aplicarFiltros()" class="form-select border-0 bg-light">
-            <option value="">Todos los estados</option>
-            <option value="1">Pendiente</option>
-            <option value="2">En proceso</option>
-            <option value="3">Completado</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button (click)="limpiarFiltros()" class="btn btn-outline-secondary w-100"
-            [disabled]="!filtro && !filtroEstatus">
-            <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Tabla de pedidos mejorada -->
-  <div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="table-light">
-          <tr>
-            <th class="ps-4"># Pedido</th>
-            <th>Cliente</th>
-            <th>Comentario</th>
-            <th>Fecha</th>
-            <th class="text-center">Estatus</th>
-            <th class="text-end pe-4">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let pedido of pedidosFiltrados" class="position-relative">
-            <td class="ps-4 fw-bold">{{ pedido.idPedido }}</td>
-            <td>
-              <div class="d-flex align-items-center">
-                <span>{{ pedido.nombreCliente || 'Sin nombre' }}</span>
-              </div>
-            </td>
-            <td>
-              <p class="mb-0 text-truncate" style="max-width: 200px;" title="{{ pedido.comentario }}">
-                {{ pedido.comentario || 'Sin comentario' }}
-              </p>
-            </td>
-            <td>{{ pedido.fechaPedido | date: 'dd/MM/yyyy' }}</td>
-            <td class="text-center">
-              <span class="badge rounded-pill py-2 px-3" [ngClass]="{
-                  'bg-secondary': pedido.estatus === 1,
-                  'bg-warning text-dark': pedido.estatus === 2,
-                  'bg-success': pedido.estatus === 3
-                }">
-                <i class="bi me-1" [ngClass]="{
-                    'bi-hourglass': pedido.estatus === 1,
-                    'bi-arrow-repeat': pedido.estatus === 2,
-                    'bi-check-circle': pedido.estatus === 3
-                  }"></i>
-                {{ pedido.estatus === 1 ? 'Pendiente' : pedido.estatus === 2 ? 'En Proceso' : 'Completado' }}
-              </span>
-            </td>
-            <td class="text-end pe-4">
-              <div>
-                <button class="btn btn-sm btn-outline-primary me-1"
-                        (click)="abrirDetallePedido(pedido.idPedido)"
-                        title="Ver detalle">
-                        Detalle
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger me-1" (click)="eliminarPedido(pedido.idPedido)"
-                  title="Eliminar">
-                  Eliminar
-                  <i class="bi bi-trash"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-success" (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
-                  [disabled]="pedido.estatus === 3" title="Avanzar estatus">
-                  Avanzar
-                  <i class="bi bi-arrow-right"></i>
-                </button>
-
-            </div>
-            </td>
-
-          </tr>
-          <tr *ngIf="pedidos.length === 0">
-            <td colspan="6" class="text-center py-5">
-              <i class="bi bi-inbox text-muted" style="font-size: 2.5rem;"></i>
-              <h5 class="mt-3 text-muted">No hay pedidos registrados</h5>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- Modal detalle pedido mejorado -->
-<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': mostrarModalDetalle}"
-  [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content border-0 shadow-lg">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">
-          Detalle del Pedido #{{ pedidoDetalle?.idPedido }}
-        </h5>
-        <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
-          (click)="cerrarModalDetalle()"></button>
-      </div>
-      <div class="modal-body p-4">
-        <div class="row mb-4">
-          <div class="col-md-6">
-            <div class="d-flex align-items-center mb-3">
-              <div>
-                <small class="text-muted">Cliente</small>
-                <p class="mb-0 fw-bold">{{ pedidoDetalle?.nombreCliente || 'No especificado' }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="d-flex align-items-center mb-3">
-              <div>
-                <small class="text-muted">Fecha</small>
-                <p class="mb-0 fw-bold">{{ pedidoDetalle?.fechaPedido | date:'dd/MM/yyyy HH:mm' }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="d-flex align-items-center mb-3">
-              <div>
-                <small class="text-muted">Comentario</small>
-                <p class="mb-0 fw-bold">{{ pedidoDetalle?.comentario || 'Sin comentario' }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="d-flex align-items-center mb-3">
-              <div>
-                <small class="text-muted">Estatus</small>
-                <p class="mb-0">
-                  <span class="badge rounded-pill py-1 px-3" [ngClass]="{
-                      'bg-secondary': pedidoDetalle?.estatus === 1,
-                      'bg-warning text-dark': pedidoDetalle?.estatus === 2,
-                      'bg-success': pedidoDetalle?.estatus === 3
-                    }">
-                    {{ pedidoDetalle?.estatus === 1 ? 'Pendiente' : pedidoDetalle?.estatus === 2 ? 'En Proceso' :
-                    'Completado' }}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <h5 class="mb-0">Lista de Pedidos</h5>
+      <div class="d-flex gap-2 flex-wrap">
+        <div class="input-group input-group-sm" style="width: 250px;">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar..."
+            [(ngModel)]="filtro"
+            (input)="aplicarFiltros()" />
+          <span class="input-group-text bg-white">
+            <i class="bi bi-search"></i>
+          </span>
         </div>
 
-        <h5 class="mb-3 fw-bold">
-          <i class="bi bi-list-check me-2"></i>Detalle de Insumos
-        </h5>
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead class="table-light">
-              <tr>
-                <th>Insumo</th>
-                <th class="text-end">Cantidad</th>
-                <th class="text-end">Precio</th>
-                <th class="text-end">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let insumo of pedidoDetalle?.detalles">
-                <td>{{ insumo.nombreInsumo }}</td>
-                <td class="text-end">{{ insumo.cantidad }}</td>
-                <td class="text-end">{{ insumo.precioPromedio | currency }}</td>
-                <td class="text-end fw-bold">{{ insumo.subtotal | currency }}</td>
-              </tr>
-              <tr *ngIf="pedidoDetalle?.detalles?.length == 0">
-                <td colspan="4" class="text-center py-4 text-muted">
-                  <i class="bi bi-exclamation-circle me-2"></i>No hay insumos registrados
-                </td>
-              </tr>
-            </tbody>
+        <select
+          class="form-select form-select-sm"
+          style="width: 200px;"
+          [(ngModel)]="filtroEstatus"
+          (change)="aplicarFiltros()">
+          <option [ngValue]="0">Todos los estatus</option>
+          <option [ngValue]="1">Pendiente</option>
+          <option [ngValue]="2">En Proceso</option>
+          <option [ngValue]="4">Pagado</option>
+          <option [ngValue]="3">Completado</option>
+        </select>
 
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer border-top-0">
-        <button type="button" class="btn btn-secondary rounded-pill px-4" (click)="cerrarModalDetalle()">
-          <i class="bi bi-x-circle me-2"></i>Cerrar
+        <button class="btn btn-sm btn-outline-primary" (click)="actualizarListado()">
+          <i class="bi bi-arrow-clockwise me-1"></i> Actualizar
         </button>
       </div>
     </div>
+
+    <div class="card-body">
+      <!-- loader listado -->
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3 text-muted">Cargando pedidos...</p>
+      </div>
+
+      <!-- tabla -->
+      <div *ngIf="pedidosFiltrados.length > 0" class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th class="text-wrap text-center">Pedido</th>
+              <th class="text-wrap text-center">Cliente</th>
+              <th class="text-center">Estado</th>
+              <th class="text-wrap text-center">Costo producción</th>
+              <th class="text-end">Ganancia</th>
+              <th class="text-end">Precio</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of pedidosFiltrados">
+              <td class="text-center">{{ p.cotizacionClave }}</td>
+              <td class="text-wrap text-center">{{ p.nombreCliente || '—' }}</td>
+              <td class="text-center">
+                <span class="badge bg-secondary" *ngIf="(p.estatus ?? 0) === 1"><i class="bi-hourglass"></i> Pendiente</span>
+                <span class="badge bg-warning text-dark" *ngIf="(p.estatus ?? 0) === 2"><i class="bi-arrow-repeat"></i> En Proceso</span>
+                <span class="badge bg-success" *ngIf="(p.estatus ?? 0) === 3"><i class="bi-check-circle"></i> Completado</span>
+                <span class="badge bg-info text-dark" *ngIf="(p.estatus ?? 0) === 4"><i class="bi-cash-stack"></i> Pagado</span>
+              </td>
+              <td class="text-center">$ {{ (p.totalPrecioBase || 0) | number:'1.2-2' }}</td>
+              <td class="text-end">$ {{ (p.totalGanancia || 0) | number:'1.2-2' }}</td>
+              <td class="text-end">$ {{ (p.totalPrecioConGanancia || 0) | number:'1.2-2' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="verPedido(p.idPedido)">
+                  <i class="bi bi-eye"></i> Ver
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- vacío -->
+      <div *ngIf="pedidosFiltrados.length === 0 && !isLoading" class="text-center py-5">
+        <p>No hay pedidos registrados.</p>
+      </div>
+
+      <!-- conteo -->
+      <div *ngIf="!isLoading" class="mt-3 text-end text-muted small">
+        Mostrando {{ pedidosFiltrados.length }} de {{ pedidos.length }} pedidos
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalle -->
+  <div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': mostrarModalDetalle }"
+    [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Detalle de Pedido
+            <ng-container *ngIf="pedidoSeleccionado">#{{ pedidoSeleccionado.cotizacionClave }}</ng-container>
+          </h5>
+          <button type="button" class="btn-close" (click)="cerrarModalDetalle()"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <!-- Loader detalle -->
+          <div *ngIf="isDetalleLoading" class="py-5 d-flex flex-column align-items-center justify-content-center">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando detalle del pedido...</p>
+          </div>
+
+          <!-- Contenido -->
+          <ng-container *ngIf="!isDetalleLoading && pedidoSeleccionado">
+
+            <div class="mb-4">
+              <div><strong>Cliente:</strong> {{ pedidoSeleccionado.nombreCliente || '—' }}</div>
+              <div><strong>Fecha:</strong> {{ pedidoSeleccionado.fechaPedido | date:'medium' }}</div>
+              <div>
+                <strong>Estado:</strong>
+                <span class="badge" [ngClass]="{
+                    'bg-secondary': (pedidoSeleccionado.estatus ?? 0) === 1,
+                    'bg-warning text-dark': (pedidoSeleccionado.estatus ?? 0) === 2,
+                    'bg-success': (pedidoSeleccionado.estatus ?? 0) === 3,
+                    'bg-info text-dark': (pedidoSeleccionado.estatus ?? 0) === 4
+                  }">
+                  {{
+                  (pedidoSeleccionado.estatus ?? 0) === 1 ? 'Pendiente' :
+                  (pedidoSeleccionado.estatus ?? 0) === 2 ? 'En Proceso' :
+                  (pedidoSeleccionado.estatus ?? 0) === 4 ? 'Pagado' : 'Completado'
+                  }}
+                </span>
+              </div>
+              <div class="mt-2">
+                <strong>Comentario:</strong> {{ pedidoSeleccionado.comentario || '—' }}
+              </div>
+            </div>
+
+            <!-- Partidas -->
+            <div *ngFor="let p of pedidoSeleccionado?.partidas; let idx = index" class="mb-4">
+              <h6 class="mb-2">
+                {{ idx + 1 }}. {{ p.nombreProducto }} · Hectáreas: {{ p.hectareas }}
+                <span class="ms-2 text-muted small">Gan.: {{ p.porcentajeGanancia }}%</span>
+              </h6>
+
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Insumo</th>
+                      <th class="text-end">Cantidad</th>
+                      <th class="text-end">Precio Promedio</th>
+                      <th class="text-end">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let d of p.detalles">
+                      <td>{{ d.nombreInsumo }}</td>
+                      <td class="text-end">{{ d.cantidad }}</td>
+                      <td class="text-end">$ {{ d.precioPromedio | number:'1.2-2' }}</td>
+                      <td class="text-end">$ {{ d.subtotal | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr *ngIf="!p.detalles || p.detalles.length === 0">
+                      <td colspan="4" class="text-center py-4 text-muted">
+                        <i class="bi bi-exclamation-circle me-2"></i>No hay insumos registrados
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Totales por partida -->
+              <div class="text-end mt-2">
+                <strong>Costos de producción:</strong> $ {{ p.precioBase | number:'1.2-2' }}<br>
+                <strong>Ganancia:</strong> $ {{ p.ganancia | number:'1.2-2' }}<br>
+                <strong>Precio de venta:</strong> $ {{ p.precioConGanancia | number:'1.2-2' }}
+              </div>
+            </div>
+
+            <!-- Totales consolidados -->
+            <div class="text-end mt-3 border-top pt-3">
+              <div><strong>Total costos de producción:</strong> $ {{ pedidoSeleccionado.totalPrecioBase | number:'1.2-2' }}</div>
+              <div><strong>Total ganancia:</strong> $ {{ pedidoSeleccionado.totalGanancia | number:'1.2-2' }}</div>
+              <div><strong>Total precio de venta:</strong> $ {{ pedidoSeleccionado.totalPrecioConGanancia | number:'1.2-2' }}</div>
+            </div>
+
+          </ng-container>
+        </div>
+
+        <div class="modal-footer">
+          <!-- Acciones por estado -->
+          <button class="btn btn-outline-danger"
+                  *ngIf="(pedidoSeleccionado?.estatus ?? 0) === 1"
+                  (click)="cancelarPedido(pedidoSeleccionado?.idPedido)"
+                  [disabled]="isAccionLoading || !pedidoSeleccionado">
+            <span class="me-1" *ngIf="isAccionLoading">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </span>
+            <i class="bi bi-x-circle"></i> Cancelar
+          </button>
+
+          <button class="btn btn-outline-warning"
+                  *ngIf="(pedidoSeleccionado?.estatus ?? 0) === 1"
+                  (click)="procesarPedido(pedidoSeleccionado?.idPedido)"
+                  [disabled]="isAccionLoading || !pedidoSeleccionado">
+            <span class="me-1" *ngIf="isAccionLoading">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </span>
+            <i class="bi bi-arrow-repeat"></i> Procesar
+          </button>
+
+          <button class="btn btn-outline-success"
+                  *ngIf="(pedidoSeleccionado?.estatus ?? 0) === 4"
+                  (click)="finalizarPedido(pedidoSeleccionado?.idPedido)"
+                  [disabled]="isAccionLoading || !pedidoSeleccionado">
+            <span class="me-1" *ngIf="isAccionLoading">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </span>
+            <i class="bi bi-check2-circle"></i> Finalizar
+          </button>
+
+          <button class="btn btn-outline-secondary" (click)="cerrarModalDetalle()" [disabled]="isAccionLoading">Cerrar</button>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- Estilos personalizados -->
-<style>
-  .avatar-sm {
-    width: 32px;
-    height: 32px;
-  }
-
-  .table-hover tbody tr:hover {
-    background-color: rgba(0, 74, 173, 0.85);
-  }
-
-  .modal-content {
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .badge {
-    transition: all 0.2s ease;
-  }
-
-  .btn-group .btn {
-    border-radius: 0;
-  }
-
-  .btn-group .btn:first-child {
-    border-top-left-radius: 50rem;
-    border-bottom-left-radius: 50rem;
-  }
-
-  .btn-group .btn:last-child {
-    border-top-right-radius: 50rem;
-    border-bottom-right-radius: 50rem;
-  }
-</style>

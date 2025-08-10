@@ -27,8 +27,8 @@ export class CompraFormularioComponent implements OnInit {
   detalle: CompraDetalleCreateRequest = {
     insumoId: 0,
     presentacion: '',
-    precioUnitario: 0,
-    cantidad: 0
+    precioUnitario: null as any,
+    cantidad: null as any
   };
 
   proveedores: Proveedor[] = [];
@@ -142,7 +142,7 @@ export class CompraFormularioComponent implements OnInit {
           text: 'La compra fue registrada correctamente',
           confirmButtonColor: '#0062BA'
         });
-        this.onCompraGuardada.emit(); // <--- Emitimos evento al padre (para ocultar formulario y recargar tabla)
+        this.onCompraGuardada.emit();
         this.resetFormulario();
       },
       error: err => {

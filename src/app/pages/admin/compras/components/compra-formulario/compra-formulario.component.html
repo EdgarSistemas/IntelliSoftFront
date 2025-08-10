@@ -1,18 +1,14 @@
 <div class="card-body" [formGroup]="form">
+
   <!-- Proveedor -->
   <div class="mb-3">
     <label class="form-label">Proveedor</label>
-    <input
-      type="text"
-      class="form-control"
-      [ngModel]="nombreProveedorSeleccionado"
-      (ngModelChange)="onProveedorInput($event)"
-      [ngModelOptions]="{ standalone: true }"
-      list="proveedorList"
-      placeholder="Busca o selecciona un proveedor" />
-    <datalist id="proveedorList">
-      <option *ngFor="let p of proveedores" [value]="p.nombre"></option>
-    </datalist>
+    <select class="form-select" formControlName="proveedorId">
+      <option [ngValue]="null" disabled selected>Selecciona un proveedor</option>
+      <option *ngFor="let p of proveedores" [ngValue]="p.idProveedor">
+        {{ p.nombre }}
+      </option>
+    </select>
   </div>
 
   <!-- Observación -->
@@ -26,33 +22,32 @@
     <label class="form-label">Agregar Insumo</label>
     <div class="row g-2">
       <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control"
-          [ngModel]="detalleNombreInsumo"
-          (ngModelChange)="onInsumoInput($event)"
-          [ngModelOptions]="{ standalone: true }"
-          list="insumoList"
-          placeholder="Busca o selecciona un insumo" />
-        <datalist id="insumoList">
-          <option *ngFor="let insumo of insumos" [value]="insumo.nombre"></option>
-        </datalist>
+        <select class="form-select" [(ngModel)]="detalle.insumoId" [ngModelOptions]="{ standalone: true }"
+          name="insumoIdDraft">
+          <option [ngValue]="0" disabled selected>Selecciona un insumo</option>
+          <option *ngFor="let i of insumos" [ngValue]="i.idInsumo">
+            {{ i.nombre }}
+          </option>
+        </select>
       </div>
+
       <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="Presentación"
-               [(ngModel)]="detalle.presentacion" [ngModelOptions]="{ standalone: true }" />
+        <input type="text" class="form-control" placeholder="Presentación" [(ngModel)]="detalle.presentacion"
+          [ngModelOptions]="{ standalone: true }" name="presentacionDraft" />
       </div>
+
       <div class="col-md-2">
-        <input type="number" class="form-control" placeholder="Precio unitario"
-               [(ngModel)]="detalle.precioUnitario" [ngModelOptions]="{ standalone: true }" />
+        <input type="number" class="form-control" placeholder="Precio unitario" [(ngModel)]="detalle.precioUnitario"
+          [ngModelOptions]="{ standalone: true }" name="precioDraft" min="0" step="any" />
       </div>
+
       <div class="col-md-2">
-        <input type="number" class="form-control" placeholder="Cantidad"
-               [(ngModel)]="detalle.cantidad" [ngModelOptions]="{ standalone: true }" />
+        <input type="number" class="form-control" placeholder="Cantidad" [(ngModel)]="detalle.cantidad"
+          [ngModelOptions]="{ standalone: true }" name="cantidadDraft" min="0" step="any" />
       </div>
+
       <div class="col-md-1">
-        <button class="btn btn-success w-100"
-                (click)="agregarDetalle()" [disabled]="!detalleCompleto()">
+        <button class="btn btn-success w-100" type="button" (click)="agregarDetalle()" [disabled]="!detalleCompleto()">
           <i class="bi bi-plus"></i>
         </button>
       </div>
@@ -80,7 +75,7 @@
           <td>{{ d.cantidad }}</td>
           <td>${{ d.precioUnitario * d.cantidad | number: '1.2-2' }}</td>
           <td class="text-end">
-            <button class="btn btn-sm btn-outline-danger" (click)="eliminarDetalle(i)">
+            <button class="btn btn-sm btn-outline-danger" type="button" (click)="eliminarDetalle(i)">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -95,8 +90,8 @@
 
   <!-- Botones -->
   <div class="mt-4 d-flex justify-content-center gap-2">
-    <button class="btn btn-primary" type="button"
-            (click)="guardarCompra()" [disabled]="!form.valid || detalles.length === 0">
+    <button class="btn btn-primary" type="button" (click)="guardarCompra()"
+      [disabled]="!form.valid || detalles.length === 0">
       <i class="bi bi-check-circle me-1"></i>Guardar
     </button>
     <button class="btn btn-outline-secondary" type="button" (click)="onCancelar.emit()">

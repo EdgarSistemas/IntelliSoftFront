@@ -40,7 +40,7 @@
             </div>
           </button>
         </h2>
-        <div [id]="'collapse' + i" 
+        <div [id]="'collapse' + i"
               class="accordion-collapse collapse"
               [class.show]="activePanelIndex === i"
               [attr.aria-labelledby]="'heading' + i">
@@ -51,12 +51,12 @@
               </div>
               <div class="col-md-4">
                 <p class="mb-2">
-                  <strong><i class="bi bi-percent me-2"></i>Porcentaje Ganancia:</strong> 
+                  <strong><i class="bi bi-percent me-2"></i>Porcentaje Ganancia:</strong>
                   {{ (pedido.porcentajeGanancia / 100) | percent:'1.0-2' }}
                 </p>
               </div>
               <div class="col-md-4">
-                <p class="mb-2"><strong><i class="bi bi-chat-left-text me-2"></i>Comentario:</strong> 
+                <p class="mb-2"><strong><i class="bi bi-chat-left-text me-2"></i>Comentario:</strong>
                   <span class="{{ !pedido.comentario ? 'text-muted' : '' }}">
                     {{ pedido.comentario || 'Sin comentarios' }}
                   </span>
@@ -130,7 +130,7 @@
         </h5>
         <button type="button" class="btn-close btn-close-white" aria-label="Cerrar" (click)="cerrarModal()"></button>
       </div>
-      
+
       <div class="modal-body p-4">
         <form>
           <!-- Sistema de calificación con estrellas mejorado -->
@@ -139,7 +139,7 @@
               <i class="bi bi-star-fill text-warning me-2"></i>Calificación
             </label>
             <div class="rating-stars d-flex justify-content-center">
-              <div *ngFor="let star of [1,2,3,4,5]" 
+              <div *ngFor="let star of [1,2,3,4,5]"
                    (click)="nuevaOpinion.calificacion = star"
                    [ngClass]="{'text-warning': star <= nuevaOpinion.calificacion, 'text-secondary': star > nuevaOpinion.calificacion}">
                 <i class="bi bi-star-fill" style="font-size: 2rem; cursor: pointer;"></i>
@@ -147,28 +147,28 @@
             </div>
             <input type="hidden" [(ngModel)]="nuevaOpinion.calificacion" name="calificacion">
           </div>
-          
+
           <div class="mb-4">
             <label for="comentario" class="form-label fw-semibold text-secondary">
               <i class="bi bi-pencil-square me-2"></i>Comentario
             </label>
-            <textarea id="comentario" 
-                      class="form-control border-2 border-secondary" 
+            <textarea id="comentario"
+                      class="form-control border-2 border-secondary"
                       rows="4"
-                      [(ngModel)]="nuevaOpinion.comentario" 
+                      [(ngModel)]="nuevaOpinion.comentario"
                       name="comentario"
                       placeholder="Escribe tu experiencia con el producto..."></textarea>
           </div>
         </form>
       </div>
-      
+
       <div class="modal-footer border-top-0 bg-light">
-        <button type="button" 
+        <button type="button"
                 class="btn btn-outline-secondary rounded-pill px-4"
                 (click)="cerrarModal()">
           <i class="bi bi-x-circle me-2"></i>Cancelar
         </button>
-        <button type="button" 
+        <button type="button"
                 class="btn btn-primary rounded-pill px-4 shadow-sm"
                 (click)="enviarOpinion()">
           <i class="bi bi-send-check me-2"></i>Enviar Opinión
@@ -216,5 +216,5 @@
 .accordion-button:not(.collapsed) .accordion-arrow {
   transform: rotate(180deg);
 }
-  
+
 </style>

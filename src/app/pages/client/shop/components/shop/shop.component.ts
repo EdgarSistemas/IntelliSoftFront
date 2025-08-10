@@ -4,7 +4,7 @@ import { ProfileService } from '../../../profile/services/profile.service';
 import { ShopService } from '../../services/shop.service';
 import { Profile } from '../../../profile/interface/profile';
 import { PedidoResponse, Opinion } from '../../interface/shop';
-import { Pedido } from '../../../../admin/ventas/interface/ventas';
+// import { Pedido } from '../../../../admin/ventas/interface/ventas';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
   styleUrl: './shop.component.css'
 })
 export class ShopComponent implements OnInit{
-  details: Profile | null = null; 
+  details: Profile | null = null;
   pedidos: PedidoResponse[] = [];
   cargando = true;
   modalAbierto = false;
@@ -97,7 +97,7 @@ export class ShopComponent implements OnInit{
         text: 'Gracias por tu comentario.',
         confirmButtonText: 'Aceptar'
       });
-      
+
       // Cierra el modal
           this.cerrarModal();
 
@@ -116,7 +116,7 @@ export class ShopComponent implements OnInit{
       });
     }
 
-    
+
 
     // Método para manejar el toggle
     togglePanel(index: number): void {

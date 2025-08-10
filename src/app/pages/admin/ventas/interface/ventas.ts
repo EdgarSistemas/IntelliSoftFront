@@ -1,31 +1,51 @@
-export interface Pedido {
+export interface PedidoResponse {
   idPedido: number;
   cotizacionId: number;
+  cotizacionClave: string;
+  fechaPedido: string | null;
+  estatus: number | null;
+
+  clienteId: string | null;
+  nombreCliente: string;
+  comentario: string | null;
+
+  partidas: CotizacionPartidaDto[];
+
+  totalPrecioBase: number;
+  totalGanancia: number;
+  totalPrecioConGanancia: number;
+  totalPrecioConRiesgo: number;
+  total: number;
+}
+
+export interface CotizacionPartidaDto {
+  cotizacionProductoId: number;
+  productoId: number;
+  nombreProducto: string | null;
+  hectareas: number;
+
+  porcentajeGanancia: number;
+  porcentajeRiesgo: number;
+  aplicaRiesgo: number;
+
+  detalles: CotizacionProductoDetalleDto[] | null;
+
+  precioBase: number;
+  ganancia: number;
+  precioConGanancia: number;
+  precioConRiesgo: number;
+  total: number;
+}
+
+export interface CotizacionProductoDetalleDto {
+  insumoId: number;
+  nombreInsumo: string;
   cantidad: number;
-  precioUnitario: number;
-  fechaPedido: string;
-  estatus: number;
-  comentario: string;
-  nombreCliente: string;
-  cotizacion?: any; 
+  precioPromedio: number;
+  subtotal: number;
 }
 
-export interface PedidoUpdateDto {
-  estatus: number;
-}
-
-export interface PedidoDetalleDto {
-  idPedido: number;
-  cotizacionId: number;
-  fechaPedido: string;
-  estatus: number;
-  clienteId: string;
-  nombreCliente: string;
-  comentario: string;
-  detalles: DetalleInsumo[];
-}
-
-export interface DetalleInsumo {
+export interface DetalleInsumoPlano {
   insumoId: number;
   nombreInsumo: string;
   cantidad: number;
