@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { opiniones } from '../../interface/opiniones';
+import { ComentariosService } from '../../services/comentarios.service';
 
 @Component({
   selector: 'app-layout-comentarios',
@@ -7,5 +9,20 @@ import { Component } from '@angular/core';
   styleUrl: './layout-comentarios.component.css'
 })
 export class LayoutComentariosComponent {
+opiniones: opiniones[] = [];
 
+  constructor(private comentariosService: ComentariosService) {}
+
+  ngOnInit(): void {
+    this.comentariosService.getOpiniones().subscribe({
+      next: (res) => this.opiniones = res,
+      error: () => console.error('Error al obtener opiniones')
+    });
+  }
+
+   openedIndex: number | null = null;
+
+  toggleAccordion(index: number) {
+    this.openedIndex = this.openedIndex === index ? null : index;
+  }
 }

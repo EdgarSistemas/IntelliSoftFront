@@ -1,5 +1,5 @@
-export interface opiniones {
-  idOpinion: number 
+export interface opiniones{
+    idOpinion: number 
     usuarioId: string,
     usuarioNombre: string,
     productoId: number,

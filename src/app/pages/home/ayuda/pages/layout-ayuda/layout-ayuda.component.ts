@@ -10,7 +10,7 @@ export class LayoutAyudaComponent {
 faqs = [
     {
       question: "¿Cómo restablezco mi contraseña?",
-      answer: "Puedes restablecer tu contraseña desde la página de login haciendo clic en '¿Olvidaste tu contraseña?' y siguiendo las instrucciones que recibirás por correo."
+      answer: "Puedes restablecer tu contraseña enviando un correo electrónico a intellisoft@intellisoft.com"
     },
     {
       question: "¿El sistema requiere instalación?",
@@ -21,8 +21,8 @@ faqs = [
       answer: "Recomendamos usar Chrome, Firefox o Edge en sus versiones más recientes para mejor rendimiento."
     },
     {
-      question: "¿Cómo actualizo a la versión premium?",
-      answer: "Desde tu panel de control, ve a 'Configuración de cuenta' y selecciona 'Actualizar plan' para ver las opciones disponibles."
+      question: "¿Cómo realizo una cotización?",
+      answer: "Navega hasta el apartado Cotizar ingresa algunos datos y si tu cotización es aceptada recibiras un correo electronico con la información"
     }
   ];
 }

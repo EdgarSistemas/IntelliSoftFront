@@ -14,6 +14,9 @@ import { Observable } from 'rxjs';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
+
+    productoSeleccionado: any;
+
  // Primer formulario (registro)
   formulario = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
@@ -61,9 +64,7 @@ export class RegisterComponent implements OnInit {
   }
 }
 
-  // Se activa al dar clic en el botón "Continuar" del formulario de registro
-// register.component.ts
-// register.component.ts
+
 registrarUsuario() {
   if (this.formulario.valid) {
     const formValue = this.formulario.value;
@@ -98,7 +99,7 @@ registrarUsuario() {
     });
   }
 }
-  // Nueva función para obtener la lista de productos
+ 
   
 
 enviarCotizacion() {

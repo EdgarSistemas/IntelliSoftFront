@@ -1,6 +1,5 @@
 .login-container {
-  background: linear-gradient(135deg, #4892f350 0%, #002b66 100%)!important;
-
+  background: linear-gradient(135deg, rgba(0,74,173,0.9) 0%, rgba(0,119,182,0.9) 100%); 
 }
 
 .login-card {

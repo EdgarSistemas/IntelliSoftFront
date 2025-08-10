@@ -4,4 +4,5 @@ export interface Productos {
   descripcion: string;
   precioActual: number;
   hectareaBase: number;
+  precioConRiesgo: number;
 }

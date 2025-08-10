@@ -161,6 +161,7 @@ export class UsersComponent implements OnInit {
         timer: 2000,
         showConfirmButton: false
       });
+      this.loadUsers()
     }
   } catch (error) {
     console.error('Error al editar usuario:', error);

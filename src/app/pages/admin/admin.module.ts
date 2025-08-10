@@ -4,7 +4,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { NgChartsModule } from 'ng2-charts';
 import { AdminRoutingModule } from './admin-routing.module';
-import { ComentariosComponent } from './comentarios/components/comentarios/comentarios.component';
+import { ComentariosComponent } from './comentarios/components/comentarios/comentarios/comentarios.component';
 import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
 import { ProveedorTableComponent } from './proveedores/components/proveedor-tabla/proveedor-tabla.component';
 import { ProveedorFormularioComponent } from './proveedores/components/proveedor-formulario/proveedor-formulario.component';
@@ -34,6 +34,7 @@ import { LayoutCotizacionesComponent } from './cotizaciones/pages/layout-cotizac
 import { NavbarAdminComponent } from "./home/pages/navbar-admin/navbar-admin.component";
 import { FooterAdminComponent } from "./home/pages/footer-admin/footer-admin.component";
 import { HeaderComponent } from './proveedores/components/proveedor-header/header/header.component';
+import { PortadaComponent } from './comentarios/components/portada/portada.component';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { HeaderComponent } from './proveedores/components/proveedor-header/heade
     LayoutUnidadesComponent,
     LayoutInsumosComponent,
     LayoutCotizacionesComponent,
+    PortadaComponent,
     NavbarAdminComponent,
     FooterAdminComponent,
 

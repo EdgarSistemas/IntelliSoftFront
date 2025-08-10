@@ -1,0 +1,19 @@
+.portada{
+background: linear-gradient(rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.85))!important;
+ color: white !important;
+ height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.bg-light-primary {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+.bg-primary-light {
+  background-color: rgba(13, 110, 253, 0.05);
+}
+.user-comment {
+  background-color: #f8f9fa;
+}

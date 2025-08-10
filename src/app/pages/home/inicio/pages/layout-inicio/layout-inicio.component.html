@@ -13,6 +13,30 @@
 
 <div class="bg-image mt-4 fixed-buttom" style="background-image: url('./img/1.jpg'); background-attachment: fixed; background-size: cover; position: relative;">
   
+  <section class="py-5 bg-light" >
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center" data-aos="fade-up">
+        
+        <!-- Título principal -->
+        <h2 class="display-5 fw-bold mb-4" >AQUAGROW</h2>
+        
+        <!-- Divisor estético -->
+        <div class="mb-4" style="height: 3px; width: 180px; background: #0d6efd; margin: 0 auto;"></div>
+        
+        <!-- Descripción -->
+        <p class="lead text-muted mb-5" data-aos="fade-up" data-aos-delay="100">
+          La solución tecnológica para una agricultura inteligente y sostenible. 
+          Combina lo mejor de la acuaponia con monitorización en tiempo real 
+          para maximizar tu producción.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- Sección 1: Introducción -->
 <section class="py-5 bg-white introduccion">
   <div class="container">
@@ -185,33 +209,90 @@
   </div>
 </section>
 
+<!-- APP MOVIL -->
+<section class="py-5 shadow-lg" id="mobile-app" style="background-color: #f8f9fa;">
+  <div class="container">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8 text-center">
+        <h2 class="fw-bold mb-3" data-aos="fade-up">AQUAGROW Mobile</h2>
+        <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100">
+          Controla tu sistema acuapónico desde cualquier lugar
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4 align-items-center">
+      <!-- Descripción -->
+      <div class="col-md-6" data-aos="fade-right">
+        <h3 class="h4 fw-bold mb-3">Toda la potencia en tu móvil</h3>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-3 d-flex">
+            <i class="fas fa-check-circle text-primary me-2 mt-1"></i>
+            <span>Monitoriza parámetros en tiempo real</span>
+          </li>
+          <li class="mb-3 d-flex">
+            <i class="fas fa-check-circle text-primary me-2 mt-1"></i>
+            <span>Recibe alertas instantáneas</span>
+          </li>
+          <li class="mb-3 d-flex">
+            <i class="fas fa-check-circle text-primary me-2 mt-1"></i>
+            <span>Control remoto del sistema</span>
+          </li>
+          <li class="mb-3 d-flex">
+            <i class="fas fa-check-circle text-primary me-2 mt-1"></i>
+            <span>Históricos y análisis de datos</span>
+          </li>
+        </ul>
+        <div class="d-flex flex-wrap gap-2">
+          <a routerLink="/documentos" class="btn btn-outline-primary btn-sm">
+            <i class="fab fa-google-play me-1"></i> Conocer más
+          </a>
+        </div>
+      </div>
+
+      <!-- Galería de imágenes -->
+      <div class="col-md-5">
+        <div class="row g-3">
+          <div class="col-6" data-aos="fade-left" data-aos-delay="200" >
+            <img src="./img/app1.png" alt="Pantalla 1" class="img-fluid rounded shadow-sm align-items-end" style="height: 400px;">
+          </div>
+          <div class="col-6" data-aos="fade-left" data-aos-delay="200" >
+            <img src="./img/app2.png" alt="Pantalla 2" class="img-fluid rounded shadow-sm align-items-end" style="height: 400px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 
 <!-- Sección 4: Testimonios -->
-<section class="py-5" style="background-color: #f8f9fa;">
+<section class="py-5" style="background-color: #fdfdfd;">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="fw-bold display-5">Lo que dicen nuestros clientes</h2>
+      <h2 class="fw-semibold display-6 text-dark">Lo que dicen nuestros clientes</h2>
     </div>
     <div class="row g-4">
       <!-- Tarjeta por cada comentario -->
-      <div class="col-md-4" *ngFor="let opinion of opiniones| slice:0:3">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="mb-3 text-warning">
-  <ng-container *ngFor="let tipoEstrella of getEstrellas(opinion.calificacion)">
-    <i *ngIf="tipoEstrella === 'fill'" class="bi bi-star-fill"></i>
-    <i *ngIf="tipoEstrella === 'half'" class="bi bi-star-half"></i>
-    <i *ngIf="tipoEstrella === 'empty'" class="bi bi-star"></i>
-  </ng-container>
-</div>
-            <p class="fst-italic">"{{opinion.comentario}}"</p>
-            <div class="d-flex align-items-center mt-3">
-              <i class="bi bi-person-fill me-3 fa-lg"></i>
-              <div>
-                <h6 class="mb-0">{{opinion.usuarioNombre}}</h6>
-              </div>
+      <div class="col-md-4" *ngFor="let opinion of opiniones | slice: 0:3">
+        <div class="card h-100 border-0 rounded-4 shadow-sm p-3 bg-white">
+          <div class="card-body px-3">
+            <div class="mb-2 text-warning small">
+              <ng-container *ngFor="let tipoEstrella of getEstrellas(opinion.calificacion)">
+                <i *ngIf="tipoEstrella === 'fill'" class="bi bi-star-fill"></i>
+                <i *ngIf="tipoEstrella === 'half'" class="bi bi-star-half"></i>
+                <i *ngIf="tipoEstrella === 'empty'" class="bi bi-star"></i>
+              </ng-container>
+            </div>
+            <p class="fst-italic text-muted mb-3">“{{ opinion.comentario }}”</p>
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-person-circle me-2 text-secondary"></i>
+              <span class="text-dark fw-medium">{{ opinion.usuarioNombre }}</span>
+            </div>
+            <div class="bg-light rounded-3 p-3">
+              <h6 class="text-secondary mb-1">Respuesta del administrador</h6>
+              <p class="mb-0 text-muted small">{{ opinion.comentarioAdmin || 'Sin respuesta aún.' }}</p>
             </div>
           </div>
         </div>
@@ -219,6 +300,7 @@
     </div>
   </div>
 </section>
+
 
 <!-- Sección 5: CTA -->
 <section class="py-5 contacto" style="background: rgba(10, 9, 58, 0.945);">

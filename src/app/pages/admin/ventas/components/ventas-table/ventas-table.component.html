@@ -86,27 +86,27 @@
               </span>
             </td>
             <td class="text-end pe-4">
-              <div class="btn-group" role="group">
-                <button class="btn btn-sm btn-outline-primary rounded-start-pill"
-                  (click)="abrirDetallePedido(pedido.idPedido)" title="Ver detalle">
-                  Detalle
+              <div>
+                <button class="btn btn-sm btn-outline-primary me-1"
+                        (click)="abrirDetallePedido(pedido.idPedido)"
+                        title="Ver detalle">
+                        Detalle
                   <i class="bi bi-eye"></i>
-                  Detalle
                 </button>
                 <button class="btn btn-sm btn-outline-danger me-1" (click)="eliminarPedido(pedido.idPedido)"
                   title="Eliminar">
                   Eliminar
                   <i class="bi bi-trash"></i>
-                  Eliminar
                 </button>
                 <button class="btn btn-sm btn-outline-success" (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
                   [disabled]="pedido.estatus === 3" title="Avanzar estatus">
                   Avanzar
                   <i class="bi bi-arrow-right"></i>
-                  Avanzar
                 </button>
-              </div>
+
+            </div>
             </td>
+
           </tr>
           <tr *ngIf="pedidos.length === 0">
             <td colspan="6" class="text-center py-5">

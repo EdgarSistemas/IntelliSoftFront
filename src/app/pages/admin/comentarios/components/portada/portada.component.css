@@ -6,16 +6,3 @@ background: linear-gradient(rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.85))!impo
   flex-direction: column;
   justify-content: center;
 }
-
-.card {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: box-shadow 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.bg-light {
-  background-color: #f8f9fa !important;
-}
