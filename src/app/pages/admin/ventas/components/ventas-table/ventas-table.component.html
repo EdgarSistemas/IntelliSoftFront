@@ -14,47 +14,35 @@
   </div>
 
   <!-- Barra de búsqueda mejorada -->
-<div class="card mb-4 border-0 shadow-sm">
-  <div class="card-body p-3">
-    <div class="row g-3 align-items-center">
-      <div class="col-md-6">
-        <div class="input-group">
-          <span class="input-group-text bg-light border-0">
-            <i class="bi bi-search text-muted"></i>
-          </span>
-          <input
-            type="text"
-            [(ngModel)]="filtro"
-            (input)="aplicarFiltros()"
-            placeholder="Buscar por cliente, ID o folio..."
-            class="form-control border-0 bg-light"
-          >
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body p-3">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-light border-0">
+              <i class="bi bi-search text-muted"></i>
+            </span>
+            <input type="text" [(ngModel)]="filtro" (input)="aplicarFiltros()"
+              placeholder="Buscar por cliente, ID o folio..." class="form-control border-0 bg-light">
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <select
-          [(ngModel)]="filtroEstatus"
-          (change)="aplicarFiltros()"
-          class="form-select border-0 bg-light"
-        >
-          <option value="">Todos los estados</option>
-          <option value="1">Pendiente</option>
-          <option value="2">En proceso</option>
-          <option value="3">Completado</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <button
-          (click)="limpiarFiltros()"
-          class="btn btn-outline-secondary w-100"
-          [disabled]="!filtro && !filtroEstatus"
-        >
-          <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
-        </button>
+        <div class="col-md-4">
+          <select [(ngModel)]="filtroEstatus" (change)="aplicarFiltros()" class="form-select border-0 bg-light">
+            <option value="">Todos los estados</option>
+            <option value="1">Pendiente</option>
+            <option value="2">En proceso</option>
+            <option value="3">Completado</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button (click)="limpiarFiltros()" class="btn btn-outline-secondary w-100"
+            [disabled]="!filtro && !filtroEstatus">
+            <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
   <!-- Tabla de pedidos mejorada -->
   <div class="card border-0 shadow-sm">
     <div class="table-responsive">
@@ -84,14 +72,12 @@
             </td>
             <td>{{ pedido.fechaPedido | date: 'dd/MM/yyyy' }}</td>
             <td class="text-center">
-              <span class="badge rounded-pill py-2 px-3"
-                [ngClass]="{
+              <span class="badge rounded-pill py-2 px-3" [ngClass]="{
                   'bg-secondary': pedido.estatus === 1,
                   'bg-warning text-dark': pedido.estatus === 2,
                   'bg-success': pedido.estatus === 3
                 }">
-                <i class="bi me-1"
-                  [ngClass]="{
+                <i class="bi me-1" [ngClass]="{
                     'bi-hourglass': pedido.estatus === 1,
                     'bi-arrow-repeat': pedido.estatus === 2,
                     'bi-check-circle': pedido.estatus === 3
@@ -102,28 +88,24 @@
             <td class="text-end pe-4">
               <div class="btn-group" role="group">
                 <button class="btn btn-sm btn-outline-primary rounded-start-pill"
-                        (click)="abrirDetallePedido(pedido.idPedido)"
-                        title="Ver detalle">
-                        Detalle
+                  (click)="abrirDetallePedido(pedido.idPedido)" title="Ver detalle">
+                  Detalle
                   <i class="bi bi-eye"></i>
                   Detalle
                 </button>
-                <button class="btn btn-sm btn-outline-danger me-1"
-                        (click)="eliminarPedido(pedido.idPedido)"
-                        title="Eliminar">
-                        Eliminar
+                <button class="btn btn-sm btn-outline-danger me-1" (click)="eliminarPedido(pedido.idPedido)"
+                  title="Eliminar">
+                  Eliminar
                   <i class="bi bi-trash"></i>
                   Eliminar
                 </button>
-                <button class="btn btn-sm btn-outline-success"
-                        (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
-                        [disabled]="pedido.estatus === 3"
-                        title="Avanzar estatus">
-                        Avanzar
+                <button class="btn btn-sm btn-outline-success" (click)="cambiarEstatus(pedido.idPedido, pedido.estatus)"
+                  [disabled]="pedido.estatus === 3" title="Avanzar estatus">
+                  Avanzar
                   <i class="bi bi-arrow-right"></i>
                   Avanzar
                 </button>
-
+              </div>
             </td>
           </tr>
           <tr *ngIf="pedidos.length === 0">
@@ -139,14 +121,16 @@
 </div>
 
 <!-- Modal detalle pedido mejorado -->
-<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': mostrarModalDetalle}" [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
+<div class="modal fade" tabindex="-1" [ngClass]="{'show d-block': mostrarModalDetalle}"
+  [style.backgroundColor]="'rgba(0,0,0,0.5)'" role="dialog">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">
           Detalle del Pedido #{{ pedidoDetalle?.idPedido }}
         </h5>
-        <button type="button" class="btn-close btn-close-white" aria-label="Cerrar" (click)="cerrarModalDetalle()"></button>
+        <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
+          (click)="cerrarModalDetalle()"></button>
       </div>
       <div class="modal-body p-4">
         <div class="row mb-4">
@@ -179,13 +163,13 @@
               <div>
                 <small class="text-muted">Estatus</small>
                 <p class="mb-0">
-                  <span class="badge rounded-pill py-1 px-3"
-                    [ngClass]="{
+                  <span class="badge rounded-pill py-1 px-3" [ngClass]="{
                       'bg-secondary': pedidoDetalle?.estatus === 1,
                       'bg-warning text-dark': pedidoDetalle?.estatus === 2,
                       'bg-success': pedidoDetalle?.estatus === 3
                     }">
-                    {{ pedidoDetalle?.estatus === 1 ? 'Pendiente' : pedidoDetalle?.estatus === 2 ? 'En Proceso' : 'Completado' }}
+                    {{ pedidoDetalle?.estatus === 1 ? 'Pendiente' : pedidoDetalle?.estatus === 2 ? 'En Proceso' :
+                    'Completado' }}
                   </span>
                 </p>
               </div>
@@ -238,23 +222,29 @@
     width: 32px;
     height: 32px;
   }
+
   .table-hover tbody tr:hover {
     background-color: rgba(0, 74, 173, 0.85);
   }
+
   .modal-content {
     border-radius: 10px;
     overflow: hidden;
   }
+
   .badge {
     transition: all 0.2s ease;
   }
+
   .btn-group .btn {
     border-radius: 0;
   }
+
   .btn-group .btn:first-child {
     border-top-left-radius: 50rem;
     border-bottom-left-radius: 50rem;
   }
+
   .btn-group .btn:last-child {
     border-top-right-radius: 50rem;
     border-bottom-right-radius: 50rem;
