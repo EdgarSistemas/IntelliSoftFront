@@ -1,83 +1,78 @@
-<div class="d-flex justify-content-center">
-  <div class="card my-3 shadow-sm" style="max-width: 650px; width: 100%; border-radius: 12px;">
-    <div class="card-body p-4">
-      <!-- Header section -->
-      <div class="d-flex align-items-start mb-3">
-        <div class="flex-grow-1">
-          <div class="d-flex align-items-center">
-            <h5 class="card-title mb-0 fw-semibold me-2">{{ opinion.usuarioNombre }}</h5>
-            <span class="badge bg-light text-dark">
-              <i class="bi bi-star-fill text-warning me-1"></i>{{ opinion.calificacion }}
-            </span>
-          </div>
-          <p class="text-muted small mb-0">
-            <i class="bi bi-box-seam me-1"></i> {{ opinion.productoNombre }}
-          </p>
+<!-- SIN d-flex justify-content-center -->
+<div class="card my-3 shadow-sm h-100" style="border-radius: 12px;">
+  <div class="card-body p-4">
+    <!-- Header section -->
+    <div class="d-flex align-items-start mb-3">
+      <div class="flex-grow-1">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0 fw-semibold me-2">{{ opinion.usuarioNombre }}</h5>
+          <span class="badge bg-light text-dark">
+            <i class="bi bi-star-fill text-warning me-1"></i>{{ opinion.calificacion }}
+          </span>
         </div>
-        <button class="btn btn-sm btn-link text-muted p-0" (click)="toggleExpanded()">
-          <i class="bi fs-5" [class.bi-chevron-down]="!expanded" [class.bi-chevron-up]="expanded"></i>
+        <p class="text-muted small mb-0">
+          <i class="bi bi-box-seam me-1"></i> {{ opinion.productoNombre }}
+        </p>
+      </div>
+      <button class="btn btn-sm btn-link text-muted p-0" (click)="toggleExpanded()">
+        <i class="bi fs-5" [class.bi-chevron-down]="!expanded" [class.bi-chevron-up]="expanded"></i>
+      </button>
+    </div>
+
+    <!-- Collapsible content -->
+    <div [class.collapse]="!expanded">
+      <!-- User comment -->
+      <div class="bg-light rounded-3 p-3 mb-3">
+        <p class="mb-2">{{ opinion.comentario }}</p>
+        <p class="text-muted small mb-0">
+          <i class="bi bi-clock me-1"></i> Publicado el {{ opinion.fecha | date: 'mediumDate' }}
+        </p>
+      </div>
+
+      <!-- Admin response -->
+      <div *ngIf="opinion.comentarioAdmin" class="mb-3">
+        <div class="d-flex align-items-center mb-2">
+          <span class="badge bg-primary rounded-pill me-2">
+            <i class="bi bi-shield-check me-1"></i> Administrador
+          </span>
+          <small class="text-muted">
+            Respondió el {{ opinion.fechaComentarioAdmin | date: 'mediumDate' }}
+          </small>
+        </div>
+        <div class="bg-primary bg-opacity-10 rounded-3 p-3 border-start border-primary border-3">
+          <p class="mb-0">{{ opinion.comentarioAdmin }}</p>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm" [class.btn-outline-primary]="!showForm" [class.btn-outline-secondary]="showForm"
+          (click)="toggleForm()">
+          <i class="bi bi-reply me-1"></i> {{ showForm ? 'Cancelar' : 'Responder' }}
+        </button>
+
+        <button *ngIf="opinion.comentarioAdmin" class="btn btn-outline-danger btn-sm" (click)="eliminarComentario()">
+          <i class="bi bi-trash me-1"></i> Eliminar
         </button>
       </div>
 
-      <!-- Collapsible content -->
-      <div [class.collapse]="!expanded">
-        <!-- User comment -->
-        <div class="bg-light rounded-3 p-3 mb-3">
-          <p class="mb-2">{{ opinion.comentario }}</p>
-          <p class="text-muted small mb-0">
-            <i class="bi bi-clock me-1"></i> Publicado el {{ opinion.fecha | date: 'mediumDate' }}
-          </p>
-        </div>
-
-        <!-- Admin response (if exists) -->
-        <div *ngIf="opinion.comentarioAdmin" class="mb-3">
-          <div class="d-flex align-items-center mb-2">
-            <span class="badge bg-primary rounded-pill me-2">
-              <i class="bi bi-shield-check me-1"></i> Administrador
-            </span>
-            <small class="text-muted">
-              Respondió el {{ opinion.fechaComentarioAdmin | date: 'mediumDate' }}
-            </small>
+      <!-- Response form -->
+      <div *ngIf="showForm" class="mt-3">
+        <form [formGroup]="comentarioForm" (ngSubmit)="enviarComentario()">
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Respuesta del administrador</label>
+            <textarea formControlName="mensaje" rows="3" class="form-control" placeholder="Escribe tu respuesta aquí..."
+              required></textarea>
           </div>
-          <div class="bg-primary bg-opacity-10 rounded-3 p-3 border-start border-primary border-3">
-            <p class="mb-0">{{ opinion.comentarioAdmin }}</p>
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="toggleForm()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary btn-sm" [disabled]="comentarioForm.invalid">
+              <i class="bi bi-send me-1"></i> Enviar
+            </button>
           </div>
-        </div>
-
-        <!-- Action buttons -->
-        <div class="d-flex gap-2">
-          <button class="btn btn-sm" 
-                  [class.btn-outline-primary]="!showForm" 
-                  [class.btn-outline-secondary]="showForm" 
-                  (click)="toggleForm()">
-            <i class="bi bi-reply me-1"></i> {{ showForm ? 'Cancelar' : 'Responder' }}
-          </button>
-          
-          <button *ngIf="opinion.comentarioAdmin" 
-                  class="btn btn-outline-danger btn-sm" 
-                  (click)="eliminarComentario()">
-            <i class="bi bi-trash me-1"></i> Eliminar
-          </button>
-        </div>
-
-        <!-- Response form -->
-        <div *ngIf="showForm" class="mt-3">
-          <form [formGroup]="comentarioForm" (ngSubmit)="enviarComentario()">
-            <div class="mb-3">
-              <label class="form-label fw-semibold small">Respuesta del administrador</label>
-              <textarea formControlName="mensaje" rows="3" class="form-control" 
-                        placeholder="Escribe tu respuesta aquí..." required></textarea>
-            </div>
-            <div class="d-flex justify-content-end gap-2">
-              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="toggleForm()">
-                Cancelar
-              </button>
-              <button type="submit" class="btn btn-primary btn-sm" [disabled]="comentarioForm.invalid">
-                <i class="bi bi-send me-1"></i> Enviar
-              </button>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
   </div>

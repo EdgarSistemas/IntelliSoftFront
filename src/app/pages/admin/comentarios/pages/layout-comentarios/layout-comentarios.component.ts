@@ -4,23 +4,28 @@ import { ComentariosService } from '../../services/comentarios.service';
 
 @Component({
   selector: 'app-layout-comentarios',
-  standalone:false,
+  standalone: false,
   templateUrl: './layout-comentarios.component.html',
-  styleUrl: './layout-comentarios.component.css'
+  styleUrl: './layout-comentarios.component.css',
 })
 export class LayoutComentariosComponent {
-opiniones: opiniones[] = [];
+  opiniones: opiniones[] = [];
+  loading = true;
 
   constructor(private comentariosService: ComentariosService) {}
 
   ngOnInit(): void {
     this.comentariosService.getOpiniones().subscribe({
-      next: (res) => this.opiniones = res,
-      error: () => console.error('Error al obtener opiniones')
+      // ajustar para quitar el loader
+      next: (res) => {
+        this.opiniones = res
+        this.loading = false
+      },
+      error: () => console.error('Error al obtener opiniones'),
     });
   }
 
-   openedIndex: number | null = null;
+  openedIndex: number | null = null;
 
   toggleAccordion(index: number) {
     this.openedIndex = this.openedIndex === index ? null : index;

@@ -1,11 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { CotizacionService } from '../../../home/cotizacion/services/cotizacion.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { Productos } from '../../../admin/productos/interface/productos'; // Asegúrate de que esta ruta sea correcta
-import { Observable } from 'rxjs';
 
+import { UserService } from '../../services/user.service';
+import { CotizacionService } from '../../../home/cotizacion/services/cotizacion.service';
+import { Productos } from '../../../admin/productos/interface/productos';
+import { Router } from '@angular/router';
+
+type RegistrarAnonimoResp = {
+  creado: boolean;
+  usuario: {
+    id: string;
+    nombre: string;
+    apellidos: string;
+    email: string;
+    rol: 'anonimo' | 'cliente' | 'admin' | string;
+  } | null;
+  message?: string;
+};
 
 @Component({
   selector: 'app-register',
@@ -14,178 +26,157 @@ import { Observable } from 'rxjs';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
+  // gating: primero registro, luego cotizador
+  mostrarCotizador = false;
 
-    productoSeleccionado: any;
+  // para mostrar info del usuario anónimo en el cotizador
+  usuarioAnonimo: { nombre: string; apellidos: string; email: string } | null =
+    null;
 
- // Primer formulario (registro)
+  // formulario de registro
   formulario = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
     apellidos: new FormControl(''),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl(''),
-    rol: new FormControl(''),
   });
 
-  // Segundo formulario (cotización)
-  formularioCotizacion = new FormGroup({
-    idUsuario: new FormControl('', [Validators.required]),
-     producto: new FormControl<number | null>(null, [Validators.required]),
-    hectareas: new FormControl(0, [Validators.required, Validators.min(1)]),
-    detalles: new FormControl(''),
-  });
-
+  // catálogo para las cards
   productos: Productos[] = [];
-  usuarioId: string | null = null;
-  productoIdSeleccionado: number | null = null;
-   loading = true;
+  loadingProductos = false;
   errorMessage = '';
 
   constructor(
     private userService: UserService,
-    private CotizacionService: CotizacionService
+    private cotizacionService: CotizacionService,
+    private router: Router
   ) {}
 
- ngOnInit(): void {
-  // Cargar productos
-  this.CotizacionService.allProducts().subscribe({
-    next: (data) => this.productos = data,
-    error: (error) => {
-      console.error('Error al obtener productos', error);
-      Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
-    }
-  });
-
-  // Cargar usuarioId si existe
-  const usuarioId = localStorage.getItem('usuarioId');
-  if (usuarioId) {
-    this.formularioCotizacion.patchValue({
-      idUsuario: usuarioId
-    });
-  }
-}
-
-
-registrarUsuario() {
-  if (this.formulario.valid) {
-    const formValue = this.formulario.value;
-    
-    this.userService.registrarOVerificarAnonimo({
-      email: formValue.email ?? '',
-      nombre: formValue.nombre ?? '',
-      apellidos: formValue.apellidos ?? ''
-    }).subscribe({
-      next: (response) => {
-        // Verificar que el ID existe
-        if (!response.usuario.id) {
-          throw new Error('El servidor no devolvió un ID válido');
-        }
-
-        // Guardar en localStorage
-        localStorage.setItem('usuarioId', response.usuario.id);
-        localStorage.setItem('usuarioEmail', formValue.email ?? '');
-        
-        // Actualizar formulario de cotización
-        this.formularioCotizacion.patchValue({
-          idUsuario: response.usuario.id
-        });
-
-        console.log('Usuario ID:', response.usuario.id); // Para depuración
-        this.mostrarFormularioCotizacion();
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        Swal.fire('Error', 'No se pudo verificar/registrar el usuario', 'error');
-      }
-    });
-  }
-}
- 
-  
-
-enviarCotizacion() {
-  if (this.formularioCotizacion.valid && this.productoIdSeleccionado) {
+  ngOnInit(): void {
+    // Si ya hay usuarioId en localStorage, mostramos cotizador directo
     const usuarioId = localStorage.getItem('usuarioId');
-    
-    if (!usuarioId) {
-      Swal.fire('Error', 'No se encontró el ID de usuario', 'error');
+    if (usuarioId) {
+      this.mostrarCotizador = true;
+      // si guardamos info de anónimo anteriormente, recupérala para el banner
+      const anonNombre = localStorage.getItem('anon_nombre') || '';
+      const anonApellidos = localStorage.getItem('anon_apellidos') || '';
+      const anonEmail = localStorage.getItem('anon_email') || '';
+      if (anonNombre || anonApellidos || anonEmail) {
+        this.usuarioAnonimo = {
+          nombre: anonNombre,
+          apellidos: anonApellidos,
+          email: anonEmail,
+        };
+      }
+    }
+    this.cargarProductos();
+  }
+
+  private cargarProductos(): void {
+    this.loadingProductos = true;
+    this.cotizacionService.allProducts().subscribe({
+      next: (data) => {
+        this.productos = data || [];
+        this.loadingProductos = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener productos', err);
+        this.errorMessage = 'No se pudieron cargar los productos';
+        this.loadingProductos = false;
+        Swal.fire('Error', this.errorMessage, 'error');
+      },
+    });
+  }
+
+  registrarUsuario(): void {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
       return;
     }
 
-    const cotizacionData = {
-      productoId: this.productoIdSeleccionado,
-      hectareas: this.formularioCotizacion.value.hectareas || 0,
-      usuarioId: usuarioId,
-      detalleCotizacion: this.formularioCotizacion.value.detalles || ''
-    };
+    const v = this.formulario.value;
 
-    console.log('Datos a enviar:', cotizacionData);
+    this.userService
+      .registrarOVerificarAnonimo({
+        email: v.email ?? '',
+        nombre: v.nombre ?? '',
+        apellidos: v.apellidos ?? '',
+      })
+      .subscribe({
+        next: (resp: RegistrarAnonimoResp) => {
+          // Caso: usuario existente y NO anónimo
+          if (resp.creado === false && !resp.usuario) {
+            Swal.fire({
+              icon: 'info',
+              title: 'Usuario ya existe',
+              text: resp.message || 'El usuario ya existe pero no es anónimo.',
+              showCancelButton: true,
+              confirmButtonText: 'Iniciar sesión',
+              cancelButtonText: 'Cerrar',
+            }).then((r) => {
+              if (r.isConfirmed) this.router.navigate(['/login']);
+            });
+            return;
+          }
 
-    this.CotizacionService.enviarCotizacion(cotizacionData).subscribe({
-      next: (response) => {
-        Swal.fire('Éxito', 'Cotización enviada correctamente', 'success');
-        this.formularioCotizacion.reset();
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        Swal.fire('Error', 'No se pudo enviar la cotización', 'error');
-      }
-    });
-  } else {
-    Swal.fire('Error', 'Completa todos los campos y selecciona un producto', 'error');
-    this.formularioCotizacion.markAllAsTouched();
+          // Caso: usuario anónimo existente o recién creado
+          const u = resp.usuario;
+          if (u && u.id) {
+            // guardamos identidad mínima para el cotizador
+            localStorage.setItem('usuarioId', u.id);
+            localStorage.setItem('usuarioEmail', u.email || '');
+
+            // si es anónimo, mostramos un banner con sus datos
+            if (u.rol === 'anonimo') {
+              this.usuarioAnonimo = {
+                nombre: u.nombre || (v.nombre ?? ''),
+                apellidos: u.apellidos || (v.apellidos ?? ''),
+                email: u.email || (v.email ?? ''),
+              };
+              // persistimos para mostrar si recarga
+              localStorage.setItem('anon_nombre', this.usuarioAnonimo.nombre);
+              localStorage.setItem(
+                'anon_apellidos',
+                this.usuarioAnonimo.apellidos
+              );
+              localStorage.setItem('anon_email', this.usuarioAnonimo.email);
+            } else {
+              // si no es anónimo (por si el backend te lo regresa igual), limpiamos banner
+              this.usuarioAnonimo = null;
+              localStorage.removeItem('anon_nombre');
+              localStorage.removeItem('anon_apellidos');
+              localStorage.removeItem('anon_email');
+            }
+
+            this.mostrarCotizador = true;
+            Swal.fire({
+              icon: 'success',
+              title: resp.message || 'Listo',
+              text:
+                u.rol === 'anonimo'
+                  ? 'Usaremos tu usuario temporal para crear la cotización.'
+                  : 'Continuemos con tu cotización.',
+              timer: 1400,
+              showConfirmButton: false,
+            });
+          } else {
+            throw new Error('El servidor no devolvió un usuario válido');
+          }
+        },
+        error: () => {
+          Swal.fire(
+            'Error',
+            'No se pudo verificar/registrar el usuario',
+            'error'
+          );
+        },
+      });
+  }
+
+  // badges visuales
+  esMasVendido(i: number): boolean {
+    return i === 0;
+  }
+  esNuevo(i: number): boolean {
+    return i === 2;
   }
 }
-  mostrarFormularioCotizacion() {
-    const registroDiv = document.getElementById('formulario-registro');
-    const cotizacionDiv = document.getElementById('formulario-cotizacion');
-    if (registroDiv && cotizacionDiv) {
-      // Usamos las clases de Bootstrap para ocultar y mostrar
-      registroDiv.classList.add('d-none');
-      cotizacionDiv.classList.remove('d-none');
-    }
-  }
-allProducts() {
-    this.CotizacionService.allProducts().subscribe({
-      next: (data) => {
-        this.productos = data;
-      },
-      error: (error) => {
-        console.error('Error al obtener productos', error);
-        Swal.fire({
-          icon: 'error',
-          title: '¡Error!',
-          text: 'No se pudieron cargar los productos. Por favor, recarga la página.',
-        });
-      },
-    });
-  }
- seleccionarProducto(producto: Productos) {
-  if (producto?.idProductos) {
-    this.productoIdSeleccionado = producto.idProductos;
-    
-    // Actualizar el formulario con el producto seleccionado
-    this.formularioCotizacion.patchValue({
-      producto: producto.idProductos
-    });
-    
-    console.log('Producto seleccionado:', producto.idProductos);
-  } else {
-    console.error("Producto no válido");
-    this.productoIdSeleccionado = null;
-    this.formularioCotizacion.patchValue({ producto: null });
-  }
-}
-
-esMasVendido(index: number): boolean {
-    return index === 0; // Mostrar solo en el primer producto como ejemplo
-  }
-
-  // Método para determinar si mostrar el badge "Nuevo"
-  esNuevo(index: number): boolean {
-    return index === 2; // Mostrar solo en el tercer producto como ejemplo
-  }
-
-}
-
-  
-

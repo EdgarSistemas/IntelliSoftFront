@@ -7,133 +7,106 @@
       <h5 class="text-muted">Soluciones completas para cultivos eficientes</h5>
     </div>
 
-<section class="py-5 bg-light">
-  <div class="container">
-    <div class="row g-4">
-      <!-- Producto - Iteración con *ngFor -->
-      <div class="col-lg-4 col-md-6" *ngFor="let producto of productos; let i = index">
-        <div class="card product-card h-100 border-0 shadow-sm">
-          <!-- Badge Más vendido -->
-          <div *ngIf="esMasVendido(i)" class="badge bg-success position-absolute top-0 end-0 m-3">Más vendido</div>
-          
-          <!-- Badge Nuevo -->
-          <div *ngIf="esNuevo(i)" class="badge bg-info position-absolute top-0 end-0 m-3">Nuevo</div>
-          
-          <!-- Imagen del producto (puedes usar una genérica o de tu API) -->
-          <img [src]="'/img/' + (i + 1) + '.jpg'" class="card-img-top" [alt]="producto.nombre">
-          
-          <div class="card-body">
-            <h5 class="card-title">{{ producto.nombre }}</h5>
-            <p class="text-muted small">{{ producto.descripcion }}</p>
-            <ul class="list-unstyled mb-4">
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Para {{ producto.hectareaBase }} hectáreas</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Monitoreo avanzado</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Solución completa</li>
-            </ul>
-            <div class="d-flex justify-content-between align-items-center">
-              <h5 class="mb-0 text-primary">{{ producto.precioConRiesgo | currency }}</h5>
-              
+    <!-- Grid de productos (sin cambios) -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6" *ngFor="let producto of productos; let i = index">
+            <div class="card product-card h-100 border-0 shadow-sm">
+              <div *ngIf="esMasVendido(i)" class="badge bg-success position-absolute top-0 end-0 m-3">Más vendido</div>
+              <div *ngIf="esNuevo(i)" class="badge bg-info position-absolute top-0 end-0 m-3">Nuevo</div>
+              <img [src]="'/img/' + (i + 1) + '.jpg'" class="card-img-top" [alt]="producto.nombre">
+              <div class="card-body">
+                <h5 class="card-title">{{ producto.nombre }}</h5>
+                <p class="text-muted small">{{ producto.descripcion }}</p>
+                <ul class="list-unstyled mb-4">
+                  <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Para {{
+                    producto.hectareaBase }} hectáreas</li>
+                  <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Monitoreo avanzado</li>
+                  <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Solución completa</li>
+                </ul>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0 text-primary">{{ producto.precioConRiesgo | currency }}</h5>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <!-- loader opcional -->
+          <div *ngIf="loadingProductos" class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+          <div *ngIf="!loadingProductos && errorMessage" class="col-12">
+            <div class="alert alert-danger">{{ errorMessage }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Registro (igual que antes) -->
+      <div id="formulario-registro" class="row justify-content-center" *ngIf="!mostrarCotizador">
+        <div class="col-lg-10">
+          <div class="p-4 rounded-4 bg-white shadow-sm" data-aos="fade-up">
+            <div class="text-center mb-4">
+              <h3 class="fw-light text-dark display-5">Ingresa tus datos</h3>
+              <h5 class="text-secondary">y genera tu cotización</h5>
+            </div>
+
+            <form [formGroup]="formulario" (ngSubmit)="registrarUsuario()">
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" formControlName="nombre" class="form-control rounded-3" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Apellidos</label>
+                <input type="text" formControlName="apellidos" class="form-control rounded-3" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" formControlName="email" class="form-control rounded-3" required />
+              </div>
+
+              <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill py-2" [disabled]="formulario.invalid">
+                  Continuar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="usuarioAnonimo" class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="bi bi-info-circle me-2"></i>
+        <div>
+          Estás usando un perfil <strong>anónimo</strong> para cotizar:
+          <span class="ms-1">
+            <strong>{{ usuarioAnonimo.nombre }} {{ usuarioAnonimo.apellidos }}</strong>
+            <span class="text-muted">({{ usuarioAnonimo.email }})</span>
+          </span>
+          <div class="small text-muted">
+            Podrás convertirlo en cuenta completa al confirmar tu pedido.
+          </div>
+        </div>
+      </div>
+
+      <div id="formulario-cotizacion" class="row justify-content-center mt-5" *ngIf="mostrarCotizador">
+        <div class="col-lg-8">
+          <div class="p-4 rounded-4 bg-white shadow-sm" data-aos="fade-up">
+            <div class="text-center mb-4">
+              <h3 class="fw-light text-dark">Realiza tu cotización</h3>
+              <p class="text-secondary small">Selecciona los productos y completa los detalles</p>
+            </div>
+            <app-cliente-cotizacion id="cotizar"></app-cliente-cotizacion>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<div class="container ">
-  <!-- Registro -->
-  <div id="formulario-registro" class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="p-4 rounded-4 bg-white shadow-sm" data-aos="fade-up">
-        <div class="text-center mb-4">
-          <h3 class="fw-light text-dark display-5">Ingresa tus datos</h3>
-          <h5 class="text-secondary">y genera tu cotización</h5>
-        </div>
-
-        <form [formGroup]="formulario" (ngSubmit)="registrarUsuario()">
-          <div class="mb-3">
-            <label class="form-label">Nombre</label>
-            <input type="text" formControlName="nombre" class="form-control rounded-3" required />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Apellidos</label>
-            <input type="text" formControlName="apellidos" class="form-control rounded-3" required />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Correo electrónico</label>
-            <input type="email" formControlName="email" class="form-control rounded-3" required />
-          </div>
-
-          <div class="d-grid gap-2 mt-4">
-            <button type="submit" class="btn btn-primary rounded-pill py-2" [disabled]="formulario.invalid">
-              Continuar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cotización -->
-  <div id="formulario-cotizacion" class="row justify-content-center d-none mt-5">
-    <div class="col-lg-8">
-      <div class="p-4 rounded-4 bg-white shadow-sm" data-aos="fade-up">
-        <div class="text-center mb-4">
-          <h3 class="fw-light text-dark">Realiza tu cotización</h3>
-          <p class="text-secondary small">Selecciona los productos y completa los detalles</p>
-        </div>
-
-        <form [formGroup]="formularioCotizacion" (ngSubmit)="enviarCotizacion()">
-          <input type="hidden" formControlName="idUsuario" />
-
-          <!-- Productos -->
-          <div class="mb-4">
-  <label class="form-label">Productos</label>
-  <div class="row">
-    <div *ngFor="let producto of productos" class="col-md-4 mb-3">
-      <div class="card h-100" 
-           [class.border-primary]="productoIdSeleccionado === producto.idProductos"
-           [class.bg-light]="productoIdSeleccionado === producto.idProductos">
-        <div class="card-body text-center">
-          <h6 class="card-title fw-normal">{{ producto.nombre }}</h6>
-          <p class="card-text text-muted small mb-3">
-            {{ producto.descripcion  }}
-          </p>
-          <button type="button"
-                  class="btn btn-sm rounded-pill"
-                  [class.btn-primary]="productoIdSeleccionado === producto.idProductos"
-                  [class.btn-outline-primary]="productoIdSeleccionado !== producto.idProductos"
-                  (click)="seleccionarProducto(producto)">
-            {{ productoIdSeleccionado === producto.idProductos ? '✓ Seleccionado' : 'Seleccionar' }}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-          <!-- Hectáreas -->
-          <div class="mb-3">
-            <label for="hectareas" class="form-label">Hectáreas</label>
-            <input type="number" id="hectareas" class="form-control rounded-3" formControlName="hectareas" />
-          </div>
-
-          <!-- Detalles -->
-          <div class="mb-3">
-            <label for="detalles" class="form-label">Detalles de la cotización</label>
-            <textarea id="detalles" rows="3" class="form-control rounded-3" formControlName="detalles"></textarea>
-          </div>
-
-          <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-primary rounded-pill py-2">
-              Enviar Cotización
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>

@@ -28,6 +28,9 @@ import { FooterInicioComponent } from './pages/home/inicio/pages/footer-inicio/f
 import { RegisterComponent } from './pages/register/components/register/register.component';
 import { RegisterclientComponent } from './pages/register/components/registerclient/registerclient.component';
 
+import { ClienteCotizacionComponent } from './pages/client/cotizacion/components/cliente-cotizacion/cliente-cotizacion.component';
+import { ClienteModule } from './pages/client/cliente.module';
+
 export function tokenGetter() {
   return localStorage.getItem('jwt');
 }
@@ -50,25 +53,23 @@ export function tokenGetter() {
     LayoutInicioComponent,
     NavbarInicioComponent,
     FooterInicioComponent,
-    
   ],
   imports: [
     BrowserModule,
     CommonModule,
     HttpClientModule,
     AppRoutingModule,
-   ReactiveFormsModule,
-   
+    ReactiveFormsModule,
+    ClienteModule,
     FormsModule,
     JwtModule.forRoot({
-        config: {
-            tokenGetter,
-            allowedDomains: ['localhost:5000'],
-            disallowedRoutes: ['localhost:5000/api/auth/login'],
-        },
+      config: {
+        tokenGetter,
+        allowedDomains: ['localhost:5000'],
+        disallowedRoutes: ['localhost:5000/api/auth/login'],
+      },
     }),
- 
-],
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

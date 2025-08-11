@@ -10,61 +10,156 @@
 </section>
 
 <div class="dashboard-container">
-  <!-- Contenido Principal -->
   <main class="main-content">
 
-    <!-- Gráficos y Datos -->
+    <!-- Sección de datos / gráficas -->
     <section class="data-section">
+
+      <!-- Pedidos por estatus -->
       <div class="chart-card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h3>Pedidos por Estatus</h3>
         </div>
-        <div class="chart-container fix-overflow">
+        <div class="chart-container fix-overflow position-relative">
+          <div *ngIf="loading.estatus" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
           <canvas baseChart
+            *ngIf="!loading.estatus"
             [data]="pedidosChartData"
-            [labels]="pedidosChartLabels"
+            [type]="pedidosChartType"
             [options]="chartOptions">
           </canvas>
         </div>
       </div>
 
+      <!-- Ingresos mensuales -->
       <div class="chart-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3>Opiniones por Calificación</h3>
+          <h3>Ingresos mensuales</h3>
         </div>
-        <div class="chart-container fix-overflow">
+        <div class="chart-container fix-overflow position-relative">
+          <div *ngIf="loading.ingresos" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
           <canvas baseChart
-            [data]="opinionesChartData"
-            [labels]="opinionesChartLabels"
+            *ngIf="!loading.ingresos"
+            [data]="ingresosMensualesData"
+            [type]="ingresosMensualesType"
             [options]="chartOptions">
           </canvas>
         </div>
       </div>
-      
+
+      <!-- Pedidos mensuales -->
       <div class="chart-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3>Productos Más Vendidos</h3>
+          <h3>Pedidos mensuales</h3>
         </div>
-        <div class="chart-container fix-overflow">
+        <div class="chart-container fix-overflow position-relative">
+          <div *ngIf="loading.pedidosMensuales" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
           <canvas baseChart
+            *ngIf="!loading.pedidosMensuales"
+            [data]="pedidosMensualesData"
+            [type]="pedidosMensualesType"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Top productos (por ingreso) -->
+      <div class="chart-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3>Productos más vendidos (ingreso)</h3>
+        </div>
+        <div class="chart-container fix-overflow position-relative">
+          <div *ngIf="loading.topProductos" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+          <canvas baseChart
+            *ngIf="!loading.topProductos"
             [data]="productosVendidosChartData"
             [type]="productosVendidosChartType"
             [options]="chartOptions">
           </canvas>
         </div>
       </div>
-      
+
+      <!-- Top clientes (por ingreso) -->
       <div class="chart-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3>Productos Mejor Calificados</h3>
+          <h3>Clientes top (ingreso)</h3>
         </div>
-        <div class="chart-container fix-overflow">
+        <div class="chart-container fix-overflow position-relative">
+          <div *ngIf="loading.topClientes" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
           <canvas baseChart
-            [data]="productosCalificadosChartData"
+            *ngIf="!loading.topClientes"
+            [data]="topClientesChartData"
+            [type]="topClientesChartType"
             [options]="chartOptions">
           </canvas>
         </div>
       </div>
+
+      <!-- Conversión cotizaciones → pedidos -->
+      <div class="chart-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3>Conversión (Cotizaciones → Pedidos)</h3>
+        </div>
+        <div class="chart-container fix-overflow position-relative d-flex flex-column align-items-center justify-content-center">
+          <div *ngIf="loading.conversion" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+          <div class="mb-2 fw-bold" *ngIf="!loading.conversion">{{ conversionTexto }}</div>
+          <canvas baseChart
+            *ngIf="!loading.conversion"
+            [data]="conversionChartData"
+            [type]="conversionChartType"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Productos mejor calificados -->
+      <div class="chart-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3>Productos mejor calificados</h3>
+        </div>
+        <div class="chart-container fix-overflow position-relative">
+          <div *ngIf="loading.calificados" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+          <canvas baseChart
+            *ngIf="!loading.calificados"
+            [data]="productosCalificadosChartData"
+            [type]="productosCalificadosChartType"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Distribución de opiniones -->
+      <div class="chart-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3>Opiniones por calificación</h3>
+        </div>
+        <div class="chart-container fix-overflow position-relative">
+          <div *ngIf="loading.opiniones" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+          <canvas baseChart
+            *ngIf="!loading.opiniones"
+            [data]="opinionesChartData"
+            [type]="opinionesChartType"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+
     </section>
   </main>
 </div>

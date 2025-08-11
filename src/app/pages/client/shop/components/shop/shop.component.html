@@ -1,130 +1,155 @@
 <div class="purchases-container">
   <!-- Header con datos del cliente -->
   <div class="purchase-header p-4 rounded-top bg-light">
-    <div class="container">
-      <h2 class="mb-0">Historial de compras de <strong>{{ details?.nombre }} {{ details?.apellidos }}</strong></h2>
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <h2 class="mb-0">
+        Historial de compras de <strong>{{ details?.nombre }} {{ details?.apellidos }}</strong>
+      </h2>
+      <button class="btn btn-sm btn-outline-primary" (click)="actualizarListado()" hidden>
+        <i class="bi bi-arrow-clockwise me-1"></i> Actualizar
+      </button>
     </div>
   </div>
 
   <!-- Cuerpo -->
- <!-- Cuerpo mejorado -->
-<div class="purchase-body p-4 rounded-bottom bg-white shadow-sm">
-  <div *ngIf="pedidos.length > 0; else noPurchases">
-    <div class="accordion custom-accordion" id="pedidosAccordion">
-      <div class="accordion-item mb-3 border-0 shadow-sm" *ngFor="let pedido of pedidos; let i = index">
-        <h2 class="accordion-header" [id]="'heading' + i">
-          <button class="accordion-button collapsed py-3" type="button"
-                  (click)="togglePanel(i)"
-                  [class.collapsed]="activePanelIndex !== i"
-                  [attr.aria-expanded]="activePanelIndex === i">
-            <div class="d-flex justify-content-between w-100 align-items-center">
-              <div class="d-flex align-items-center">
-                <span class="badge rounded-pill me-3" [ngClass]="{
-                  'bg-secondary': pedido.estatus === 1,
-                  'bg-warning text-dark': pedido.estatus === 2,
-                  'bg-success': pedido.estatus === 3
-                }" style="min-width: 100px; padding: 8px 12px;">
-                  <i class="bi me-2" [ngClass]="{
-                    'bi-hourglass-split': pedido.estatus === 1,
-                    'bi-truck': pedido.estatus === 2,
-                    'bi-check-circle': pedido.estatus === 3
-                  }"></i>
-                  {{ getNombreEstatus(pedido.estatus) }}
-                </span>
-                <div>
-                  <h5 class="mb-0 fw-bold">Pedido #{{ pedido.idPedido }}</h5>
-                  <small class="text-muted">{{ pedido.fechaPedido | date: 'dd/MM/yyyy HH:mm' }}</small>
+  <div class="purchase-body p-4 rounded-bottom bg-white shadow-sm">
+    <!-- Loader listado -->
+    <div *ngIf="cargando" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-3 text-muted">Cargando pedidos...</p>
+    </div>
+
+    <!-- Lista -->
+    <div *ngIf="!cargando && pedidos.length > 0; else noPurchases">
+      <div class="accordion custom-accordion" id="pedidosAccordion">
+        <div class="accordion-item mb-3 border-0 shadow-sm" *ngFor="let pedido of pedidos; let i = index">
+          <h2 class="accordion-header" [id]="'heading' + i">
+            <button class="accordion-button collapsed py-3" type="button" (click)="togglePanel(i)"
+              [class.collapsed]="activePanelIndex !== i" [attr.aria-expanded]="activePanelIndex === i">
+              <div class="d-flex justify-content-between w-100 align-items-center">
+                <div class="d-flex align-items-center">
+                  <span class="badge rounded-pill me-3" [ngClass]="getBadgeClass(pedido.estatus)"
+                    style="min-width: 110px; padding: 8px 12px;">
+                    <i class="bi me-2" [ngClass]="getBadgeIcon(pedido.estatus)"></i>
+                    {{ getNombreEstatus(pedido.estatus) }}
+                  </span>
+                  <div>
+                    <h5 class="mb-0 fw-bold">
+                      Pedido #{{ pedido.idPedido }}
+                      <small class="text-muted ms-2" *ngIf="pedido.cotizacionClave">({{ pedido.cotizacionClave
+                        }})</small>
+                    </h5>
+                    <small class="text-muted">{{ pedido.fechaPedido | date: 'dd/MM/yyyy HH:mm' }}</small>
+                  </div>
+                </div>
+                <i class="bi bi-chevron-down accordion-arrow"></i>
+              </div>
+            </button>
+          </h2>
+
+          <div [id]="'collapse' + i" class="accordion-collapse collapse" [class.show]="activePanelIndex === i"
+            [attr.aria-labelledby]="'heading' + i">
+            <div class="accordion-body px-4 py-3">
+
+              <!-- Comentario del pedido -->
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <p class="mb-2">
+                    <strong><i class="bi bi-chat-left-text me-2"></i>Comentario:</strong>
+                    <span [class.text-muted]="!pedido.comentario">
+                      {{ pedido.comentario || 'Sin comentarios' }}
+                    </span>
+                  </p>
                 </div>
               </div>
-              <i class="bi bi-chevron-down accordion-arrow"></i>
-            </div>
-          </button>
-        </h2>
-        <div [id]="'collapse' + i"
-              class="accordion-collapse collapse"
-              [class.show]="activePanelIndex === i"
-              [attr.aria-labelledby]="'heading' + i">
-          <div class="accordion-body px-4 py-3">
-            <div class="row mb-3">
-              <div class="col-md-4">
-                <p class="mb-2"><strong><i class="bi bi-box-seam me-2"></i>Producto:</strong> {{ pedido.nombreProducto }}</p>
-              </div>
-              <div class="col-md-4">
-                <p class="mb-2">
-                  <strong><i class="bi bi-percent me-2"></i>Porcentaje Ganancia:</strong>
-                  {{ (pedido.porcentajeGanancia / 100) | percent:'1.0-2' }}
-                </p>
-              </div>
-              <div class="col-md-4">
-                <p class="mb-2"><strong><i class="bi bi-chat-left-text me-2"></i>Comentario:</strong>
-                  <span class="{{ !pedido.comentario ? 'text-muted' : '' }}">
-                    {{ pedido.comentario || 'Sin comentarios' }}
-                  </span>
-                </p>
-              </div>
-            </div>
 
-            <div class="table-responsive mt-3">
-              <table class="table table-hover table-sm">
-                <thead class="table-light">
-                  <tr>
-                    <th class="ps-3"><i class="bi bi-box me-2"></i>Insumo</th>
-                    <th class="text-center"><i class="bi bi-hash me-2"></i>Cantidad</th>
-                    <th class="text-end"><i class="bi bi-currency-dollar me-2"></i>Precio</th>
-                    <th class="text-end pe-3"><i class="bi bi-calculator me-2"></i>Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let d of pedido.detalles" class="align-middle">
-                    <td class="ps-3">{{ d.nombreInsumo }}</td>
-                    <td class="text-center">{{ d.cantidad }}</td>
-                    <td class="text-end">{{ d.precioPromedio | currency }}</td>
-                    <td class="text-end pe-3">{{ d.cantidad * d.precioPromedio | currency }}</td>
-                  </tr>
-                </tbody>
-                <tfoot class="table-group-divider">
-                  <tr>
-                    <td colspan="3" class="text-end fw-bold pe-3">Total:</td>
-                    <td class="text-end fw-bold pe-3">{{ getTotalPedido(pedido) | currency }}</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+              <!-- Partidas (sin precios de insumos) -->
+              <div *ngFor="let p of pedido.partidas; let k = index" class="mb-4">
+                <h6 class="mb-2">
+                  {{ k + 1 }}. {{ p.nombreProducto || 'Producto' }} · Hectáreas: {{ p.hectareas }}
+                </h6>
 
-            <div class="d-flex justify-content-end mt-4">
-              <button class="btn btn-primary rounded-pill px-4" (click)="abrirModal(pedido.productoId)">
-                <i class="bi bi-chat-left-text me-2"></i> Agregar opinión
-              </button>
+                <div class="table-responsive">
+                  <table class="table table-hover table-sm">
+                    <thead class="table-light">
+                      <tr>
+                        <th class="ps-3">Insumo</th>
+                        <th class="text-center">Cantidad</th>
+                        <!-- Se ocultaron columnas de Precio/Subtotal -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let d of p.detalles" class="align-middle">
+                        <td class="ps-3">{{ d.nombreInsumo }}</td>
+                        <td class="text-center">{{ d.cantidad }}</td>
+                      </tr>
+                      <tr *ngIf="!p.detalles || p.detalles.length === 0">
+                        <td colspan="2" class="text-center py-4 text-muted">
+                          <i class="bi bi-exclamation-circle me-2"></i>No hay insumos registrados
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Solo precio final del pedido -->
+              <div class="d-flex justify-content-end mt-3 border-top pt-3">
+                <div class="text-end">
+                  <div class="fs-5 fw-bold">
+                    Total a pagar: {{ getTotalPedido(pedido) | currency }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Acciones del pedido (cliente) -->
+              <div class="d-flex justify-content-end mt-4 gap-2">
+                <!-- Pagar: solo cuando está En Proceso (2) -->
+                <button class="btn btn-primary rounded-pill px-4" *ngIf="(pedido.estatus ?? 0) === 2"
+                  (click)="pagarPedido(pedido.idPedido)" [disabled]="pagando">
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"
+                    *ngIf="pagando"></span>
+                  <i class="bi bi-cash-coin me-2" *ngIf="!pagando"></i> Marcar como pagado
+                </button>
+
+                <!-- Opinión (puedes ajustarla por partida si lo deseas) -->
+                <button class="btn btn-outline-primary rounded-pill px-4"
+                  (click)="abrirModal((pedido.partidas && pedido.partidas[0].productoId) || 0)">
+                  <i class="bi bi-chat-left-text me-2"></i> Agregar opinión
+                </button>
+              </div>
+
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Sin compras - diseño mejorado -->
-  <ng-template #noPurchases>
-    <div class="text-center py-5 px-3">
-      <div class="empty-state">
-        <i class="bi bi-cart-x text-muted" style="font-size: 4rem; opacity: 0.7;"></i>
-        <h3 class="mt-4 fw-bold">Aún no has realizado ningún pedido</h3>
-        <p class="text-muted mb-4">Descubre nuestros productos y realiza tu primera compra</p>
-        <button class="btn btn-success rounded-pill px-4 py-2" routerLink="/cliente/products">
-          <i class="bi bi-arrow-right-circle me-2"></i> Explorar productos
-        </button>
+    <!-- Sin compras -->
+    <ng-template #noPurchases>
+      <div class="text-center py-5 px-3" *ngIf="!cargando">
+        <div class="empty-state">
+          <i class="bi bi-cart-x text-muted" style="font-size: 4rem; opacity: 0.7;"></i>
+          <h3 class="mt-4 fw-bold">Aún no has realizado ningún pedido</h3>
+          <p class="text-muted mb-4">Descubre nuestros productos y realiza tu primera compra</p>
+          <button class="btn btn-success rounded-pill px-4 py-2" routerLink="/cliente/products">
+            <i class="bi bi-arrow-right-circle me-2"></i> Explorar productos
+          </button>
+        </div>
       </div>
-    </div>
-  </ng-template>
+    </ng-template>
+  </div>
 </div>
 
-
-
 <!-- Modal para agregar opinión -->
-<div class="modal fade show" tabindex="-1" [ngClass]="{'d-block': modalAbierto}" [style.background]="'rgba(0,0,0,0.5)'" role="dialog" *ngIf="modalAbierto">
+<div class="modal fade show" tabindex="-1" [ngClass]="{'d-block': modalAbierto}" [style.background]="'rgba(0,0,0,0.5)'"
+  role="dialog" *ngIf="modalAbierto">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 10px;">
-      <!-- Encabezado con color sólido -->
-      <div class="modal-header text-white" style="background-color: #4a6bdf; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+      <div class="modal-header text-white"
+        style="background-color: #4a6bdf; border-top-left-radius: 10px; border-top-right-radius: 10px;">
         <h5 class="modal-title fw-bold">
           <i class="bi bi-chat-square-text me-2"></i>Agregar Tu Opinión
         </h5>
@@ -133,15 +158,13 @@
 
       <div class="modal-body p-4">
         <form>
-          <!-- Sistema de calificación con estrellas mejorado -->
           <div class="mb-4">
             <label class="form-label fw-semibold text-secondary d-block mb-3">
               <i class="bi bi-star-fill text-warning me-2"></i>Calificación
             </label>
             <div class="rating-stars d-flex justify-content-center">
-              <div *ngFor="let star of [1,2,3,4,5]"
-                   (click)="nuevaOpinion.calificacion = star"
-                   [ngClass]="{'text-warning': star <= nuevaOpinion.calificacion, 'text-secondary': star > nuevaOpinion.calificacion}">
+              <div *ngFor="let star of [1,2,3,4,5]" (click)="nuevaOpinion.calificacion = star"
+                [ngClass]="{'text-warning': star <= nuevaOpinion.calificacion, 'text-secondary': star > nuevaOpinion.calificacion}">
                 <i class="bi bi-star-fill" style="font-size: 2rem; cursor: pointer;"></i>
               </div>
             </div>
@@ -152,25 +175,18 @@
             <label for="comentario" class="form-label fw-semibold text-secondary">
               <i class="bi bi-pencil-square me-2"></i>Comentario
             </label>
-            <textarea id="comentario"
-                      class="form-control border-2 border-secondary"
-                      rows="4"
-                      [(ngModel)]="nuevaOpinion.comentario"
-                      name="comentario"
-                      placeholder="Escribe tu experiencia con el producto..."></textarea>
+            <textarea id="comentario" class="form-control border-2 border-secondary" rows="4"
+              [(ngModel)]="nuevaOpinion.comentario" name="comentario"
+              placeholder="Escribe tu experiencia con el producto..."></textarea>
           </div>
         </form>
       </div>
 
       <div class="modal-footer border-top-0 bg-light">
-        <button type="button"
-                class="btn btn-outline-secondary rounded-pill px-4"
-                (click)="cerrarModal()">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" (click)="cerrarModal()">
           <i class="bi bi-x-circle me-2"></i>Cancelar
         </button>
-        <button type="button"
-                class="btn btn-primary rounded-pill px-4 shadow-sm"
-                (click)="enviarOpinion()">
+        <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" (click)="enviarOpinion()">
           <i class="bi bi-send-check me-2"></i>Enviar Opinión
         </button>
       </div>
@@ -178,20 +194,22 @@
   </div>
 </div>
 
-
 <!-- Estilos personalizados -->
 <style>
   .custom-accordion .accordion-button:not(.collapsed) {
     background-color: #f8f9fa;
     box-shadow: none;
   }
+
   .custom-accordion .accordion-button:focus {
     box-shadow: none;
-    border-color: rgba(0,0,0,.125);
+    border-color: rgba(0, 0, 0, .125);
   }
+
   .accordion-arrow {
     transition: transform 0.3s ease;
   }
+
   .accordion-button:not(.collapsed) .accordion-arrow {
     transform: rotate(180deg);
   }
@@ -204,17 +222,7 @@
     background-color: #f8fafc;
   }
 
-.accordion-button::after {
-  display: none !important; /* Oculta la flecha de Bootstrap */
-}
-
-.accordion-arrow {
-  transition: transform 0.3s ease;
-  margin-left: 10px; /* Espacio entre el texto y tu flecha */
-}
-
-.accordion-button:not(.collapsed) .accordion-arrow {
-  transform: rotate(180deg);
-}
-
+  .accordion-button::after {
+    display: none !important;
+  }
 </style>

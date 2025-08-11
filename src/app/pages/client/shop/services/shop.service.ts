@@ -9,12 +9,16 @@ import { PedidoResponse, Opinion } from '../interface/shop';
 })
 export class ShopService {
 
-  private apiUrl =  `${environment.apiUrl}/Pedido`;
+  private apiUrl =  `${environment.apiUrl}/pedidos`;
   private apiUrlO =  `${environment.apiUrl}/Opinion`;
   constructor(private http: HttpClient) {}
 
   getPedidosPorUsuario(): Observable<PedidoResponse[]> {
     return this.http.get<PedidoResponse[]>(`${this.apiUrl}/cliente`);
+  }
+
+  marcarPagado(idPedido: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${idPedido}/pagado`, {});
   }
 
   crearOpinion(opinion: Opinion): Observable<Opinion> {
